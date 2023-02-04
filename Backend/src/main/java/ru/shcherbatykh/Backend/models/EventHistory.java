@@ -1,8 +1,8 @@
 package ru.shcherbatykh.Backend.models;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class EventHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private EventType eventType;

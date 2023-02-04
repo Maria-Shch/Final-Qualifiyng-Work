@@ -1,8 +1,8 @@
 package ru.shcherbatykh.Backend.models;
 
-import jakarta.persistence.*;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private int serialNumber;
     private String name;
     private String description;

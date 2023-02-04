@@ -1,13 +1,13 @@
 package ru.shcherbatykh.Backend.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "groups")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_of_edu_id")
     private LevelOfEdu levelOfEdu;

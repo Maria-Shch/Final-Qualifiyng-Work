@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.shcherbatykh.Backend.models.Status;
 
 @Repository
-public interface TaskStatusHistory extends CrudRepository<Status, Long> {
+public interface TaskStatusHistoryRepo extends CrudRepository<Status, Long> {
 }

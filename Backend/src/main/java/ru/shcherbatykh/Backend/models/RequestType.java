@@ -1,12 +1,12 @@
 package ru.shcherbatykh.Backend.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "request_types")
 public class RequestType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     public String name;
 }
