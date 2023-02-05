@@ -10,24 +10,30 @@ import ru.shcherbatykh.Backend.security.JwtAuthentication;
 import ru.shcherbatykh.Backend.services.AuthService;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/hello")
 @RequiredArgsConstructor
 public class Controller {
 
     private final AuthService authService;
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("hello/user")
+    @GetMapping("/user")
     public ResponseEntity<String> helloUser() {
         final JwtAuthentication authInfo = authService.getAuthInfo();
         return ResponseEntity.ok("Hello user " + authInfo.getPrincipal() + "!");
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("hello/admin")
+    @GetMapping("/admin")
     public ResponseEntity<String> helloAdmin() {
         final JwtAuthentication authInfo = authService.getAuthInfo();
         return ResponseEntity.ok("Hello admin " + authInfo.getPrincipal() + "!");
     }
 
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<String> helloAll() {
+        final JwtAuthentication authInfo = authService.getAuthInfo();
+        return ResponseEntity.ok("Hello all " + authInfo.getPrincipal() + "!");
+    }
 }

@@ -1,0 +1,22 @@
+<div>
+  <div>
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <input type="text"
+             ngModel
+             name="username"
+             id="username"
+             placeholder="Enter your username"
+      >
+
+      <input type="password"
+             ngModel
+             name="password"
+             id="password"
+             placeholder="Enter your password"
+      >
+
+      <input type="submit"
+             value="Login">
+    </form>
+  </div>
+</div>

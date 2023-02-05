@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import ru.shcherbatykh.Backend.classes.Role;
 
 import java.util.Collection;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -15,11 +14,11 @@ public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
     private String username;
-    private String firstName;
-    private Set<Role> roles;
+    private String name;
+    private Role role;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() { return roles; }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return role.getAuthorities(); }
 
     @Override
     public Object getCredentials() { return null; }
@@ -39,6 +38,6 @@ public class JwtAuthentication implements Authentication {
     }
 
     @Override
-    public String getName() { return firstName; }
+    public String getName() { return name; }
 
 }
