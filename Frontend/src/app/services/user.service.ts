@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthorizationService} from "./authorization.service";
-import {Observable} from "rxjs";
-import {IJwtResponse} from "../interfaces/IJwtResponse";
-import {IUsernamePassword} from "../interfaces/IUsernamePassword";
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +9,11 @@ export class UserService {
 
   PATH_OF_API = 'http://localhost:8084';
 
-  requestHeader = new HttpHeaders({ 'No-Auth': 'True' });
   constructor(
     private httpclient: HttpClient,
     private authService: AuthorizationService
   ) {}
 
-  public login(loginData: IUsernamePassword) : Observable<IJwtResponse> {
-    return this.httpclient.post<IJwtResponse>(this.PATH_OF_API + '/auth/login', loginData, {
-      headers: this.requestHeader,
-    });
-  }
 
   public forUser() {
     return this.httpclient.get(this.PATH_OF_API + '/hello/user', {

@@ -34,7 +34,7 @@ public class JwtProvider {
 
     public String generateAccessToken(@NonNull User user) {
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(60).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusDays(2).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
                 .setSubject(user.getUsername())
@@ -80,7 +80,7 @@ public class JwtProvider {
         } catch (SignatureException sEx) {
             log.error("Invalid signature", sEx);
         } catch (Exception e) {
-            log.error("invalid token", e);
+            log.error("Invalid token", e);
         }
         return false;
     }
@@ -100,5 +100,4 @@ public class JwtProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
 }

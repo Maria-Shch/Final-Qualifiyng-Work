@@ -14,7 +14,8 @@ import { UserComponent } from './components/user/user.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {UserService} from "./services/user.service";
-import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { ForbiddenComponent } from './components/authorization/forbidden/forbidden.component';
+import { UpdateTokensComponent } from './components/authorization/update-tokens/update-tokens.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ForbiddenComponent } from './components/forbidden/forbidden.component';
     HomeComponent,
     AdminComponent,
     UserComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    UpdateTokensComponent
   ],
   imports: [
     BrowserModule,

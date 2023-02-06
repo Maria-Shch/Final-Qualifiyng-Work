@@ -5,9 +5,11 @@
       <a routerLink="/admin"
          *ngIf="userService.roleMatch(['ADMIN'])"
       >Admin Dashboard</a>
+
       <a  routerLink="/user"
          *ngIf="userService.roleMatch(  ['USER'])"
       >User Dashboard</a>
+
       <button *ngIf="! isLoggedIn()" type="button" routerLink="/login">Login</button>
       <button *ngIf="isLoggedIn()" type="button" (click)="logout()" >Logout</button>
     </div>

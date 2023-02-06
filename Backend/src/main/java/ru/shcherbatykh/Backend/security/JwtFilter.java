@@ -1,6 +1,5 @@
 package ru.shcherbatykh.Backend.security;
 
-
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +44,4 @@ public class JwtFilter extends GenericFilterBean {
         }
         return null;
     }
-
 }

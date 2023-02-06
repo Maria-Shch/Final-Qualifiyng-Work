@@ -20,7 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -45,11 +44,15 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .antMatchers("/auth/login", "/auth/token").permitAll()
+                                .antMatchers("/auth/login", "/auth/token", "auth/refresh").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                ).build();
+                )
+                .formLogin()
+                .failureHandler((request, response, exception) -> response.sendRedirect("/auth/error"))
+                .and()
+                .build();
     }
 
     @Bean
