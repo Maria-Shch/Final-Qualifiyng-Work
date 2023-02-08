@@ -1,3 +1,5 @@
+import {IGroup} from "./IGroup";
+
 export interface IUser {
   id:number;
   name:string;
@@ -7,4 +9,5 @@ export interface IUser {
   password:string;
   registrationDate:Date;
   role:string;
+  group: IGroup | null;
 }

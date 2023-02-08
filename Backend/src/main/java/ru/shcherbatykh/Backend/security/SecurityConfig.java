@@ -44,14 +44,16 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .antMatchers("/auth/login", "/auth/token", "auth/refresh").permitAll()
+                                .antMatchers("/auth/login",
+                                        "/auth/token",
+                                        "/auth/refresh",
+                                        "/group/all",
+                                        "/user/isPresent",
+                                        "/user/registerNewUser").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 )
-                .formLogin()
-                .failureHandler((request, response, exception) -> response.sendRedirect("/auth/error"))
-                .and()
                 .build();
     }
 

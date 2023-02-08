@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user',
@@ -9,7 +10,7 @@ import {UserService} from "../../services/user.service";
 export class UserComponent {
   messageUser: any;
   messageAll: any;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.forUser();
@@ -21,6 +22,7 @@ export class UserComponent {
         this.messageUser = response;
       },
       (error)=>{
+        this.router.navigate(['/error']);
         console.log(error);
       }
     );
@@ -30,6 +32,7 @@ export class UserComponent {
         this.messageAll = response;
       },
       (error)=>{
+        this.router.navigate(['/error']);
         console.log(error);
       }
     );

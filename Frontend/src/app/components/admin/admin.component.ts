@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {UserService} from "../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin',
@@ -9,7 +10,7 @@ import {UserService} from "../../services/user.service";
 export class AdminComponent {
   messageAdmin: any;
   messageAll: any;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
   ngOnInit(): void {
     this.forAdmin();
   }
@@ -20,6 +21,7 @@ export class AdminComponent {
       },
       (error)=>{
         console.log(error);
+        this.router.navigate(['/error']);
       }
     );
 
@@ -29,6 +31,7 @@ export class AdminComponent {
       },
       (error)=>{
         console.log(error);
+        this.router.navigate(['/error']);
       }
     );
   }

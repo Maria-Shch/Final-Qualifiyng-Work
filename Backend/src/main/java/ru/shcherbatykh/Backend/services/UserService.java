@@ -26,10 +26,10 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(User newUser) {
+    public User addUser(User newUser) {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         //todo it's not thread safe when two users with the same username sign up at the same time
-        userRepo.save(newUser);
+        return userRepo.save(newUser);
     }
 
     public List<User> getUsers(){

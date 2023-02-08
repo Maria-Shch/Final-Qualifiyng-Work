@@ -3,34 +3,31 @@ import {IUsernamePassword} from "../interfaces/IUsernamePassword";
 import {Observable} from "rxjs";
 import {IAuthResponse} from "../interfaces/IAuthResponse";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {environment} from "../environments/enviroment";
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizationService {
-
-  PATH_OF_API = 'http://localhost:8084';
   constructor(private httpclient: HttpClient) {}
 
   public login(loginData: IUsernamePassword) : Observable<IAuthResponse> {
-      return this.httpclient.post<IAuthResponse>(this.PATH_OF_API + '/auth/login', loginData, {
+      return this.httpclient.post<IAuthResponse>(environment.apiUrl + '/auth/login', loginData, {
           headers: new HttpHeaders({ 'No-Auth': 'True' }),
       });
   }
 
   public async refreshTokens() {
-      this.httpclient.post<IAuthResponse>(this.PATH_OF_API + '/auth/token',
+      this.httpclient.post<IAuthResponse>(environment.apiUrl + '/auth/token',
         {"refreshToken": this.getRefreshToken()},
         { headers: new HttpHeaders({ 'No-Auth': 'True' }),}
       ).subscribe((data:IAuthResponse) =>{
           this.setAccessToken(data.accessToken);
-          console.log("выполнился token");
 
-          this.httpclient.post<IAuthResponse>(this.PATH_OF_API + '/auth/refresh',
+          this.httpclient.post<IAuthResponse>(environment.apiUrl + '/auth/refresh',
             {"refreshToken": this.getRefreshToken()}
           ).subscribe((data:IAuthResponse) =>{
               this.setAccessToken(data.accessToken);
               this.setRefreshToken(data.refreshToken);
-              console.log("выполнился refresh");
           });
       });
   }

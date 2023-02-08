@@ -1,0 +1,42 @@
+<div>
+  <div>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+
+      <p *ngIf="(name.errors?.['required'] ||
+                lastname.errors?.['required'] ||
+                patronymic.errors?.['required'] ||
+                username.errors?.['required'] ||
+                password.errors?.['required'] ||
+                confirmPassword.errors?.['required']) &&
+                hasBeenSubmitted">
+        Заполните все обязательные поля</p>
+      <p *ngIf="username.errors?.['email'] && hasBeenSubmitted">Поле 'Электронная почта' заполнено неверно</p>
+      <p *ngIf="!isPasswordsMatch() && hasBeenSubmitted">Пароли не совпадают</p>
+      <p *ngIf="isRepeatedUsername">Пользователем с такой электронной почтой уже существует</p>
+
+      <input type="text" formControlName="name" id="name" placeholder="Имя">
+      <br/>
+      <input type="text" formControlName="lastname" id="lastname" placeholder="Фамилия" required>
+      <br/>
+      <input type="text" formControlName="patronymic" id="patronymic" placeholder="Отчество" required>
+      <br/>
+      <input type="text" nodel formControlName="username" id="username" placeholder="Электронная почта" required>
+      <br/>
+
+      <select formControlName="group" id="group">
+        <option [ngValue]="null">Без группы</option>
+        <option [ngValue]="group" *ngFor="let group of groups">{{group.name}}</option>
+      </select>
+
+      <br/>
+      <input type="password" formControlName="password" id="password" placeholder="Пароль" required>
+      <br/>
+      <input type="password" formControlName="confirmPassword" id="confirmPassword" placeholder="Подтверждение пароля" required>
+      <br/>
+
+      <input type="submit" value="Создать аккаунт">
+
+      <a routerLink="/login">Уже есть аккаунт</a>
+    </form>
+  </div>
+</div>

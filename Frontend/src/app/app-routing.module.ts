@@ -5,8 +5,10 @@ import {HomeComponent} from "./components/home/home.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {AuthGuard} from "./auth/auth.guard";
 import {UserComponent} from "./components/user/user.component";
-import {ForbiddenComponent} from "./components/authorization/forbidden/forbidden.component";
+import {ForbiddenComponent} from "./components/utils/forbidden/forbidden.component";
 import {UpdateTokensComponent} from "./components/authorization/update-tokens/update-tokens.component";
+import {RegistrationComponent} from "./components/authorization/registration/registration.component";
+import {ErrorComponent} from "./components/utils/error/error.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -14,7 +16,9 @@ const routes: Routes = [
     { path: 'user', component: UserComponent ,  canActivate:[AuthGuard], data:{roles:['USER']} },
     { path: 'login', component: LoginComponent },
     { path: 'forbidden', component: ForbiddenComponent },
-    { path: 'update/tokens', component: UpdateTokensComponent }
+    { path: 'update/tokens', component: UpdateTokensComponent },
+    { path: 'registration', component: RegistrationComponent },
+    { path: 'error', component: ErrorComponent }
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import {RouterModule, RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import { LoginComponent } from './components/authorization/login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -14,8 +14,10 @@ import { UserComponent } from './components/user/user.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {UserService} from "./services/user.service";
-import { ForbiddenComponent } from './components/authorization/forbidden/forbidden.component';
+import { ForbiddenComponent } from './components/utils/forbidden/forbidden.component';
 import { UpdateTokensComponent } from './components/authorization/update-tokens/update-tokens.component';
+import { RegistrationComponent } from './components/authorization/registration/registration.component';
+import { ErrorComponent } from './components/utils/error/error.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { UpdateTokensComponent } from './components/authorization/update-tokens/
     AdminComponent,
     UserComponent,
     ForbiddenComponent,
-    UpdateTokensComponent
+    UpdateTokensComponent,
+    RegistrationComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +38,8 @@ import { UpdateTokensComponent } from './components/authorization/update-tokens/
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthGuard,

@@ -1,29 +1,14 @@
 <div>
   <div>
     <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-      <input type="text"
-             ngModel
-             name="username"
-             id="username"
-             placeholder="Enter your username"
-      >
+      <input type="text" ngModel name="username" id="username" placeholder="Электронная почта">
       <br/>
-
-      <input type="password"
-             ngModel
-             name="password"
-             id="password"
-             placeholder="Enter your password"
-      >
-
+      <input type="password" ngModel name="password" id="password" placeholder="Пароль">
       <br/>
-
       {{errorMessage}}
-
       <br/>
-
-      <input type="submit"
-             value="Login">
+      <input type="submit" value="Login">
+      <a routerLink="/registration">Региcтрация</a>
     </form>
   </div>
 </div>

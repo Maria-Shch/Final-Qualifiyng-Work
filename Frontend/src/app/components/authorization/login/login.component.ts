@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthorizationService} from "../../../services/authorization.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
@@ -12,17 +12,13 @@ import {IAuthResponse} from "../../../interfaces/IAuthResponse";
 export class LoginComponent {
 
   errorMessage:string = "";
-  constructor(
-    private authService: AuthorizationService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthorizationService, private router: Router) {}
 
   ngOnInit(): void {}
 
   login(loginForm: NgForm) {
     this.authService.login(loginForm.value).subscribe(
       (response: IAuthResponse) => {
-        console.log(response);
         if (response.authResponseStatus === "SUCCESS"){
           this.authService.setRole(response.user.role);
           this.authService.setAccessToken(response.accessToken);
@@ -41,6 +37,7 @@ export class LoginComponent {
 
       },
       (error) => {
+        this.router.navigate(['/error']);
         console.log(error);
       }
     );

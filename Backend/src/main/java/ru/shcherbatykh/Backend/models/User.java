@@ -24,8 +24,6 @@ public class User {
     @Column(name = "email")
     private String username;
     private String password;
-    @Transient
-    private String confirmPassword;
     @Column(name = "registration_date")
     @CreationTimestamp
     private LocalDateTime registrationDate;

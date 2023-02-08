@@ -1,9 +1,14 @@
 package ru.shcherbatykh.Backend.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "forms_of_edu")
+@Getter
+@Setter
 public class FormOfEdu {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

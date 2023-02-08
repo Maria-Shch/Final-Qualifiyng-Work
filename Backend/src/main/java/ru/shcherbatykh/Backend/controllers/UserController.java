@@ -1,9 +1,8 @@
 package ru.shcherbatykh.Backend.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.shcherbatykh.Backend.modelsForSend.UserFS;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.services.UserService;
 
 import java.util.List;
@@ -18,9 +17,17 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<UserFS> getUsers(){
-        return userService.getUsers()
-                .stream()
-                .map(u -> new UserFS(u.getId(), u.getName(), u.getLastname(), u.getPatronymic(), u.getUsername())).toList();
+    public List<User> getUsers(){
+        return userService.getUsers();
+    }
+
+    @PostMapping("/isPresent")
+    public boolean isPresentUser (@RequestBody String username) {
+        return userService.findByUsername(username).isPresent();
+    }
+
+    @PostMapping(value = "/registerNewUser", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User registerNewUser (@RequestBody User newUser) {
+        return userService.addUser(newUser);
     }
 }
