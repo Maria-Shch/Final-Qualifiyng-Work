@@ -118,6 +118,10 @@ h5 {
   margin: 6px 0 6px 0;
 }
 
+.required-input{
+  border-bottom: 2px solid var(--c12);
+}
+
 .i-submit {
   display: flex;
   flex-direction: row;
