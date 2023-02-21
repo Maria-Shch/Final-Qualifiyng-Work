@@ -42,4 +42,8 @@ export class LoginComponent {
       }
     );
   }
+
+  hasErrors(): boolean {
+    return this.errorMessage.length != 0;
+  }
 }

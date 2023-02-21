@@ -1,1 +1,143 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  font-family: 'Inter';
+  font-style: normal;
+  margin: 0px;
+}
+
+:root {
+  --c1: #FFFFFF;
+  --c2: #3748E6;
+  --c3: #00069A;
+  --c4: #010101;
+  --c5: #F4F4FA;
+  --c6: #2A2C32;
+  --c7: #CCEDC1;
+  --c8: #FFF6A5;
+  --c9: #EBCAA4;
+  --c10: #EDC1C1;
+  --c11: #D7A5FF;
+  --c12: #DD1616;
+  --c13: rgba(11, 137, 0, 0.58);
+  --c14: rgba(0, 54, 193, 0.31);
+  --c15: rgba(48, 48, 48, 0.2);
+}
+
+*:focus {
+  outline: none;
+}
+
+.d-app-root {
+  height: 100%;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 58px;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+h5 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.p1 {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 48px;
+}
+
+.p2 {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 39px;
+}
+
+.p3 {
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.p4 {
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.p5 {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.error {
+  color: var(--c12);
+  margin: 10px 0 10px 0;
+}
+
+.input-params{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 15px;
+  gap: 10px;
+  width: 367px;
+  background: var(--c5);
+  border-radius: 8px;
+
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--c6);
+
+  border: none;
+  margin: 6px 0 6px 0;
+}
+
+.i-submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 40px;
+  gap: 10px;
+
+  width: 256px;
+  height: 44px;
+
+  background-color: var(--c2);
+  color: var(--c1);
+  border-radius: 8px;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+
+  border: none;
+  cursor: pointer;
+  margin: 30px 0 15px 0;
+}
