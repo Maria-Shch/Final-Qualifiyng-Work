@@ -18,6 +18,7 @@ import { ForbiddenComponent } from './components/utils/forbidden/forbidden.compo
 import { UpdateTokensComponent } from './components/authorization/update-tokens/update-tokens.component';
 import { RegistrationComponent } from './components/authorization/registration/registration.component';
 import { ErrorComponent } from './components/utils/error/error.component';
+import { ToHomeComponent } from './components/utils/to-home/to-home.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ErrorComponent } from './components/utils/error/error.component';
     ForbiddenComponent,
     UpdateTokensComponent,
     RegistrationComponent,
-    ErrorComponent
+    ErrorComponent,
+    ToHomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 html,
 body {
-  height: 100%;
   font-family: 'Inter';
   font-style: normal;
   margin: 0px;
+}
+
+body {
+  height: 100vh;
+  max-width: 100vw;
 }
 
 :root {
@@ -27,10 +31,6 @@ body {
 
 *:focus {
   outline: none;
-}
-
-.d-app-root {
-  height: 100%;
 }
 
 h1 {
@@ -143,5 +143,5 @@ h5 {
 
   border: none;
   cursor: pointer;
-  margin: 30px 0 15px 0;
+  margin: 20px 0 0px 0;
 }
