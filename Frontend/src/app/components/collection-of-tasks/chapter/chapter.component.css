@@ -1,0 +1,53 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.d-block{
+  display: flex;
+  justify-content: space-between;
+
+  width: 255px;
+  padding: 10px 20px;
+  margin: 10px 30px 30px 0;
+
+  background: var(--c5);
+  border-radius: 35px;
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+}
+
+.d-block:hover{
+  background: var(--c16);
+}
+
+.icon-open-book {
+  background: url("../../../../assets/icons/open_book.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
+.icon-pencil {
+  background: url("../../../../assets/icons/pencil.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
+.d-row{
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+}
+
+.hr{
+  width: 1.5px;
+  height: 20px;
+  background-color: var(--c6);
+  border: none;
+}

@@ -1,11 +1,6 @@
 .icon-back {
   background: url("../../../../assets/icons/back.png");
-}
-
-.a-img{
   background-size: var(--imgXY-back);
   width: var(--imgXY-back);
   height: var(--imgXY-back);
-  cursor: pointer;
-  border: none;
 }

@@ -1,0 +1,52 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 0 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+      <img src="../../../../assets/icons/book.png" height="30px" width="auto" style="margin-right: 10px">
+      <h2 style="color: var(--c6); margin:0">Глава {{serialNumberOfChapter}}</h2>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfChapter === '1' && !isChapterLast">
+      <app-next [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-next>
+      <hr class="hr">
+      <app-to-chapters></app-to-chapters>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfChapter != '1' && !isChapterLast">
+      <app-previous [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-previous>
+      <hr class="hr">
+      <app-next [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-next>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfChapter != '1' && isChapterLast">
+      <app-previous [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-previous>
+      <hr class="hr">
+      <app-to-chapters></app-to-chapters>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfChapter === '1' && isChapterLast">
+      <app-to-chapters></app-to-chapters>
+    </div>
+  </div>
+
+  <h3 style="color: var(--c6); margin: 10px 0 20px 25px">{{chapter?.name}}</h3>
+
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start">
+    <div *ngFor="let block of blocks" class="d-block" (click)="toTheoryOfBlock(serialNumberOfChapter, block.serialNumber)">
+
+      <h3  style="color: var(--c6); margin: 15px 0 0 10px;">
+        Блок {{serialNumberOfChapter}}. {{block.serialNumber}}
+      </h3>
+      <h4 style="color: var(--c2); margin: 13px 0 0 10px"> {{block.name}}</h4>
+
+      <div>
+        <div style="display: flex; flex-direction: row; justify-content: left; align-items: end; margin: 25px 0 0 10px">
+          <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{block.serialNumber}}/theory" class="a-img icon-open-book"></a>
+          <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{block.serialNumber}}/theory" class="p4" style="color: var(--c6); margin-left: 13px">К теории</a>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: left; align-items: end; margin: 10px 0 20px 10px">
+          <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{block.serialNumber}}/practice" class="a-img icon-pencil"></a>
+          <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{block.serialNumber}}/practice" class="p4" style="color: var(--c6); margin-left: 13px">К практике</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

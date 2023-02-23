@@ -1,19 +1,19 @@
 <nav style="width: 1400px; display: flex; justify-content: space-between;">
-  <a routerLink="/chapters" class="h3" style="text-decoration: none">К списку глав</a>
+  <a routerLink="/chapters" class="h3 a-none">К списку глав</a>
 
-  <a routerLink="/privateOffice" class="h3" style="text-decoration: none"
+  <a routerLink="/privateOffice" class="h3 a-none" style="text-decoration: none"
      *ngIf="userService.roleMatch(['USER','TEACHER','ADMIN'])"
   >Личный кабинет</a>
 
-  <a routerLink="/checkTasks" class="h3" style="text-decoration: none"
+  <a routerLink="/checkTasks" class="h3 a-none"
      *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
   >Проверка решений</a>
 
-  <a routerLink="/studentsGroups" class="h3" style="text-decoration: none"
+  <a routerLink="/studentsGroups" class="h3 a-none"
      *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
   >Студенты и группы</a>
 
-  <a routerLink="/teachers" class="h3" style="text-decoration: none"
+  <a routerLink="/teachers" class="h3 a-none"
      *ngIf="userService.roleMatch(['ADMIN'])"
   >Преподаватели</a>
 

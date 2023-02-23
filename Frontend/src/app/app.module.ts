@@ -20,6 +20,10 @@ import { RegistrationComponent } from './components/authorization/registration/r
 import { ErrorComponent } from './components/utils/error/error.component';
 import { ToHomeComponent } from './components/utils/to-home/to-home.component';
 import { ChaptersComponent } from './components/collection-of-tasks/chapters/chapters.component';
+import { ChapterComponent } from './components/collection-of-tasks/chapter/chapter.component';
+import { NextComponent } from './components/utils/next/next.component';
+import { PreviousComponent } from './components/utils/previous/previous.component';
+import { ToChaptersComponent } from './components/utils/to-chapters/to-chapters.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,11 @@ import { ChaptersComponent } from './components/collection-of-tasks/chapters/cha
     RegistrationComponent,
     ErrorComponent,
     ToHomeComponent,
-    ChaptersComponent
+    ChaptersComponent,
+    ChapterComponent,
+    NextComponent,
+    PreviousComponent,
+    ToChaptersComponent
   ],
   imports: [
     BrowserModule,

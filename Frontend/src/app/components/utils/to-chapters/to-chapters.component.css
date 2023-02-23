@@ -1,0 +1,15 @@
+:host{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: end;
+  margin: 0 10px 0 10px;
+}
+
+.icon-back {
+  background: url("../../../../assets/icons/back.png");
+  background-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0 10px 3px 10px;
+}

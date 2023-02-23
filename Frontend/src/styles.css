@@ -39,12 +39,25 @@ body {
 
   --imgXY-back: 18px;
   --imgXY-login-logout: 40px;
+  --imgXY-theory-pencil: 22px;
 
-  --width-main-container: 1250px;
+  --width-main-container: 1300px;
 }
 
 *:focus {
   outline: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:hover, a:active{
+  text-decoration: revert;
+}
+
+.a-none:hover {
+  text-decoration: none;
 }
 
 h1, .h1 {
@@ -150,4 +163,10 @@ h5, .h5 {
   border: none;
   cursor: pointer;
   margin: 20px 0 0px 0;
+}
+
+.a-img{
+  cursor: pointer;
+  border: none;
+  display: flex;
 }

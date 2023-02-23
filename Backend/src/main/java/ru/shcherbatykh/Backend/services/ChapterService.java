@@ -22,4 +22,12 @@ public class ChapterService {
     private Sort orderBySerialNumber() {
         return Sort.by(Sort.Direction.ASC, "serialNumber");
     }
+
+    public long getCountOfChapters(){
+        return chapterRepo.count();
+    }
+
+    public Chapter getChapterBySerialNumber(int serialNumber){
+        return chapterRepo.findChapterBySerialNumber(serialNumber);
+    }
 }

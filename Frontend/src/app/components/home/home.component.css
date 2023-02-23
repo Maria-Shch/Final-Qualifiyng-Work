@@ -35,7 +35,6 @@
   border-radius: 8px;
 
   cursor: pointer;
-  text-decoration: none;
 }
 
 .to-tasks{
@@ -56,5 +55,4 @@
   border-radius: 8px;
   color: var(--c1);
 }
-
 

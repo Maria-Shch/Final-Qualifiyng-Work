@@ -10,6 +10,7 @@ import {UpdateTokensComponent} from "./components/authorization/update-tokens/up
 import {RegistrationComponent} from "./components/authorization/registration/registration.component";
 import {ErrorComponent} from "./components/utils/error/error.component";
 import {ChaptersComponent} from "./components/collection-of-tasks/chapters/chapters.component";
+import {ChapterComponent} from "./components/collection-of-tasks/chapter/chapter.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
     { path: 'update/tokens', component: UpdateTokensComponent },
     { path: 'registration', component: RegistrationComponent },
     { path: 'error', component: ErrorComponent },
-    { path: 'chapters', component: ChaptersComponent }
+    { path: 'chapters', component: ChaptersComponent },
+    { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent }
 ];
 
 @NgModule({

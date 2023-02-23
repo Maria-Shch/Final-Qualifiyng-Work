@@ -50,7 +50,9 @@ public class SecurityConfig {
                                         "/group/all",
                                         "/user/isPresent",
                                         "/user/registerNewUser",
-                                        "/chapter/all").permitAll()
+                                        "/chapter/all",
+                                        "/chapter/{serialNumberOfChapter}/blocks",
+                                        "/chapters/count").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
