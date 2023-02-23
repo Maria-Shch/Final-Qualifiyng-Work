@@ -9,6 +9,7 @@ import {ForbiddenComponent} from "./components/utils/forbidden/forbidden.compone
 import {UpdateTokensComponent} from "./components/authorization/update-tokens/update-tokens.component";
 import {RegistrationComponent} from "./components/authorization/registration/registration.component";
 import {ErrorComponent} from "./components/utils/error/error.component";
+import {ChaptersComponent} from "./components/collection-of-tasks/chapters/chapters.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
     { path: 'forbidden', component: ForbiddenComponent },
     { path: 'update/tokens', component: UpdateTokensComponent },
     { path: 'registration', component: RegistrationComponent },
-    { path: 'error', component: ErrorComponent }
+    { path: 'error', component: ErrorComponent },
+    { path: 'chapters', component: ChaptersComponent }
 ];
 
 @NgModule({

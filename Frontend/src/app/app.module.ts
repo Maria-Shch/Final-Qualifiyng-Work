@@ -19,6 +19,7 @@ import { UpdateTokensComponent } from './components/authorization/update-tokens/
 import { RegistrationComponent } from './components/authorization/registration/registration.component';
 import { ErrorComponent } from './components/utils/error/error.component';
 import { ToHomeComponent } from './components/utils/to-home/to-home.component';
+import { ChaptersComponent } from './components/collection-of-tasks/chapters/chapters.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ToHomeComponent } from './components/utils/to-home/to-home.component';
     UpdateTokensComponent,
     RegistrationComponent,
     ErrorComponent,
-    ToHomeComponent
+    ToHomeComponent,
+    ChaptersComponent
   ],
   imports: [
     BrowserModule,

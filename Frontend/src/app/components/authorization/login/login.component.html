@@ -1,10 +1,10 @@
 <h1 class="header">Введите данные для входа в систему</h1>
 <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="form-login">
   <h5 class="error" *ngIf="hasErrors()">{{errorMessage}}</h5>
-  <input type="text" ngModel name="username" id="username" placeholder="Электронная почта" class="input-params">
-  <input type="password" ngModel name="password" id="password" placeholder="Пароль" class="input-params">
-  <input type="submit" value="Войти" class="i-submit">
-  <a routerLink="/registration" class="a-registration">Создать аккаунт</a>
+  <input type="text" ngModel name="username" id="username" placeholder="Электронная почта" class="input-params p4">
+  <input type="password" ngModel name="password" id="password" placeholder="Пароль" class="input-params p4">
+  <input type="submit" value="Войти" class="i-submit h5">
+  <a routerLink="/registration" class="a-registration h5">Создать аккаунт</a>
   <app-to-home></app-to-home>
 </form>
 

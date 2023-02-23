@@ -12,7 +12,10 @@ import {IAuthResponse} from "../../../interfaces/IAuthResponse";
 export class LoginComponent {
 
   errorMessage:string = "";
-  constructor(private authService: AuthorizationService, private router: Router) {}
+  constructor(
+    private authService: AuthorizationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -28,13 +31,7 @@ export class LoginComponent {
             this.authService.setRole(response.user.role);
             this.authService.setAccessToken(response.accessToken);
             this.authService.setRefreshToken(response.refreshToken);
-
-            const role = response.user.role;
-            if (role === 'ADMIN') {
-              this.router.navigate(['/admin']);
-            } else {
-              this.router.navigate(['/user']);
-            }
+            this.router.navigate(['/chapters']);
           }
           if (response.authResponseStatus === "ERROR"){
             this.errorMessage = response.errorMessage;

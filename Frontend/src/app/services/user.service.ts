@@ -49,8 +49,6 @@ export class UserService {
         if (userRole === allowedRoles[i]) {
           isMatch = true;
           return isMatch;
-        } else {
-          return isMatch;
         }
       }
     }

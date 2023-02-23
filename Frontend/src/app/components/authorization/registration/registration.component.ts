@@ -27,7 +27,12 @@ export class RegistrationComponent implements OnInit {
     confirmPassword: new FormControl<string>('', [Validators.required]),
   });
 
-  constructor(private groupService: GroupService, private userService: UserService, private router:Router) {}
+  constructor(
+    private groupService: GroupService,
+    private userService: UserService,
+    private router:Router
+  ) {}
+
   ngOnInit(): void {
     this.groupService.getGroups().subscribe((data: IGroup[]) =>{
       this.groups = data;

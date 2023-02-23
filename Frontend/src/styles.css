@@ -6,6 +6,14 @@ body {
   margin: 0px;
 }
 
+a, a:active{
+  color: var(--c6);
+}
+
+a:hover{
+  color: var(--c2);
+}
+
 body {
   height: 100vh;
   max-width: 100vw;
@@ -27,69 +35,75 @@ body {
   --c13: rgba(11, 137, 0, 0.58);
   --c14: rgba(0, 54, 193, 0.31);
   --c15: rgba(48, 48, 48, 0.2);
+  --c16: #eeeefd;
+
+  --imgXY-back: 18px;
+  --imgXY-login-logout: 40px;
+
+  --width-main-container: 1250px;
 }
 
 *:focus {
   outline: none;
 }
 
-h1 {
+h1, .h1 {
   font-weight: 700;
-  font-size: 45px;
+  font-size: 46px;
   line-height: 58px;
 }
 
-h2 {
+h2, .h2 {
   font-weight: 700;
-  font-size: 36px;
+  font-size: 34px;
   line-height: 44px;
 }
 
-h3 {
+h3, .h3 {
   font-weight: 600;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 36px;
 }
 
-h4 {
+h4, .h4 {
   font-weight: 600;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 29px;
 }
 
-h5 {
+h5, .h5 {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 24px;
 }
 
 .p1 {
   font-weight: 600;
-  font-size: 40px;
+  font-size: 38px;
   line-height: 48px;
 }
 
 .p2 {
   font-weight: 400;
-  font-size: 32px;
+  font-size: 30px;
   line-height: 39px;
 }
 
 .p3 {
   font-weight: 300;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 29px;
 }
 
 .p4 {
   font-weight: 300;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 24px;
 }
 
 .p5 {
   font-weight: 300;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 19px;
 }
 
@@ -108,10 +122,6 @@ h5 {
   background: var(--c5);
   border-radius: 8px;
 
-  font-style: normal;
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 24px;
   color: var(--c6);
 
   border: none;
@@ -136,10 +146,6 @@ h5 {
   background-color: var(--c2);
   color: var(--c1);
   border-radius: 8px;
-
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
 
   border: none;
   cursor: pointer;

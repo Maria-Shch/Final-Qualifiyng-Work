@@ -29,9 +29,6 @@
   border: 3px solid var(--c2);
   border-radius: 8px;
 
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
   color: var(--c2);
 
   cursor: pointer;

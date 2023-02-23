@@ -1,13 +1,26 @@
-<nav>
-  <a routerLink="/home">Home</a>
-  <a routerLink="/admin"
+<nav style="width: 1400px; display: flex; justify-content: space-between;">
+  <a routerLink="/chapters" class="h3" style="text-decoration: none">К списку глав</a>
+
+  <a routerLink="/privateOffice" class="h3" style="text-decoration: none"
+     *ngIf="userService.roleMatch(['USER','TEACHER','ADMIN'])"
+  >Личный кабинет</a>
+
+  <a routerLink="/checkTasks" class="h3" style="text-decoration: none"
+     *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
+  >Проверка решений</a>
+
+  <a routerLink="/studentsGroups" class="h3" style="text-decoration: none"
+     *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
+  >Студенты и группы</a>
+
+  <a routerLink="/teachers" class="h3" style="text-decoration: none"
      *ngIf="userService.roleMatch(['ADMIN'])"
-  >Admin Dashboard</a>
+  >Преподаватели</a>
 
-  <a  routerLink="/user"
-     *ngIf="userService.roleMatch(['USER'])"
-  >User Dashboard</a>
-
-  <button *ngIf="! isLoggedIn()" type="button" routerLink="/login">Login</button>
-  <button *ngIf="isLoggedIn()" type="button" (click)="logout()" >Logout</button>
+  <a *ngIf="! isLoggedIn()" routerLink="/login" class="a-img icon-login"></a>
+  <button *ngIf="isLoggedIn()" type="button" (click)="logout()" class="a-img icon-logout"></button>
 </nav>
+
+
+
+

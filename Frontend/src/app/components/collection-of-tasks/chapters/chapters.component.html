@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/book.png" height="30px" width="auto">
+    <h2 style="var(--c6); margin-left: 10px">Главы сборника</h2>
+  </div>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between">
+    <div *ngFor="let chapter of chapters" class="d-chapter" (click)="toChapter(chapter.serialNumber)">
+      <a routerLink="/chapter/{{chapter.serialNumber}}" class="h3" style="margin: 15px 0 10px 10px; text-decoration: none">
+        Глава {{chapter.serialNumber}}.
+      </a>
+      <ul style="margin: 0; padding-left: 25px">
+        <li style="color: var(--c2);">
+          <p class="p4" style="color: var(--c2);"> {{chapter.name}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

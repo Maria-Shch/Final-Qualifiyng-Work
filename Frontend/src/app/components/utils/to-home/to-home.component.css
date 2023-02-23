@@ -3,9 +3,9 @@
 }
 
 .a-img{
-  background-size: 20px;
-  width: 20px;
-  height: 20px;
+  background-size: var(--imgXY-back);
+  width: var(--imgXY-back);
+  height: var(--imgXY-back);
   cursor: pointer;
   border: none;
 }

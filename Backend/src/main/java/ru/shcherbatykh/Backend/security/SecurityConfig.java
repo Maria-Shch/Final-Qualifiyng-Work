@@ -49,7 +49,8 @@ public class SecurityConfig {
                                         "/auth/refresh",
                                         "/group/all",
                                         "/user/isPresent",
-                                        "/user/registerNewUser").permitAll()
+                                        "/user/registerNewUser",
+                                        "/chapter/all").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
