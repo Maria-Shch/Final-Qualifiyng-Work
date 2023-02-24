@@ -22,4 +22,18 @@ public class BlockService {
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
         return blockRepo.getBlocksByChapter(chapter);
     }
+
+    public Block getBlockByChapterAndSerialNumber(Chapter chapter, int serialNumberOfBlock){
+        return blockRepo.getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
+    }
+
+    public Block getBlockBySNOfChapterAndSNOfBlock(int serialNumberOfChapter, int serialNumberOfBlock){
+        Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+        return blockRepo.getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
+    }
+
+    public int getCountOfBlocks(int serialNumberOfChapter) {
+        Chapter chapter =  chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+        return blockRepo.countByChapter(chapter);
+    }
 }

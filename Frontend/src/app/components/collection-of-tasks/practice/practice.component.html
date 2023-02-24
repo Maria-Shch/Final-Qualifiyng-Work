@@ -1,0 +1,45 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 10px 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+      <img src="../../../../assets/icons/pencil.png" height="30px" width="auto" style="margin-right: 10px">
+      <h2 style="color: var(--c6); margin:0">Блок {{serialNumberOfChapter}}. {{serialNumberOfBlock}}</h2>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock === '1' && !isBlockLast">
+      <app-next-block></app-next-block>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && !isBlockLast">
+      <app-previous-block></app-previous-block>
+      <hr class="hr">
+      <app-next-block></app-next-block>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && isBlockLast">
+      <app-previous-block></app-previous-block>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: end;  margin: 10px 0 20px 25px">
+    <h3 style="color: var(--c6); margin: 0">{{blockName}}</h3>
+    <div style="display: flex; justify-content: space-between; width: 410px">
+      <div class="d to-theory">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/theory" class="a-img icon-open-book"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/theory" class="p4 a-none" style="color: var(--c6); margin: 0">К теории</a>
+      </div>
+      <div class="d to-blocks">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}" class="a-img icon-book"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}" class="p4 a-none" style="color: var(--c6); margin: 0">К списку блоков</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start">
+    <div *ngFor="let task of tasksOfBlock" class="d-task" (click)="toTask(serialNumberOfChapter, serialNumberOfBlock, task.serialNumber)">
+
+      <h3  style="color: var(--c6); margin: 5px 0 0 10px;">
+         Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
+      </h3>
+      <h4 style="color: var(--c2); margin: 13px 0 0 10px;"> {{task.name}}</h4>
+
+    </div>
+  </div>
+</div>

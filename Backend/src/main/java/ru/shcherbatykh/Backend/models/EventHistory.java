@@ -1,5 +1,7 @@
 package ru.shcherbatykh.Backend.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,6 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "event_history")
+@Getter
+@Setter
 public class EventHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

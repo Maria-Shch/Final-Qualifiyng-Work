@@ -37,14 +37,14 @@ export class ChapterComponent implements OnInit{
       });
 
       this.collectionOfTasksService.getBlocksOfChapter(this.serialNumberOfChapter).subscribe(
-        (data: IBlock[]) => {
-          this.blocks = data;
-          this.chapter = this.blocks[1].chapter;
-        },
-        (error)=>{
-          console.log(error);
-          this.router.navigate(['/error']);
-        });
+      (data: IBlock[]) => {
+        this.blocks = data;
+        this.chapter = this.blocks[1].chapter;
+      },
+      (error)=>{
+        console.log(error);
+        this.router.navigate(['/error']);
+      });
     });
   }
 

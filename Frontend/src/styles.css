@@ -170,3 +170,12 @@ h5, .h5 {
   border: none;
   display: flex;
 }
+
+.hr{
+  width: 1.5px;
+  height: 15px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--c6);
+  border: none;
+}

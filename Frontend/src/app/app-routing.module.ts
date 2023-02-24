@@ -11,6 +11,7 @@ import {RegistrationComponent} from "./components/authorization/registration/reg
 import {ErrorComponent} from "./components/utils/error/error.component";
 import {ChaptersComponent} from "./components/collection-of-tasks/chapters/chapters.component";
 import {ChapterComponent} from "./components/collection-of-tasks/chapter/chapter.component";
+import {PracticeComponent} from "./components/collection-of-tasks/practice/practice.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
     { path: 'registration', component: RegistrationComponent },
     { path: 'error', component: ErrorComponent },
     { path: 'chapters', component: ChaptersComponent },
-    { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent }
+    { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent },
+    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent }
 ];
 
 @NgModule({

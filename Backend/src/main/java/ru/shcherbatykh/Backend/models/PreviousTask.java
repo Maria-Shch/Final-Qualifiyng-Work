@@ -1,9 +1,14 @@
 package ru.shcherbatykh.Backend.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "logically_related_previous_tasks")
+@Getter
+@Setter
 public class PreviousTask {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

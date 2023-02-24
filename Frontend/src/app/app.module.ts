@@ -24,6 +24,9 @@ import { ChapterComponent } from './components/collection-of-tasks/chapter/chapt
 import { NextComponent } from './components/utils/next/next.component';
 import { PreviousComponent } from './components/utils/previous/previous.component';
 import { ToChaptersComponent } from './components/utils/to-chapters/to-chapters.component';
+import { PracticeComponent } from './components/collection-of-tasks/practice/practice.component';
+import { NextBlockComponent } from './components/utils/next-block/next-block.component';
+import { PreviousBlockComponent } from './components/utils/previous-block/previous-block.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import { ToChaptersComponent } from './components/utils/to-chapters/to-chapters.
     ChapterComponent,
     NextComponent,
     PreviousComponent,
-    ToChaptersComponent
+    ToChaptersComponent,
+    PracticeComponent,
+    NextBlockComponent,
+    PreviousBlockComponent
   ],
   imports: [
     BrowserModule,

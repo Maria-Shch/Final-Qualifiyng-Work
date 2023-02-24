@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface BlockRepo extends CrudRepository<Block, Long> {
     List<Block> getBlocksByChapter(Chapter chapter);
+
+    Block getBlockByChapterAndSerialNumber(Chapter chapter, int serialNumber);
+
+    int countByChapter(Chapter chapter);
 }

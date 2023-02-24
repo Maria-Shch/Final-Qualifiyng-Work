@@ -20,7 +20,6 @@ export class LoginComponent {
   ngOnInit(): void {}
 
   login(loginForm: NgForm) {
-    console.log(loginForm.value);
     if(loginForm.value.username.length === 0 ||  loginForm.value.password.length === 0) {
       this.errorMessage = "Заполните все поля";
     }
