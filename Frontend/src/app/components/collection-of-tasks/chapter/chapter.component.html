@@ -6,17 +6,17 @@
       <h2 style="color: var(--c6); margin:0">Глава {{serialNumberOfChapter}}</h2>
     </div>
     <div class="d-row" *ngIf="serialNumberOfChapter === '1' && !isChapterLast">
-      <app-next [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-next>
+      <app-next></app-next>
       <hr class="hr">
       <app-to-chapters></app-to-chapters>
     </div>
     <div class="d-row" *ngIf="serialNumberOfChapter != '1' && !isChapterLast">
-      <app-previous [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-previous>
+      <app-previous></app-previous>
       <hr class="hr">
-      <app-next [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-next>
+      <app-next></app-next>
     </div>
     <div class="d-row" *ngIf="serialNumberOfChapter != '1' && isChapterLast">
-      <app-previous [serialNumberOfCurrentChapter]=serialNumberOfChapter></app-previous>
+      <app-previous></app-previous>
       <hr class="hr">
       <app-to-chapters></app-to-chapters>
     </div>
