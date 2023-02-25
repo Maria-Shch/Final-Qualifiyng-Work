@@ -27,10 +27,12 @@ public class Request {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "state_id")
     private RequestState requestState;
+    @Column(name = "student_message")
     private String studentMsg;
     @Column(name = "creation_time")
     @CreationTimestamp
     private LocalDateTime creationTime;
+    @Column(name = "teacher_message")
     private String teacherMsg;
     @Column(name = "closing_time")
     private LocalDateTime closingTime;

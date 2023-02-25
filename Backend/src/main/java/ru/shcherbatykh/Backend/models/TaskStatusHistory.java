@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "student_tasks")
+@Table(name = "task_statuses_history")
 @Getter
 @Setter
 public class TaskStatusHistory {
