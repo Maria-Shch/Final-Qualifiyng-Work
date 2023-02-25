@@ -4,5 +4,5 @@ export interface ITaskOfBlock {
   id: number;
   serialNumber:number;
   name:string;
-  status: IStatus;
+  status: IStatus | null;
 }

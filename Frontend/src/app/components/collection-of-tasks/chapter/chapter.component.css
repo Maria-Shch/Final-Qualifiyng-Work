@@ -22,6 +22,7 @@
 
 .d-block:hover{
   background: var(--c16);
+  box-shadow: var(--box-shadow-div);
 }
 
 .icon-open-book {

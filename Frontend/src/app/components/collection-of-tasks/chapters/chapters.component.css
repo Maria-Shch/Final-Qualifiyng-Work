@@ -20,4 +20,5 @@
 
 .d-chapter:hover{
   background: var(--c16);
+  box-shadow: var(--box-shadow-div);
 }

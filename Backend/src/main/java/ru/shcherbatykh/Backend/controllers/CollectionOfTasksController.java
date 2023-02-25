@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
-import ru.shcherbatykh.Backend.security.JwtAuthentication;
 import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.BlockService;
 import ru.shcherbatykh.Backend.services.ChapterService;
@@ -54,8 +53,7 @@ public class CollectionOfTasksController {
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
     @GetMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/practice")
     public List<TaskOfBlock> getPracticeForAuthUSer(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
-        final JwtAuthentication authInfo = authService.getAuthInfo();
-        return null;
+        return taskService.getPracticeForAuthUser(serialNumberOfChapter, serialNumberOfBlock, authService.getUser().orElse(null));
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}")

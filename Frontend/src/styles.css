@@ -30,18 +30,21 @@ body {
   --c8: #FFF6A5;
   --c9: #EBCAA4;
   --c10: #EDC1C1;
-  --c11: #D7A5FF;
+  --c11: rgba(215, 165, 255, 0.73);
   --c12: #DD1616;
-  --c13: rgba(11, 137, 0, 0.58);
-  --c14: rgba(0, 54, 193, 0.31);
+  --c13: rgba(11, 137, 0, 0.44);
+  --c14: rgba(0, 54, 193, 0.25);
   --c15: rgba(48, 48, 48, 0.2);
-  --c16: #eeeefd;
+  --c16: #e8e8fd;
 
   --imgXY-back: 18px;
   --imgXY-login-logout: 40px;
   --imgXY-theory-pencil: 22px;
 
   --width-main-container: 1300px;
+
+  --box-shadow-header: 0px 6px 20px 7px #D6CEE6;
+  --box-shadow-div: 0px 10px 15px 0px #D6CEE6;
 }
 
 *:focus {

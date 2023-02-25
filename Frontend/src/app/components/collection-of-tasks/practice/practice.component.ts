@@ -37,6 +37,7 @@ export class PracticeComponent implements OnInit{
       this.collectionOfTasksService.getPractice(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
         (data : ITaskOfBlock[]) => {
         this.tasksOfBlock = data;
+        console.log(data);
       });
 
       this.collectionOfTasksService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(

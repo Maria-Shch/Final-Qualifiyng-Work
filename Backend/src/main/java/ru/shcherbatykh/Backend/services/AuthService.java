@@ -12,6 +12,7 @@ import ru.shcherbatykh.Backend.security.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +78,10 @@ public class AuthService {
 
     public JwtAuthentication getAuthInfo() {
         return (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public Optional<User> getUser() {
+        JwtAuthentication jwtAuthentication =  (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        return userService.findByUsername(jwtAuthentication.getUsername());
     }
 }

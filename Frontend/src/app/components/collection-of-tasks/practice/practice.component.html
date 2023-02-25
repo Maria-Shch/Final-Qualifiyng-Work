@@ -33,13 +33,23 @@
   </div>
 
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start">
-    <div *ngFor="let task of tasksOfBlock" class="d-task" (click)="toTask(serialNumberOfChapter, serialNumberOfBlock, task.serialNumber)">
-
+    <div *ngFor="let task of tasksOfBlock"
+         class="d-task"
+         [ngClass]="{
+         'bc-clr-default' : task.status?.name === 'Не решена' || task.status === null,
+         'bc-clr-returned-not-passed-tests' : task.status?.name === 'Не прошла тесты' || task.status?.name === 'Возвращена преподавателем',
+         'bc-clr-consideration' : task.status?.name === 'На рассмотрении',
+         'bc-clr-review' : task.status?.name === 'На проверке',
+         'bc-clr-solved' : task.status?.name === 'Решена',
+         'bc-clr-passed-tests' : task.status?.name === 'Прошла тесты',
+         'bc-clr-on-testing' : task.status?.name === 'На тестировании'
+         }"
+         (click)="toTask(serialNumberOfChapter, serialNumberOfBlock, task.serialNumber)">
       <h3  style="color: var(--c6); margin: 5px 0 0 10px;">
          Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
       </h3>
-      <h4 style="color: var(--c2); margin: 13px 0 0 10px;"> {{task.name}}</h4>
-
+      <h4 style="color: var(--c2); margin: 13px 0 0 10px;">{{task.name}}</h4>
+      <p class="p4" style="color: var(--c6); margin: 13px 0 0 10px;">{{task.status?.name}}</p>
     </div>
   </div>
 </div>

@@ -6,14 +6,13 @@
 
 .d-task{
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
 
   width: 255px;
   min-height: 130px;
   padding: 20px 20px;
   margin: 10px 30px 30px 0;
 
-  background: var(--c5);
   border-radius: 35px;
   display: flex;
   flex-direction: column;
@@ -22,8 +21,43 @@
 }
 
 .d-task:hover{
-  background: var(--c16);
+  box-shadow: var(--box-shadow-div);
 }
+
+.bc-clr-default{
+  background: var(--c5);
+}
+
+/*Не прошла тесты, возвращена преподавателем*/
+.bc-clr-returned-not-passed-tests{
+  background: var(--c10);
+}
+
+/*На рассмотрении*/
+.bc-clr-consideration{
+  background: var(--c9);
+}
+
+/*На проверке*/
+.bc-clr-review{
+  background: var(--c8);
+}
+
+/*Решена*/
+.bc-clr-solved{
+  background: var(--c13);
+}
+
+/*Прошла тесты*/
+.bc-clr-passed-tests{
+  background: var(--c7);
+}
+
+/*На тестировании*/
+.bc-clr-on-testing{
+  background: var(--c11);
+}
+
 
 .d{
   display: flex;
