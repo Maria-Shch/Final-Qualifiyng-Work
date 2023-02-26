@@ -51,4 +51,11 @@ public class TaskService {
                         studentTasksService.getStatusByUserAndTask(user, t)
                 )).toList();
     }
+
+    public Block saveTextOfTheory(int serialNumberOfChapter, int serialNumberOfBlock, String textOfTheory){
+        Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+        Block block = blockService.getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
+        block.setTextTheory(textOfTheory);
+        return blockService.saveBlock(block);
+    }
 }

@@ -5,4 +5,5 @@ export interface IBlock {
   serialNumber: number;
   name:string;
   chapter: IChapter;
+  textTheory: string;
 }

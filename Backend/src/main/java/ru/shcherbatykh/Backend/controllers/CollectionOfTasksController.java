@@ -2,9 +2,7 @@ package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
@@ -56,7 +54,7 @@ public class CollectionOfTasksController {
         return taskService.getPracticeForAuthUser(serialNumberOfChapter, serialNumberOfBlock, authService.getUser().orElse(null));
     }
 
-    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}")
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/name")
     public ResponseEntity<String> getNameOfBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
         return ResponseEntity.ok(blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock).getName());
     }
@@ -64,5 +62,17 @@ public class CollectionOfTasksController {
     @GetMapping("/chapters/{serialNumberOfChapter}/blocks/count")
     public long getCountOfBlocks(@PathVariable int serialNumberOfChapter){
         return blockService.getCountOfBlocks(serialNumberOfChapter);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/saveTheory")
+    public Block saveTextOfTheory(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                              @RequestBody String textOfTheory) {
+        return taskService.saveTextOfTheory(serialNumberOfChapter, serialNumberOfBlock, textOfTheory);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}")
+    public Block getBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock){
+        return blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
     }
 }

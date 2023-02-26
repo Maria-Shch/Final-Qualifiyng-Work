@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.shcherbatykh.Backend.models.Group;
 import ru.shcherbatykh.Backend.services.GroupService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,8 @@ public class GroupController {
 
     @GetMapping("/all")
     public List<Group> getGroup(){
-        return groupService.getGroups();
+        return groupService.getGroups().stream()
+                .sorted(Comparator.comparing(Group::getName))
+                .toList();
     }
 }

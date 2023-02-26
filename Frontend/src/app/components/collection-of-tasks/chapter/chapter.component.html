@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <h3 style="color: var(--c6); margin: 10px 0 20px 25px">{{chapter?.name}}</h3>
+  <h3 style="color: var(--c6); margin: 10px 0 20px 0">{{chapter?.name}}</h3>
 
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start">
     <div *ngFor="let block of blocks" class="d-block" (click)="toTheoryOfBlock(serialNumberOfChapter, block.serialNumber)">

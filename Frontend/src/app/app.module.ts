@@ -4,9 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {RouterModule, RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
-import { LoginComponent } from './components/authorization/login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import { EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
+
+import { LoginComponent } from './components/authorization/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -59,7 +61,8 @@ import { TheoryComponent } from './components/collection-of-tasks/theory/theory.
     FormsModule,
     HttpClientModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    EditorModule
   ],
   providers: [
     AuthGuard,
@@ -68,7 +71,11 @@ import { TheoryComponent } from './components/collection-of-tasks/theory/theory.
       useClass:AuthInterceptor,
       multi:true
     },
-    UserService
+    UserService,
+    {
+      provide: TINYMCE_SCRIPT_SRC,
+      useValue: 'tinymce/tinymce.min.js'
+    }
   ],
   bootstrap: [AppComponent]
 })

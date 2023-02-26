@@ -18,9 +18,9 @@
     </div>
   </div>
 
-  <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 25px">
-    <h3 style="color: var(--c6); margin: 0">{{blockName}}</h3>
-    <div style="display: flex; justify-content: space-between; width: 420px">
+  <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 0">
+    <h3 style="color: var(--c6); margin: 0">{{block?.name}}</h3>
+    <div style="display: flex; justify-content: space-between; min-width: 420px; margin: 0 30px 0 0;">
       <div class="d-white-button to-section">
         <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="a-img icon-pencil"></a>
         <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="p4 a-none" style="color: var(--c6); margin: 0">К практике</a>
@@ -29,9 +29,20 @@
         <a routerLink="/chapter/{{serialNumberOfChapter}}" class="a-img icon-book"></a>
         <a routerLink="/chapter/{{serialNumberOfChapter}}" class="p4 a-none" style="color: var(--c6); margin: 0">К списку блоков</a>
       </div>
+      <button *ngIf="userService.roleMatch(['ADMIN']) && isEditing === false"
+              (click)="this.isEditing = true"
+              class="p4 d-violet-button to-editor">
+        Редактировать
+      </button>
     </div>
   </div>
-  <div>
-
+  <div *ngIf="isEditing === false" id="textTheory" style="padding: 0 30px 0 0;"></div>
+  <div *ngIf="isEditing === true" >
+    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%; margin: 15px 0 20px 0">
+      <button class="p4 d-violet-button" (click)="save()">Сохранить изменения</button>
+      <button class="p4 d-violet-button" (click)="saveAndTurnOffEditing()">Сохранить изменения и выйти из режима редактирования</button>
+      <button class="p4 d-violet-button" (click)="turnOffEditing()">Выйти</button>
+    </div>
+    <editor [init]="editorConfig" id="editor"></editor>
   </div>
 </div>

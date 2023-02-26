@@ -5,6 +5,7 @@ import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.BlockRepo;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,7 +22,9 @@ public class BlockService {
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
         List<Block> blocksByChapter = blockRepo.getBlocksByChapter(chapter);
         for(Block block: blocksByChapter) block.setTextTheory(null);
-        return blocksByChapter;
+        return blocksByChapter.stream()
+                .sorted(Comparator.comparing(Block::getSerialNumber))
+                .toList();
     }
 
     public Block getBlockByChapterAndSerialNumber(Chapter chapter, int serialNumberOfBlock){
@@ -36,5 +39,9 @@ public class BlockService {
     public int getCountOfBlocks(int serialNumberOfChapter) {
         Chapter chapter =  chapterService.getChapterBySerialNumber(serialNumberOfChapter);
         return blockRepo.countByChapter(chapter);
+    }
+
+    public Block saveBlock(Block block){
+        return blockRepo.save(block);
     }
 }
