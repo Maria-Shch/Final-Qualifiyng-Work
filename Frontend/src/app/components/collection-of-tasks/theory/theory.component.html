@@ -1,0 +1,37 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 10px 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+      <img src="../../../../assets/icons/open_book.png" height="30px" width="auto" style="margin-right: 10px">
+      <h2 style="color: var(--c6); margin:0">Блок {{serialNumberOfChapter}}. {{serialNumberOfBlock}}</h2>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock === '1' && !isBlockLast">
+      <app-next-block [section]="'theory'"></app-next-block>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && !isBlockLast">
+      <app-previous-block [section]="'theory'">></app-previous-block>
+      <hr class="hr">
+      <app-next-block [section]="'theory'">></app-next-block>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && isBlockLast">
+      <app-previous-block [section]="'theory'">></app-previous-block>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 25px">
+    <h3 style="color: var(--c6); margin: 0">{{blockName}}</h3>
+    <div style="display: flex; justify-content: space-between; width: 420px">
+      <div class="d-white-button to-section">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="a-img icon-pencil"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="p4 a-none" style="color: var(--c6); margin: 0">К практике</a>
+      </div>
+      <div class="d-white-button to-blocks">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}" class="a-img icon-book"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}" class="p4 a-none" style="color: var(--c6); margin: 0">К списку блоков</a>
+      </div>
+    </div>
+  </div>
+  <div>
+
+  </div>
+</div>

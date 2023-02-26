@@ -17,10 +17,11 @@ public class BlockService {
         this.chapterService = chapterService;
     }
 
-
-    public List<Block> getBlocksOfChapter(int serialNumberOfChapter) {
+    public List<Block> getBlocksOfChapterWithoutTheory(int serialNumberOfChapter) {
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
-        return blockRepo.getBlocksByChapter(chapter);
+        List<Block> blocksByChapter = blockRepo.getBlocksByChapter(chapter);
+        for(Block block: blocksByChapter) block.setTextTheory(null);
+        return blocksByChapter;
     }
 
     public Block getBlockByChapterAndSerialNumber(Chapter chapter, int serialNumberOfBlock){

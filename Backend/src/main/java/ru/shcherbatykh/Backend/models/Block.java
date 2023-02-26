@@ -19,4 +19,7 @@ public class Block {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
+
+    @Column(name = "text_theory")
+    private String textTheory;
 }

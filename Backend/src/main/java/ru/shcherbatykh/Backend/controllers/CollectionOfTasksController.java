@@ -42,7 +42,7 @@ public class CollectionOfTasksController {
 
     @GetMapping("/chapter/{serialNumberOfChapter}/blocks")
     public List<Block> getBlocksOfChapter(@PathVariable int serialNumberOfChapter){
-        return blockService.getBlocksOfChapter(serialNumberOfChapter);
+        return blockService.getBlocksOfChapterWithoutTheory(serialNumberOfChapter);
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/practice")

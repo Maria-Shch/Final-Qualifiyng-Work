@@ -58,30 +58,6 @@
   background: var(--c11);
 }
 
-
-.d{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: end;
-  box-sizing: border-box;
-  padding: 10px 15px;
-  gap: 10px;
-  border: 3px solid var(--c2);
-  border-radius: 8px;
-  color: var(--c2);
-  cursor: pointer;
-}
-
-.to-theory{
-  width: 150px;
-}
-
-.to-blocks{
-  width: 210px;
-  margin-right: 30px;
-}
-
 .icon-open-book {
   background: url("../../../../assets/icons/open_book.png") no-repeat;
   background-size: var(--imgXY-theory-pencil);
@@ -89,17 +65,3 @@
   height: var(--imgXY-theory-pencil);
 }
 
-.icon-book{
-  background: url("../../../../assets/icons/book.png") no-repeat;
-  background-size: 17px;
-  width: 17px;
-  height: 17px;
-  padding-bottom: 3px;
-}
-
-.d-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}

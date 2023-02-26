@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -7,6 +7,9 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./next-block.component.css']
 })
 export class NextBlockComponent {
+
+  @Input()
+  section: string = "";
   serialNumberOfCurrentChapter: string = "";
   serialNumberOfCurrentBlock: string = "";
   serialNumberOfNextBlock: number | undefined;

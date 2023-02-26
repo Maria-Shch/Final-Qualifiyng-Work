@@ -12,6 +12,7 @@ import {ErrorComponent} from "./components/utils/error/error.component";
 import {ChaptersComponent} from "./components/collection-of-tasks/chapters/chapters.component";
 import {ChapterComponent} from "./components/collection-of-tasks/chapter/chapter.component";
 import {PracticeComponent} from "./components/collection-of-tasks/practice/practice.component";
+import {TheoryComponent} from "./components/collection-of-tasks/theory/theory.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
     { path: 'error', component: ErrorComponent },
     { path: 'chapters', component: ChaptersComponent },
     { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent },
-    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent }
+    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent },
+    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent}
 ];
 
 @NgModule({

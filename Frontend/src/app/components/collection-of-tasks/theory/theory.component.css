@@ -1,0 +1,24 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-pencil {
+  background: url("../../../../assets/icons/pencil.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
+.sp-th-g {
+  color: var(--c17);
+}
+
+.sp-th-b {
+  color: var(--c18);
+}
+
+.c{
+  text-align: justify;
+}

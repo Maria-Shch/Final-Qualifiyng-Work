@@ -39,10 +39,3 @@
   height: var(--imgXY-theory-pencil);
 }
 
-.d-row{
-  display: flex;
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-}
-

@@ -204,3 +204,5 @@ INSERT INTO faculties (name) VALUES ('ПИНЖ');
 
 INSERT INTO forms_of_edu (name) VALUES ('Очная');
 INSERT INTO forms_of_edu (name) VALUES ('Заочная');
+
+ALTER TABLE blocks ADD text_theory text;

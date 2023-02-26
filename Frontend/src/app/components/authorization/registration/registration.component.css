@@ -13,13 +13,6 @@
   align-items: center;
 }
 
-.d-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
 .select{
   width: 395px;
 }

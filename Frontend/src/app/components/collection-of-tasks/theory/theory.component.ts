@@ -1,17 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
-import {ITaskOfBlock} from "../../../dto_interfaces/ITaskOfBlock";
 
 @Component({
-  selector: 'app-practice',
-  templateUrl: './practice.component.html',
-  styleUrls: ['./practice.component.css']
+  selector: 'app-theory',
+  templateUrl: './theory.component.html',
+  styleUrls: ['./theory.component.css']
 })
-export class PracticeComponent implements OnInit{
+export class TheoryComponent implements OnInit{
+
   serialNumberOfChapter: string = "";
   serialNumberOfBlock: string = "";
-  tasksOfBlock: ITaskOfBlock[] = [];
   blockName: string = "";
   isBlockLast: boolean = false;
 
@@ -20,7 +19,6 @@ export class PracticeComponent implements OnInit{
     private collectionOfTasksService: CollectionOfTasksService,
     private router: Router
   ) {}
-
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       // @ts-ignore
@@ -29,13 +27,8 @@ export class PracticeComponent implements OnInit{
       this.serialNumberOfBlock = this.route.snapshot.paramMap.get("serialNumberOfBlock");
 
       this.collectionOfTasksService.getNameOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
-      (data : string) => {
-        this.blockName = data;
-      });
-
-      this.collectionOfTasksService.getPractice(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
-        (data : ITaskOfBlock[]) => {
-        this.tasksOfBlock = data;
+        (data : string) => {
+          this.blockName = data;
       });
 
       this.collectionOfTasksService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
@@ -50,7 +43,4 @@ export class PracticeComponent implements OnInit{
     });
   }
 
-  toTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: number) {
-    this.router.navigate(['/chapter', serialNumberOfChapter, 'block', serialNumberOfBlock, 'task', serialNumberOfTask]);
-  }
 }
