@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
+import ru.shcherbatykh.Backend.models.Status;
+import ru.shcherbatykh.Backend.models.Task;
 import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.BlockService;
 import ru.shcherbatykh.Backend.services.ChapterService;
@@ -68,11 +70,37 @@ public class CollectionOfTasksController {
     @PostMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/saveTheory")
     public Block saveTextOfTheory(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
                                               @RequestBody String textOfTheory) {
-        return taskService.saveTextOfTheory(serialNumberOfChapter, serialNumberOfBlock, textOfTheory);
+        return blockService.saveTextOfTheory(serialNumberOfChapter, serialNumberOfBlock, textOfTheory);
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}")
     public Block getBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock){
         return blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count")
+    public int getCountOfTasks(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock){
+        return taskService.getCountOfTasks(serialNumberOfChapter, serialNumberOfBlock);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}")
+    public Task getCountOfTasks(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                @PathVariable int serialNumberOfTask){
+        return taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/saveDescription")
+    public Task saveTextOfTheory(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                 @PathVariable int serialNumberOfTask, @RequestBody String description) {
+        return taskService.saveDescriptionOfTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask, description);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @GetMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/status")
+    public Status getStatusOfTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                  @PathVariable int serialNumberOfTask) {
+        return taskService.getStatusOfTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
+                authService.getUser().orElse(null));
     }
 }

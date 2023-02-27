@@ -23,22 +23,4 @@
   text-align: justify;
 }
 
-.d-violet-button{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: end;
-  box-sizing: border-box;
-  padding: 10px 15px;
-  gap: 10px;
-  border: 3px solid var(--c2);
-  border-radius: 8px;
-  color: var(--c1);
-  cursor: pointer;
-  background-color: var(--c2);
-}
 
-.to-editor{
-  width: 150px;
-  margin-left: 10px;
-}

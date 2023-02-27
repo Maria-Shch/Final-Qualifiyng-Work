@@ -24,40 +24,6 @@
   box-shadow: var(--box-shadow-div);
 }
 
-.bc-clr-default{
-  background: var(--c5);
-}
-
-/*Не прошла тесты, возвращена преподавателем*/
-.bc-clr-returned-not-passed-tests{
-  background: var(--c10);
-}
-
-/*На рассмотрении*/
-.bc-clr-consideration{
-  background: var(--c9);
-}
-
-/*На проверке*/
-.bc-clr-review{
-  background: var(--c8);
-}
-
-/*Решена*/
-.bc-clr-solved{
-  background: var(--c13);
-}
-
-/*Прошла тесты*/
-.bc-clr-passed-tests{
-  background: var(--c7);
-}
-
-/*На тестировании*/
-.bc-clr-on-testing{
-  background: var(--c11);
-}
-
 .icon-open-book {
   background: url("../../../../assets/icons/open_book.png") no-repeat;
   background-size: var(--imgXY-theory-pencil);

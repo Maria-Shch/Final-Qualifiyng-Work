@@ -56,7 +56,10 @@ public class SecurityConfig {
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/name",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/practice",
                                         "/chapters/{serialNumberOfChapter}/blocks/count",
-                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}").permitAll()
+                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}",
+                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count",
+                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}")
+                                    .permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)

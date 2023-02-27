@@ -1,4 +1,5 @@
 import {IBlock} from "./IBlock";
+import {IPreviousTask} from "./IPreviousTask";
 
 export interface ITask {
   id:number;
@@ -7,5 +8,5 @@ export interface ITask {
   description:string;
   manualCheckRequired: boolean;
   block: IBlock;
-  previousTasks: ITask[];
+  previousTasks: IPreviousTask[];
 }

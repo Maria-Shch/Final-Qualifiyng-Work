@@ -6,6 +6,8 @@ import {IChapter} from "../interfaces/IChapter";
 import {IBlock} from "../interfaces/IBlock";
 import {AuthorizationService} from "./authorization.service";
 import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
+import {ITask} from "../interfaces/ITask";
+import {IStatus} from "../interfaces/IStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -68,4 +70,24 @@ export class CollectionOfTasksService {
       textOfTheory);
   }
 
+  getCountOfTasks(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<number> {
+    return this.httpclient.get<number>(environment.apiUrl + `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/tasks/count`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' })
+    });
+  }
+
+  getTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string) : Observable<ITask> {
+    return this.httpclient.get<ITask>(environment.apiUrl + `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' })
+    });
+  }
+
+  saveDescriptionOfTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, description: string)  : Observable<ITask> {
+    return this.httpclient.post<ITask>(environment.apiUrl + `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/saveDescription`,
+      description);
+  }
+
+  getStatusOfTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<IStatus> {
+    return this.httpclient.get<IStatus>(environment.apiUrl + `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/status`);
+  }
 }

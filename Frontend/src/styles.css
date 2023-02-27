@@ -222,3 +222,57 @@ h5, .h5 {
   width: 165px;
   margin-right: 10px;
 }
+
+.d-violet-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: end;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  gap: 10px;
+  border: 3px solid var(--c2);
+  border-radius: 8px;
+  color: var(--c1);
+  cursor: pointer;
+  background-color: var(--c2);
+}
+
+.to-editor{
+  width: 150px;
+  margin-left: 10px;
+}
+
+.bc-clr-default{
+  background: var(--c5);
+}
+
+/*Не прошла тесты, возвращена преподавателем*/
+.bc-clr-returned-not-passed-tests{
+  background: var(--c10);
+}
+
+/*На рассмотрении*/
+.bc-clr-consideration{
+  background: var(--c9);
+}
+
+/*На проверке*/
+.bc-clr-review{
+  background: var(--c8);
+}
+
+/*Решена*/
+.bc-clr-solved{
+  background: var(--c13);
+}
+
+/*Прошла тесты*/
+.bc-clr-passed-tests{
+  background: var(--c7);
+}
+
+/*На тестировании*/
+.bc-clr-on-testing{
+  background: var(--c11);
+}

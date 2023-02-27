@@ -1,18 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-previous-block',
-  templateUrl: './previous-block.component.html',
-  styleUrls: ['./previous-block.component.css']
+  selector: 'app-previous-task',
+  templateUrl: './previous-task.component.html',
+  styleUrls: ['./previous-task.component.css']
 })
-export class PreviousBlockComponent implements OnInit{
+export class PreviousTaskComponent {
 
-  @Input()
-  section: string = "";
   serialNumberOfCurrentChapter: string = "";
   serialNumberOfCurrentBlock: string = "";
-  serialNumberOfPreviousBlock: number | undefined;
+  serialNumberOfCurrentTask: string = "";
+  serialNumberOfPreviousTask: number | undefined;
   constructor(
     private route: ActivatedRoute
   ) {}
@@ -23,7 +22,9 @@ export class PreviousBlockComponent implements OnInit{
       this.serialNumberOfCurrentChapter = this.route.snapshot.paramMap.get("serialNumberOfChapter");
       // @ts-ignore
       this.serialNumberOfCurrentBlock = this.route.snapshot.paramMap.get("serialNumberOfBlock");
-      this.serialNumberOfPreviousBlock = parseInt(this.serialNumberOfCurrentBlock) - 1;
+      // @ts-ignore
+      this.serialNumberOfCurrentTask = this.route.snapshot.paramMap.get("serialNumberOfTask");
+      this.serialNumberOfPreviousTask = parseInt(this.serialNumberOfCurrentTask) - 1;
     });
   }
 }

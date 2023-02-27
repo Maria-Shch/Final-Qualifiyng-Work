@@ -1,0 +1,56 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-open-book {
+  background: url("../../../../assets/icons/open_book.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
+.d-status{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px;
+  gap: 17px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.d-previous-tasks{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px;
+  gap: 8px;
+  border-radius: 8px;
+  background: var(--c5);
+}
+
+.d-check{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px;
+  gap: 17px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.present-check{
+  background: var(--c11);
+}
+
+.none-check{
+  background: var(--c5);
+}

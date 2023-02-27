@@ -30,6 +30,9 @@ import { PracticeComponent } from './components/collection-of-tasks/practice/pra
 import { NextBlockComponent } from './components/utils/next-block/next-block.component';
 import { PreviousBlockComponent } from './components/utils/previous-block/previous-block.component';
 import { TheoryComponent } from './components/collection-of-tasks/theory/theory.component';
+import { TaskComponent } from './components/collection-of-tasks/task/task.component';
+import { NextTaskComponent } from './components/utils/next-task/next-task.component';
+import { PreviousTaskComponent } from './components/utils/previous-task/previous-task.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { TheoryComponent } from './components/collection-of-tasks/theory/theory.
     PracticeComponent,
     NextBlockComponent,
     PreviousBlockComponent,
-    TheoryComponent
+    TheoryComponent,
+    TaskComponent,
+    NextTaskComponent,
+    PreviousTaskComponent
   ],
   imports: [
     BrowserModule,

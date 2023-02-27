@@ -41,6 +41,13 @@ public class BlockService {
         return blockRepo.countByChapter(chapter);
     }
 
+    public Block saveTextOfTheory(int serialNumberOfChapter, int serialNumberOfBlock, String textOfTheory){
+        Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+        Block block = getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
+        block.setTextTheory(textOfTheory);
+        return saveBlock(block);
+    }
+
     public Block saveBlock(Block block){
         return blockRepo.save(block);
     }

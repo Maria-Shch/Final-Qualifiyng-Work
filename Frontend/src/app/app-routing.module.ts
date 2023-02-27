@@ -13,6 +13,7 @@ import {ChaptersComponent} from "./components/collection-of-tasks/chapters/chapt
 import {ChapterComponent} from "./components/collection-of-tasks/chapter/chapter.component";
 import {PracticeComponent} from "./components/collection-of-tasks/practice/practice.component";
 import {TheoryComponent} from "./components/collection-of-tasks/theory/theory.component";
+import {TaskComponent} from "./components/collection-of-tasks/task/task.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
     { path: 'chapters', component: ChaptersComponent },
     { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent },
     { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent },
-    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent}
+    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent},
+    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask', component: TaskComponent}
 ];
 
 @NgModule({

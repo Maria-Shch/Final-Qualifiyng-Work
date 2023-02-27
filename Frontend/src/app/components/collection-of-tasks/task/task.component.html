@@ -1,0 +1,98 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 10px 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+      <img src="../../../../assets/icons/pencil.png" height="30px" width="auto" style="margin-right: 10px">
+      <h2 style="color: var(--c6); margin:0">Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task?.serialNumber}}</h2>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfTask === '1' && !isTaskLast">
+      <app-next-task></app-next-task>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfTask != '1' && !isTaskLast">
+      <app-previous-task></app-previous-task>
+      <hr class="hr">
+      <app-next-task></app-next-task>
+    </div>
+    <div class="d-row" *ngIf="serialNumberOfTask != '1' && isTaskLast">
+      <app-previous-task></app-previous-task>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 0">
+    <h3 style="color: var(--c6); margin: 0">{{task?.name}}</h3>
+    <div style="display: flex; justify-content: space-between; min-width: 420px; margin-right: 30px;">
+      <div class="d-white-button to-section">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/theory" class="a-img icon-open-book"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/theory" class="p4 a-none" style="color: var(--c6); margin: 0">К теории</a>
+      </div>
+      <div class="d-white-button to-blocks">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="a-img icon-book"></a>
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="p4 a-none" style="color: var(--c6); margin: 0">К списку задач</a>
+      </div>
+      <button *ngIf="userService.roleMatch(['ADMIN']) && isEditing === false"
+              (click)="this.isEditing = true"
+              class="p4 d-violet-button to-editor">
+        Редактировать
+      </button>
+    </div>
+  </div>
+  <div *ngIf="isEditing === false" style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 50px;">
+    <div style="display: flex; flex-direction: column">
+      <div id="description" style="padding: 0 30px 0 0;"></div>
+      <div *ngIf="!authService.isLoggedIn()" style="display:flex; flex-direction: row; margin: 20px 0 0 0">
+        <p class="p4" style="color: var(--c6); margin: 0">Для того, чтобы отправить решение на проверку, необходимо&nbsp;</p>
+        <a routerLink="/login" class="p4" style="margin: 0; text-decoration: revert; color: var(--c2)">войти в систему</a>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column;  width: 170px">
+      <div *ngIf="authService.isLoggedIn()" class="d-status"
+           [ngClass]="{
+         'bc-clr-default' : status?.name === 'Не решена' || status === null,
+         'bc-clr-returned-not-passed-tests' : status?.name === 'Не прошла тесты' || status?.name === 'Возвращена преподавателем',
+         'bc-clr-consideration' : status?.name === 'На рассмотрении',
+         'bc-clr-review' : status?.name === 'На проверке',
+         'bc-clr-solved' : status?.name === 'Решена',
+         'bc-clr-passed-tests' : status?.name === 'Прошла тесты',
+         'bc-clr-on-testing' : status?.name === 'На тестировании'
+         }">
+        <p class="p4" style="margin: 0; text-align: center; color: var(--c6)">{{status?.name}}</p>
+      </div>
+
+      <div *ngIf="task?.previousTasks?.length === 0" class="d-previous-tasks">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Задача не требует решения других задач</p>
+      </div>
+
+      <div *ngIf="task?.previousTasks?.length != 0"
+           class="d-previous-tasks">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Предыдущие задачи</p>
+        <a *ngFor="let prevTask of task?.previousTasks"
+           style="text-decoration: revert; color: var(--c2); text-align: center;"
+           routerLink="/chapter/{{prevTask.previousTask.block.chapter.serialNumber}}/block/{{prevTask.previousTask.block.serialNumber}}/task/{{prevTask.previousTask.serialNumber}}">
+          {{prevTask.previousTask.name}}
+        </a>
+      </div>
+
+      <div class="d-check present-check" *ngIf="task?.manualCheckRequired == true">
+        <p  class="p4" style="margin: 0; color: var(--c6); text-align: center">
+          Задача требует подтверждения решения преподавателем
+        </p>
+      </div>
+      <div class="d-check none-check" *ngIf="task?.manualCheckRequired == false">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">
+          Задача не требует подтверждения решения преподавателем
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isEditing === true" >
+    <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%; margin: 15px 0 20px 0">
+      <button class="p4 d-violet-button" (click)="save()">Сохранить изменения</button>
+      <button class="p4 d-violet-button" (click)="saveAndTurnOffEditing()">Сохранить изменения и выйти из режима редактирования</button>
+      <button class="p4 d-violet-button" (click)="turnOffEditing()">Выйти</button>
+    </div>
+    <editor [init]="editorConfig" id="editorTask"></editor>
+  </div>
+
+</div>

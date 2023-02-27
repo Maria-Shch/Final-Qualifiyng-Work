@@ -18,14 +18,14 @@ export class TheoryComponent implements OnInit{
   serialNumberOfBlock: string = "";
   block: IBlock | null = null;
   isBlockLast: boolean = false;
-  @Input() isEditing: boolean = false;
+  isEditing: boolean = false;
 
   editorConfig = {
     base_url: '/tinymce',
     suffix: '.min',
     plugins: 'lists link image table wordcount style',
     height: 720,
-    toolbar: 'undo redo | styles | fontfamily | fontsize | line_height_formats | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code',
+    toolbar: 'undo redo | styles | fontfamily | fontsize | line_height_formats | forecolor | bold italic | alignleft aligncenter alignright alignjustify | numlist bullist | outdent indent | link image | code',
     init_instance_callback: (editor: { id: any; }) => {
       this.setContent();
     },

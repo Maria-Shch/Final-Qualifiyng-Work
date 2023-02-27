@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -6,7 +6,7 @@ import {ActivatedRoute} from "@angular/router";
   templateUrl: './next-block.component.html',
   styleUrls: ['./next-block.component.css']
 })
-export class NextBlockComponent {
+export class NextBlockComponent implements OnInit{
 
   @Input()
   section: string = "";
