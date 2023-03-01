@@ -204,6 +204,7 @@ h5, .h5 {
   border-radius: 8px;
   color: var(--c2);
   cursor: pointer;
+  background-color: var(--c1);
 }
 
 .to-blocks{

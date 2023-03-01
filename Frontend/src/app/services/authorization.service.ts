@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {IUsernamePassword} from "../interfaces/IUsernamePassword";
+import {IUsernamePassword} from "../dto_interfaces/IUsernamePassword";
 import {Observable} from "rxjs";
-import {IAuthResponse} from "../interfaces/IAuthResponse";
+import {IAuthResponse} from "../dto_interfaces/IAuthResponse";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../environments/enviroment";
 @Injectable({

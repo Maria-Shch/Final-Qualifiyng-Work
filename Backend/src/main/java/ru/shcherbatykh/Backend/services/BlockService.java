@@ -51,4 +51,9 @@ public class BlockService {
     public Block saveBlock(Block block){
         return blockRepo.save(block);
     }
+
+    public Block getLastBlockOfChapter(int serialNumberOfChapter){
+        Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+        return getBlockBySNOfChapterAndSNOfBlock(chapter.getSerialNumber(), getCountOfBlocks(chapter.getSerialNumber()));
+    }
 }

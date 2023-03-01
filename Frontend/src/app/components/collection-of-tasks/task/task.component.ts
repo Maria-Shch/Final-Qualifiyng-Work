@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {ITaskOfBlock} from "../../../dto_interfaces/ITaskOfBlock";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
 import {ITask} from "../../../interfaces/ITask";
-import {IBlock} from "../../../interfaces/IBlock";
 import tinymce from "tinymce";
 import {Observable} from "rxjs";
 import {UserService} from "../../../services/user.service";
-import {environment} from "../../../environments/enviroment";
 import {AuthorizationService} from "../../../services/authorization.service";
 import {IStatus} from "../../../interfaces/IStatus";
+import {IResponseAboutTestingAllowed} from "../../../dto_interfaces/IResponseAboutTestingAllowed";
+import {ICodeTextArea} from "../../../interfaces/ICodeTextArea";
 
 @Component({
   selector: 'app-task',
@@ -24,6 +23,9 @@ export class TaskComponent implements OnInit{
   task: ITask | null = null;
   isEditing: boolean = false;
   status: IStatus | null = null;
+  responseAboutTestingAllowed: IResponseAboutTestingAllowed | null = null;
+  codeTextAreas: ICodeTextArea[] = [{id: 0}];
+  counterCodeTextArea: number = 0;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -88,17 +90,39 @@ export class TaskComponent implements OnInit{
       }
 
       this.collectionOfTasksService.getTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
-        (data: ITask) => {
-          this.task = data;
-          if (document.getElementById('description') != null){
-            // @ts-ignore
-            document.getElementById('description').innerHTML = this.task.description;
-          }
+      (data: ITask) => {
+        this.task = data;
+        if (document.getElementById('description') != null){
+          // @ts-ignore
+          document.getElementById('description').innerHTML = this.task.description;
+        }
+      },
+      (error)=>{
+        console.log(error);
+        this.router.navigate(['/error']);
+      });
+
+      if (this.authService.isLoggedIn()) {
+        this.collectionOfTasksService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+        (data: IResponseAboutTestingAllowed) => {
+          this.responseAboutTestingAllowed = data;
+          // @ts-ignore
+          console.log(this.responseAboutTestingAllowed!.reasonOfProhibition === 'PREVIOUS_TASK_NOT_SOLVED' );
         },
-        (error)=>{
+        (error) => {
           console.log(error);
           this.router.navigate(['/error']);
         });
+      }
+
+      this.collectionOfTasksService.getPreviousTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+      (data: ITask | null) => {
+        // console.log(data?.block.chapter.serialNumber + '.' + data?.block.serialNumber + '.' + data?.serialNumber);
+      },
+      (error) => {
+        console.log(error);
+        this.router.navigate(['/error']);
+      });
     });
   }
 
@@ -126,8 +150,21 @@ export class TaskComponent implements OnInit{
 
   sendContent() : Observable<ITask>{
     let description = tinymce.get('editorTask')?.getContent();
-
     // @ts-ignore
     return this.collectionOfTasksService.saveDescriptionOfTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, description);
   }
+
+  addTextArea() {
+    this.counterCodeTextArea = this.counterCodeTextArea + 1;
+    this.codeTextAreas.push({id: this.counterCodeTextArea});
+  }
+
+  saveCodeAndTesting() {
+
+  }
+
+  removeTextArea(id: number) {
+    this.codeTextAreas = this.codeTextAreas.filter(item => item.id !== id);
+  }
+
 }

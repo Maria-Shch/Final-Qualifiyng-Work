@@ -3,6 +3,7 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
@@ -102,5 +103,20 @@ public class CollectionOfTasksController {
                                   @PathVariable int serialNumberOfTask) {
         return taskService.getStatusOfTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
                 authService.getUser().orElse(null));
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @GetMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/isTestingAllowed")
+    public ResponseAboutTestingAllowed isTestingAllowed(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                                        @PathVariable int serialNumberOfTask) {
+        ResponseAboutTestingAllowed responseAboutTestingAllowed = taskService.getResponseAboutTestingAllowed(
+                serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask, authService.getUser().orElse(null));
+        return responseAboutTestingAllowed;
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/previousTask")
+    public Task getPreviousTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                                        @PathVariable int serialNumberOfTask) {
+        return taskService.getPreviousTask(taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask));
     }
 }

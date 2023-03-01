@@ -58,7 +58,8 @@ public class SecurityConfig {
                                         "/chapters/{serialNumberOfChapter}/blocks/count",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count",
-                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}")
+                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}",
+                                        "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/previousTask")
                                     .permitAll()
                                 .anyRequest().authenticated()
                                 .and()

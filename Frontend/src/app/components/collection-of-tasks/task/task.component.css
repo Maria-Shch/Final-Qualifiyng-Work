@@ -54,3 +54,25 @@
 .none-check{
   background: var(--c5);
 }
+
+.textarea-code{
+  min-height: 150px;
+  margin: 0 0 20px 0;
+  border: 3px solid var(--c2);
+  border-radius: 8px;
+  color: var(--c6);
+  cursor: pointer;
+  background-color: var(--c1);
+  width: 985px;
+}
+
+.b-delete{
+  background: var(--c2) url("../../../../assets/icons/delete.png") no-repeat center;
+  background-size: 30px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 40px;
+  border: none;
+  margin-left: 5px;
+}

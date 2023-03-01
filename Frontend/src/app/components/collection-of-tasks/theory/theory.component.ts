@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
 import tinymce from "tinymce";
