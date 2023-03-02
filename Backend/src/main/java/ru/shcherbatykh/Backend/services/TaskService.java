@@ -41,7 +41,7 @@ public class TaskService {
     }
 
     public List<Task> getTasks(int serialNumberOfChapter, int serialNumberOfBlock){
-        Block block = blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
+        Block block = blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock);
         return getTasksOfBlock(block);
     }
 
@@ -59,12 +59,12 @@ public class TaskService {
     }
 
     public int getCountOfTasks(int serialNumberOfChapter, int serialNumberOfBlock){
-        Block block = blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
+        Block block = blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock);
         return taskRepo.countByBlock(block);
     }
 
     public Task getTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask) {
-        Block block = blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
+        Block block = blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock);
         return taskRepo.getTasksByBlockAndSerialNumber(block, serialNumberOfTask);
     }
 
@@ -79,42 +79,47 @@ public class TaskService {
         return studentTasksService.getStatusByUserAndTask(user, task);
     }
 
-    public Task getPreviousTask(Task currTask){
-        if (Objects.equals(currTask.getSerialNumber(), 1) &&
-            Objects.equals(currTask.getBlock().getSerialNumber(), 1) &&
-            Objects.equals(currTask.getBlock().getChapter().getSerialNumber(), 1)) return null;
-
-        else if (!Objects.equals(currTask.getSerialNumber(), 1)) {
-            return getTask(currTask.getBlock().getChapter().getSerialNumber(), currTask.getBlock().getSerialNumber(),
-                    currTask.getSerialNumber()-1);
+    public Task getPreviousTask(int sNOfChapter, int sNOfBlock, int sNOfTask){
+        if (sNOfTask == 1 && sNOfBlock == 1 && sNOfChapter == 1) return null;
+        else if (sNOfTask != 1) {
+            return getTask(sNOfChapter, sNOfBlock, sNOfTask - 1);
         }
-
-        else if (!Objects.equals(currTask.getBlock().getSerialNumber(), 1) && Objects.equals(currTask.getSerialNumber(), 1)) {
-            int snOfChapter = currTask.getBlock().getChapter().getSerialNumber();
-            int sNOfPrevBlock = currTask.getBlock().getSerialNumber() - 1;
-            int sNOfLastTask = getLastTaskOfBlock(blockService.getBlockBySNOfChapterAndSNOfBlock(snOfChapter, sNOfPrevBlock)).getSerialNumber();
-            return getTask (snOfChapter, sNOfPrevBlock, sNOfLastTask);
+        else if (sNOfBlock != 1 && sNOfTask == 1) {
+            int sNOfLastTask = getLastTaskOfBlock(sNOfChapter, sNOfBlock - 1).getSerialNumber();
+            return getTask (sNOfChapter, sNOfBlock - 1, sNOfLastTask);
         }
-
-        else if (Objects.equals(currTask.getBlock().getSerialNumber(), 1) && Objects.equals(currTask.getSerialNumber(), 1)){
-            int sNOfPrevChapter = currTask.getBlock().getChapter().getSerialNumber() - 1;
+        else if (sNOfBlock == 1 && sNOfTask == 1){
+            int sNOfPrevChapter = sNOfChapter - 1;
             int sNOfLastBlock = blockService.getLastBlockOfChapter(sNOfPrevChapter).getSerialNumber();
-            int sNOfLastTask = getLastTaskOfBlock(blockService.getBlockBySNOfChapterAndSNOfBlock(sNOfPrevChapter, sNOfLastBlock)).getSerialNumber();
+            int sNOfLastTask = getLastTaskOfBlock(sNOfPrevChapter, sNOfLastBlock).getSerialNumber();
             return getTask (sNOfPrevChapter, sNOfLastBlock, sNOfLastTask);
         }
         return null;
     }
 
-    public Task getLastTaskOfBlock(Block block){
-        return getTask(block.getChapter().getSerialNumber(), block.getSerialNumber(),
-                getCountOfTasks(block.getChapter().getSerialNumber(), block.getSerialNumber()));
+    public Task getNextTask(int sNOfChapter, int sNOfBlock, int sNOfTask){
+        if (sNOfTask == getLastTaskOfBlock(sNOfChapter, sNOfBlock).getSerialNumber()){
+            if (sNOfBlock == blockService.getLastBlockOfChapter(sNOfChapter).getSerialNumber()){
+                if (sNOfChapter == chapterService.getCountOfChapters()){
+                    return null;
+                }
+                else return getTask(sNOfChapter + 1, 1, 1);
+            } else {
+                return getTask(sNOfChapter, sNOfBlock +  1, 1);
+            }
+        } else return getTask(sNOfChapter, sNOfBlock, sNOfTask + 1);
+    }
+
+
+    public Task getLastTaskOfBlock(int sNOfChapter, int sNOfBlock){
+        return getTask(sNOfChapter, sNOfBlock, getCountOfTasks(sNOfChapter, sNOfBlock));
     }
 
     public ResponseAboutTestingAllowed getResponseAboutTestingAllowed(int serialNumberOfChapter, int serialNumberOfBlock,
                                                                       int serialNumberOfTask, User user) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
-        Task prevTask = getPreviousTask(task);
-        if (prevTask!=null){
+        Task prevTask = getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+        if (prevTask != null){
             if (Objects.equals(studentTasksService.getStatusByUserAndTask(user, prevTask).getName(), "Не решена")){
                 return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.PREVIOUS_TASK_NOT_SOLVED);
             }

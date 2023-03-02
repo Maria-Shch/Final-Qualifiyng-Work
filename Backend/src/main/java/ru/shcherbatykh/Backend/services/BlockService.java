@@ -27,11 +27,11 @@ public class BlockService {
                 .toList();
     }
 
-    public Block getBlockByChapterAndSerialNumber(Chapter chapter, int serialNumberOfBlock){
+    public Block getBlock(Chapter chapter, int serialNumberOfBlock){
         return blockRepo.getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
     }
 
-    public Block getBlockBySNOfChapterAndSNOfBlock(int serialNumberOfChapter, int serialNumberOfBlock){
+    public Block getBlock(int serialNumberOfChapter, int serialNumberOfBlock){
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
         return blockRepo.getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
     }
@@ -43,7 +43,7 @@ public class BlockService {
 
     public Block saveTextOfTheory(int serialNumberOfChapter, int serialNumberOfBlock, String textOfTheory){
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
-        Block block = getBlockByChapterAndSerialNumber(chapter, serialNumberOfBlock);
+        Block block = getBlock(chapter, serialNumberOfBlock);
         block.setTextTheory(textOfTheory);
         return saveBlock(block);
     }
@@ -54,6 +54,28 @@ public class BlockService {
 
     public Block getLastBlockOfChapter(int serialNumberOfChapter){
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
-        return getBlockBySNOfChapterAndSNOfBlock(chapter.getSerialNumber(), getCountOfBlocks(chapter.getSerialNumber()));
+        return getBlock(chapter.getSerialNumber(), getCountOfBlocks(chapter.getSerialNumber()));
+    }
+
+    public Block getPreviousBlock(int sNOfChapter, int sNOfBlock) {
+        if (sNOfBlock == 1 && sNOfChapter == 1) return null;
+        else if (sNOfBlock != 1) {
+            return getBlock(sNOfChapter, sNOfBlock - 1);
+        }
+        else if (sNOfChapter != 1 && sNOfBlock == 1) {
+            int sNOfLastBlock = getLastBlockOfChapter(sNOfChapter - 1).getSerialNumber();
+            return getBlock (sNOfChapter - 1, sNOfLastBlock);
+        }
+        return null;
+    }
+
+
+    public Block getNextBlock(int sNOfChapter, int sNOfBlock) {
+        if (sNOfBlock == getLastBlockOfChapter(sNOfChapter).getSerialNumber()){
+            if (sNOfChapter == chapterService.getCountOfChapters()){
+                return null;
+            }
+            else return getBlock(sNOfChapter + 1, 1);
+        } else return getBlock(sNOfChapter, sNOfBlock + 1);
     }
 }

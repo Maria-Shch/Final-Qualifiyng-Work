@@ -1,0 +1,18 @@
+<div class="d-row" *ngIf="previousBlock == null">
+  <a routerLink="{{linkToNextBlock}}" class="p4" style="color: var(--c6);">Перейти к следующему блоку</a>
+  <a routerLink="{{linkToNextBlock}}" class="a-img icon-next"></a>
+</div>
+
+<div class="d-row" *ngIf="previousBlock != null && nextBlock != null">
+  <a routerLink="{{linkToPreviousBlock}}" class="a-img icon-previous" ></a>
+  <a routerLink="{{linkToPreviousBlock}}" class="p4" style="color: var(--c6);">Перейти к предыдущему блоку</a>
+  <hr class="hr">
+  <a routerLink="{{linkToNextBlock}}" class="p4" style="color: var(--c6);">Перейти к следующему блоку</a>
+  <a routerLink="{{linkToNextBlock}}" class="a-img icon-next"></a>
+</div>
+
+<div class="d-row" *ngIf="nextBlock == null">
+  <a routerLink="{{linkToPreviousBlock}}" class="a-img icon-previous" ></a>
+  <a routerLink="{{linkToPreviousBlock}}" class="p4" style="color: var(--c6);">Перейти к предыдущему блоку</a>
+</div>
+

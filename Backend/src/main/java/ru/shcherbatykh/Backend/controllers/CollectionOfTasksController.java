@@ -59,7 +59,7 @@ public class CollectionOfTasksController {
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/name")
     public ResponseEntity<String> getNameOfBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
-        return ResponseEntity.ok(blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock).getName());
+        return ResponseEntity.ok(blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock).getName());
     }
 
     @GetMapping("/chapters/{serialNumberOfChapter}/blocks/count")
@@ -76,7 +76,7 @@ public class CollectionOfTasksController {
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}")
     public Block getBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock){
-        return blockService.getBlockBySNOfChapterAndSNOfBlock(serialNumberOfChapter, serialNumberOfBlock);
+        return blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock);
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count")
@@ -116,7 +116,23 @@ public class CollectionOfTasksController {
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/previousTask")
     public Task getPreviousTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
-                                                        @PathVariable int serialNumberOfTask) {
-        return taskService.getPreviousTask(taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask));
+                                @PathVariable int serialNumberOfTask) {
+        return taskService.getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/nextTask")
+    public Task getNextTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                            @PathVariable int serialNumberOfTask) {
+        return taskService.getNextTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/previousBlock")
+    public Block getPreviousBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
+        return blockService.getPreviousBlock(serialNumberOfChapter, serialNumberOfBlock);
+    }
+
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/nextBlock")
+    public Block getNextBlock(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
+        return blockService.getNextBlock(serialNumberOfChapter, serialNumberOfBlock);
     }
 }

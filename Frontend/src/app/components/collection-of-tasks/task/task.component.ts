@@ -19,11 +19,10 @@ export class TaskComponent implements OnInit{
   serialNumberOfChapter: string = "";
   serialNumberOfBlock: string = "";
   serialNumberOfTask: string = "";
-  isTaskLast: boolean = false;
   task: ITask | null = null;
   isEditing: boolean = false;
   status: IStatus | null = null;
-  responseAboutTestingAllowed: IResponseAboutTestingAllowed | null = null;
+  responseAboutTestingAllowed: IResponseAboutTestingAllowed | null  = null;
   codeTextAreas: ICodeTextArea[] = [{id: 0}];
   counterCodeTextArea: number = 0;
 
@@ -55,16 +54,6 @@ export class TaskComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfTask = this.route.snapshot.paramMap.get("serialNumberOfTask");
 
-      this.collectionOfTasksService.getCountOfTasks(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
-      (count: number) => {
-        if (this.serialNumberOfTask === count.toString()) this.isTaskLast = true;
-        else this.isTaskLast = false;
-      },
-      (error)=>{
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
-
       this.collectionOfTasksService.getTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
       (data: ITask) => {
         this.task = data;
@@ -89,40 +78,16 @@ export class TaskComponent implements OnInit{
         });
       }
 
-      this.collectionOfTasksService.getTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
-      (data: ITask) => {
-        this.task = data;
-        if (document.getElementById('description') != null){
-          // @ts-ignore
-          document.getElementById('description').innerHTML = this.task.description;
-        }
-      },
-      (error)=>{
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
-
       if (this.authService.isLoggedIn()) {
         this.collectionOfTasksService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IResponseAboutTestingAllowed) => {
           this.responseAboutTestingAllowed = data;
-          // @ts-ignore
-          console.log(this.responseAboutTestingAllowed!.reasonOfProhibition === 'PREVIOUS_TASK_NOT_SOLVED' );
         },
         (error) => {
           console.log(error);
           this.router.navigate(['/error']);
         });
       }
-
-      this.collectionOfTasksService.getPreviousTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
-      (data: ITask | null) => {
-        // console.log(data?.block.chapter.serialNumber + '.' + data?.block.serialNumber + '.' + data?.serialNumber);
-      },
-      (error) => {
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
     });
   }
 

@@ -106,9 +106,30 @@ export class CollectionOfTasksService {
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/isTestingAllowed`);
   }
 
-  getPreviousTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string)  : Observable<ITask | null> {
+  getPreviousTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<ITask | null> {
     return this.httpclient.get<ITask | null>(environment.apiUrl +
       `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/previousTask`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' })
+    });
+  }
+
+  getNextTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<ITask | null> {
+    return this.httpclient.get<ITask | null>(environment.apiUrl +
+      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/nextTask`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' })
+    });
+  }
+
+  getPreviousBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<IBlock | null> {
+    return this.httpclient.get<IBlock | null>(environment.apiUrl +
+      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/previousBlock`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' })
+    });
+  }
+
+  getNextBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<IBlock | null> {
+    return this.httpclient.get<IBlock | null>(environment.apiUrl +
+      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/nextBlock`, {
       headers: new HttpHeaders({ 'No-Auth': 'True' })
     });
   }

@@ -1,0 +1,18 @@
+<div class="d-row" *ngIf="previousTask == null">
+  <a routerLink="{{linkToNextTask}}" class="p4" style="color: var(--c6);">Перейти к следующей задаче</a>
+  <a routerLink="{{linkToNextTask}}" class="a-img icon-next"></a>
+</div>
+
+<div class="d-row" *ngIf="previousTask != null && nextTask != null">
+  <a routerLink="{{linkToPreviousTask}}" class="a-img icon-previous" ></a>
+  <a routerLink="{{linkToPreviousTask}}" class="p4" style="color: var(--c6);">Перейти к предыдущей задаче</a>
+  <hr class="hr">
+  <a routerLink="{{linkToNextTask}}" class="p4" style="color: var(--c6);">Перейти к следующей задаче</a>
+  <a routerLink="{{linkToNextTask}}" class="a-img icon-next"></a>
+</div>
+
+<div class="d-row" *ngIf="nextTask == null">
+  <a routerLink="{{linkToPreviousTask}}" class="a-img icon-previous" ></a>
+  <a routerLink="{{linkToPreviousTask}}" class="p4" style="color: var(--c6);">Перейти к предыдущей задаче</a>
+</div>
+

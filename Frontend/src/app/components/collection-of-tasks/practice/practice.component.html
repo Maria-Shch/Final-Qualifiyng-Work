@@ -5,17 +5,7 @@
       <img src="../../../../assets/icons/pencil.png" height="30px" width="auto" style="margin-right: 10px">
       <h2 style="color: var(--c6); margin:0">Блок {{serialNumberOfChapter}}. {{serialNumberOfBlock}}</h2>
     </div>
-    <div class="d-row" *ngIf="serialNumberOfBlock === '1' && !isBlockLast">
-      <app-next-block [section]="'practice'"></app-next-block>
-    </div>
-    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && !isBlockLast">
-      <app-previous-block [section]="'practice'"></app-previous-block>
-      <hr class="hr">
-      <app-next-block [section]="'practice'"></app-next-block>
-    </div>
-    <div class="d-row" *ngIf="serialNumberOfBlock != '1' && isBlockLast">
-      <app-previous-block [section]="'practice'"></app-previous-block>
-    </div>
+    <app-block-switcher [section]="'practice'" ></app-block-switcher>
   </div>
 
   <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 0">
