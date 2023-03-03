@@ -19,6 +19,10 @@ public class StudentTasksService {
         this.statusService = statusService;
     }
 
+    public StudentTask getStudentTask(User user, Task task){
+        return studentTaskRepo.findStudentTaskByUserAndTask(user, task).orElse(null);
+    }
+
     public Status getStatusByUserAndTask(User user, Task task){
         Optional<StudentTask> studentTask = studentTaskRepo.findStudentTaskByUserAndTask(user, task);
         if (studentTask.isPresent()) return studentTask.get().getCurrStatus();

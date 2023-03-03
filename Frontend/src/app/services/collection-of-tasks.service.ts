@@ -133,4 +133,15 @@ export class CollectionOfTasksService {
       headers: new HttpHeaders({ 'No-Auth': 'True' })
     });
   }
+
+  sendOnTesting(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[])  : Observable<any> {
+    return this.httpclient.post<any>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onTesting`,
+      codes);
+  }
+
+  getClasses(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<string[]> {
+    return this.httpclient.get<string[]>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getClasses`);
+  }
 }

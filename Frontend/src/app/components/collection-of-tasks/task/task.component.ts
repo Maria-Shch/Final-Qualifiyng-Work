@@ -23,7 +23,7 @@ export class TaskComponent implements OnInit{
   isEditing: boolean = false;
   status: IStatus | null = null;
   responseAboutTestingAllowed: IResponseAboutTestingAllowed | null  = null;
-  codeTextAreas: ICodeTextArea[] = [{id: 0}];
+  codeTextAreas: ICodeTextArea[] = [];
   counterCodeTextArea: number = 0;
 
   editorConfig = {
@@ -76,12 +76,24 @@ export class TaskComponent implements OnInit{
           console.log(error);
           this.router.navigate(['/error']);
         });
-      }
 
-      if (this.authService.isLoggedIn()) {
         this.collectionOfTasksService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IResponseAboutTestingAllowed) => {
           this.responseAboutTestingAllowed = data;
+        },
+        (error) => {
+          console.log(error);
+          this.router.navigate(['/error']);
+        });
+
+        this.collectionOfTasksService.getClasses(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+        (data: string[]) => {
+          if(data == null || data.length === 0){
+            this.codeTextAreas = [{id: 0, content: ""}];
+            this.counterCodeTextArea = this.counterCodeTextArea + 1;
+          } else {
+            this.setCodeToTextAreas(data);
+          }
         },
         (error) => {
           console.log(error);
@@ -119,17 +131,61 @@ export class TaskComponent implements OnInit{
     return this.collectionOfTasksService.saveDescriptionOfTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, description);
   }
 
-  addTextArea() {
+  addEmptyTextArea() {
+    this.codeTextAreas.push({id: this.counterCodeTextArea, content: ""});
     this.counterCodeTextArea = this.counterCodeTextArea + 1;
-    this.codeTextAreas.push({id: this.counterCodeTextArea});
+  }
+
+  setCodeToTextAreas(codes: string[]){
+    this.codeTextAreas = [];
+    for (let i = 0; i < codes.length; i++) {
+      this.codeTextAreas.push({id: i, content: codes[i]});
+      this.counterCodeTextArea = this.counterCodeTextArea + 1;
+    }
   }
 
   saveCodeAndTesting() {
-
+    let codes: string [] = [];
+    for (let i = 0; i <= this.counterCodeTextArea; i++) {
+      if(document.getElementById(i.toString()) != null){
+        let code = (<HTMLInputElement>document.getElementById(i.toString()))?.value;
+        if(code.length > 0) codes.push(code);
+      }
+    }
+    this.collectionOfTasksService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+      (data: any) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+        this.router.navigate(['/error']);
+      });
   }
 
   removeTextArea(id: number) {
     this.codeTextAreas = this.codeTextAreas.filter(item => item.id !== id);
   }
 
+  more(id: number) {
+    let el = (<HTMLInputElement>document.getElementById(id.toString()));
+    el.setAttribute('style', "height:" + String(el.scrollHeight)+"px");
+
+    let more = (<HTMLInputElement>document.getElementById("more"+id));
+    more.setAttribute('style', "display:none");
+
+    let less = (<HTMLInputElement>document.getElementById("less"+id));
+    less.setAttribute('style', "display:block");
+  }
+
+  less(id: number) {
+    let el = (<HTMLInputElement>document.getElementById(id.toString()));
+    el.setAttribute('style', "height:150px");
+
+    let more = (<HTMLInputElement>document.getElementById("more"+id));
+    more.setAttribute('style', "display:block");
+
+    let less = (<HTMLInputElement>document.getElementById("less"+id));
+    less.setAttribute('style', "display:none");
+  }
 }
+

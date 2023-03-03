@@ -5,14 +5,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
+import ru.shcherbatykh.Backend.dto.TestingResultResponse;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.models.Status;
 import ru.shcherbatykh.Backend.models.Task;
-import ru.shcherbatykh.Backend.services.AuthService;
-import ru.shcherbatykh.Backend.services.BlockService;
-import ru.shcherbatykh.Backend.services.ChapterService;
-import ru.shcherbatykh.Backend.services.TaskService;
+import ru.shcherbatykh.Backend.services.*;
 
 import java.util.List;
 
@@ -23,12 +21,15 @@ public class CollectionOfTasksController {
     private final BlockService blockService;
     private final AuthService authService;
     private final TaskService taskService;
+    private final TestingService testingService;
 
-    public CollectionOfTasksController(ChapterService chapterService, BlockService blockService, AuthService authService, TaskService taskService) {
+    public CollectionOfTasksController(ChapterService chapterService, BlockService blockService, AuthService authService,
+                                       TaskService taskService, TestingService testingService) {
         this.chapterService = chapterService;
         this.blockService = blockService;
         this.authService = authService;
         this.taskService = taskService;
+        this.testingService = testingService;
     }
 
     @GetMapping("/chapter/all")

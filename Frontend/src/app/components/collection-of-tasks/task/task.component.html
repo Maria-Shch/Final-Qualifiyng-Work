@@ -48,12 +48,16 @@
           <textarea class="textarea-code"
                     oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
                     id="{{codeTA.id}}"
-          ></textarea>
-          <button class="b-delete" (click)="removeTextArea(codeTA.id)"></button>
+          >{{codeTA.content}}</textarea>
+          <div style="display:flex; flex-direction: column">
+            <button id="more{{codeTA.id}}" class="b-violet-cycle b-more" (click)="more(codeTA.id)"></button>
+            <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
+            <button class="b-violet-cycle b-delete" (click)="removeTextArea(codeTA.id)"></button>
+          </div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 15px; width: 995px">
-          <button class="h5 d-white-button" style="width: 300px" (click)="addTextArea()">+ Новое окно</button>
-          <button class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
+          <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextArea()">+ Новое окно</button>
+          <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
         </div>
       </div>
     </div>

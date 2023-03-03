@@ -120,7 +120,7 @@ public class TaskService {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         Task prevTask = getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         if (prevTask != null){
-            if (Objects.equals(studentTasksService.getStatusByUserAndTask(user, prevTask).getName(), "Не решена")){
+            if (!Objects.equals(studentTasksService.getStatusByUserAndTask(user, prevTask).getName(), "Решена")){
                 return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.PREVIOUS_TASK_NOT_SOLVED);
             }
         }
