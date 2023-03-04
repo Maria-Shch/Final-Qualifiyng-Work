@@ -1,6 +1,5 @@
 package ru.shcherbatykh.Backend.services;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -32,22 +28,44 @@ public class TestingService {
     @Value("${app.codeStorage.path}")
     private String CODE_STORAGE_PATH;
 
+    @Value("${app.testing.isTestsPassed}")
+    private boolean IS_TEST_PASSED;
+
     private final TaskService taskService;
     private final StudentTasksService studentTasksService;
+    private final StatusService statusService;
 
-    public TestingService(TaskService taskService, StudentTasksService studentTasksService) {
+    public TestingService(TaskService taskService, StudentTasksService studentTasksService, StatusService statusService) {
         this.taskService = taskService;
         this.studentTasksService = studentTasksService;
+        this.statusService = statusService;
     }
-
+    
     public TestingResultResponse testing(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        if(stTask == null){
+            stTask = studentTasksService.addNew(user, task);
+        }
+
         if (saveCodeToFiles(stTask, codes) == false){
-            return new TestingResultResponse(false, TestError.TEST_ERR_001);
-        };
-        return new TestingResultResponse(true);
+            return new TestingResultResponse(stTask.getCurrStatus(),false, TestError.TEST_ERR_001);
+        } else {
+            studentTasksService.setStatusOnTesting(stTask);
+            if(IS_TEST_PASSED){
+                if(task.isManualCheckRequired()){
+                    studentTasksService.setStatusPassedTests(stTask);
+                } else {
+                    studentTasksService.setStatusSolved(stTask);
+                }
+                return new TestingResultResponse(stTask.getCurrStatus(), true);
+            } else {
+                studentTasksService.setStatusNotPassedTests(stTask);
+                return new TestingResultResponse(stTask.getCurrStatus(), false, TestError.TEST_ERR_002);
+            }
+        }
     }
+
 
     private boolean saveCodeToFiles(StudentTask stTask, List<String> codes)  {
         String path = getPathToSave(stTask);
@@ -112,7 +130,6 @@ public class TestingService {
             .append(stTask.getTask().getSerialNumber());
         return path.toString();
     }
-
 
     public List<String> getClasses(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user){
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);

@@ -9,6 +9,7 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
+import {ITestingResultResponse} from "../dto_interfaces/ITestingResultResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -134,8 +135,8 @@ export class CollectionOfTasksService {
     });
   }
 
-  sendOnTesting(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[])  : Observable<any> {
-    return this.httpclient.post<any>(environment.apiUrl +
+  sendOnTesting(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[]): Observable<ITestingResultResponse> {
+    return this.httpclient.post<ITestingResultResponse>(environment.apiUrl +
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onTesting`,
       codes);
   }

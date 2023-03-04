@@ -35,12 +35,6 @@
         <a routerLink="/login" class="p4" style="margin: 0; text-decoration: revert; color: var(--c2)">войти в систему</a>
       </div>
 
-      <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition != null &&
-                  responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'PREVIOUS_TASK_NOT_SOLVED'"
-           style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
-        <p class="p4" style="color: var(--c12); margin: 0 0 20px 0">Вы не можете тестировать решения данной задачи, пока не решите предыдущую.</p>
-      </div>
-
       <div *ngIf="responseAboutTestingAllowed?.testingAllowed" style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
         <p class="p4" style="color: var(--c2); margin: 0 0 20px 0">Разместите код каждого класса в отдельном окне</p>
 
@@ -59,6 +53,118 @@
           <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextArea()">+ Новое окно</button>
           <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
         </div>
+
+        <div *ngIf="status?.name === 'Не прошла тесты'">
+          <div class="bc-clr-returned-not-passed-tests d-result">
+            <p class="p4" style="color: var(--c6); margin: 0">
+              Тестирование завершилось неудачей
+            </p>
+          </div>
+          <p class="p4" style="color: var(--c6); margin: 10px 0 0 0">
+            Код вашего решения был сохранён
+          </p>
+          <p class="p4" style="color: var(--c2); margin: 20px 0 0 0; cursor: pointer" (click)="toConsideration()">
+            Не согласны с результатами тестирования?
+          </p>
+        </div>
+
+        <div *ngIf="status?.name === 'Прошла тесты'"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div>
+            <div class="bc-clr-passed-tests d-result">
+              <p class="p4" style="color: var(--c6); margin: 0">
+                Тестирование завершилось успешно
+              </p>
+            </div>
+            <p class="p4" style="color: var(--c6); margin: 10px 0 0 0">
+              Код вашего решения был сохранён
+            </p>
+          </div>
+          <button class="p4 d-to-review-button" (click)="saveAndSendToReview()">
+            Сохранить код и отправить на проверку
+          </button>
+        </div>
+
+        <div *ngIf="status?.name === 'Решена' && task?.manualCheckRequired === false"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div>
+            <div class="bc-clr-solved d-result">
+              <p class="p4" style="color: var(--c6); margin: 0">
+                Тестирование завершилось успешно
+              </p>
+            </div>
+            <p class="p4" style="color: var(--c6); margin: 10px 0 0 0">
+              Код вашего решения был сохранён
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="status?.name === 'Решена' && task?.manualCheckRequired != false"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div>
+            <div class="bc-clr-solved d-result">
+              <p class="p4" style="color: var(--c6); margin: 0">
+                Преподаватель принял ваше решение
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition != null &&
+                  responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'PREVIOUS_TASK_NOT_SOLVED'"
+           style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
+        <p class="p4" style="color: var(--c12); margin: 0 0 20px 0">Вы не можете тестировать решения данной задачи, пока не решите предыдущую.</p>
+      </div>
+
+      <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition != null &&
+                  responseAboutTestingAllowed?.reasonOfProhibition?.toString() != 'PREVIOUS_TASK_NOT_SOLVED'"
+           style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
+
+
+        <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TEACHER_REVIEW'">
+          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+            Вы отправили решение задачи на проверку. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
+          </p>
+          <div  style="display:flex; flex-direction: row; margin: 0">
+            <p class="p4" style="color: var(--c6); margin: 10px 0 20px 0">Вы можете&nbsp;</p>
+            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="cancelReview()">
+              отменить запрос на проверку задачи.
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TEACHER_CONSIDERATION'">
+          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+            Вы отправили решение задачи на рассмотрение. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
+          </p>
+          <div  style="display:flex; flex-direction: row; margin: 0">
+            <p class="p4" style="color: var(--c6); margin: 10px 0 20px 0">Вы можете&nbsp;</p>
+            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="cancelConsideration()">
+              отменить запрос о рассмотрении решения задачи.
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TESTING'">
+          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+            Вы отправили решение задачи на тестирование. Редактирование решения и функция тестирования станут вновь доступны после его завершения.
+          </p>
+        </div>
+
+        <div *ngFor="let codeTA of codeTextAreas" style="display: flex; flex-direction: row; align-items: start; justify-content: space-between">
+          <textarea class="textarea-code"
+                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                    id="{{codeTA.id}}"
+                    readonly
+          >{{codeTA.content}}</textarea>
+          <div style="display:flex; flex-direction: column">
+            <button id="more{{codeTA.id}}" class="b-violet-cycle b-more" (click)="more(codeTA.id)"></button>
+            <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
+          </div>
+        </div>
+
+
       </div>
     </div>
 
@@ -111,5 +217,7 @@
     </div>
     <editor [init]="editorConfig" id="editorTask"></editor>
   </div>
+
+
 
 </div>

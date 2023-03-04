@@ -8,7 +8,8 @@ import {UserService} from "../../../services/user.service";
 import {AuthorizationService} from "../../../services/authorization.service";
 import {IStatus} from "../../../interfaces/IStatus";
 import {IResponseAboutTestingAllowed} from "../../../dto_interfaces/IResponseAboutTestingAllowed";
-import {ICodeTextArea} from "../../../interfaces/ICodeTextArea";
+import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
+import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
 
 @Component({
   selector: 'app-task',
@@ -25,6 +26,7 @@ export class TaskComponent implements OnInit{
   responseAboutTestingAllowed: IResponseAboutTestingAllowed | null  = null;
   codeTextAreas: ICodeTextArea[] = [];
   counterCodeTextArea: number = 0;
+  testingResultResponse: ITestingResultResponse | null = null;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -153,8 +155,11 @@ export class TaskComponent implements OnInit{
       }
     }
     this.collectionOfTasksService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
-      (data: any) => {
-        console.log(data);
+      (data: ITestingResultResponse) => {
+        this.status = data.status;
+        this.testingResultResponse = data;
+        console.log(this.testingResultResponse);
+        console.log(this.status?.name == 'Не прошла тесты');
       },
       (error) => {
         console.log(error);
@@ -186,6 +191,24 @@ export class TaskComponent implements OnInit{
 
     let less = (<HTMLInputElement>document.getElementById("less"+id));
     less.setAttribute('style', "display:none");
+  }
+
+
+  saveAndSendToReview() {
+    
+  }
+
+  toConsideration() {
+
+  }
+
+  cancelReview() {
+
+  }
+
+
+  cancelConsideration() {
+
   }
 }
 
