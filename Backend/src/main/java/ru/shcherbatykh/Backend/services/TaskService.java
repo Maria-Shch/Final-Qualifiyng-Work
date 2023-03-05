@@ -1,28 +1,42 @@
 package ru.shcherbatykh.Backend.services;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.shcherbatykh.Backend.classes.ReasonOfProhibitionTesting;
-import ru.shcherbatykh.Backend.dto.ResponseAboutTestingAllowed;
+import ru.shcherbatykh.Backend.classes.AppError;
+import ru.shcherbatykh.Backend.dto.RBOnConsideration;
+import ru.shcherbatykh.Backend.dto.SendingOnReviewOrConsiderationResponse;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
-import ru.shcherbatykh.Backend.models.Block;
-import ru.shcherbatykh.Backend.models.Status;
-import ru.shcherbatykh.Backend.models.Task;
-import ru.shcherbatykh.Backend.models.User;
+import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.repositories.TaskRepo;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Stream;
 
+@Slf4j
 @Service
 public class TaskService {
+
+    @Value("${app.codeStorage.path}")
+    private String CODE_STORAGE_PATH;
+
     private final TaskRepo taskRepo;
     private final ChapterService chapterService;
     private final BlockService blockService;
-    private final StudentTasksService studentTasksService;
+    private final StudentTaskService studentTasksService;
 
     public TaskService(TaskRepo taskRepo, ChapterService chapterService, BlockService blockService,
-                       StudentTasksService studentTasksService) {
+                       StudentTaskService studentTasksService) {
         this.taskRepo = taskRepo;
         this.chapterService = chapterService;
         this.blockService = blockService;
@@ -110,30 +124,142 @@ public class TaskService {
         } else return getTask(sNOfChapter, sNOfBlock, sNOfTask + 1);
     }
 
-
     public Task getLastTaskOfBlock(int sNOfChapter, int sNOfBlock){
         return getTask(sNOfChapter, sNOfBlock, getCountOfTasks(sNOfChapter, sNOfBlock));
     }
 
-    public ResponseAboutTestingAllowed getResponseAboutTestingAllowed(int serialNumberOfChapter, int serialNumberOfBlock,
-                                                                      int serialNumberOfTask, User user) {
+    public SendingOnReviewOrConsiderationResponse sendTaskOnReview(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
-        Task prevTask = getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
-        if (prevTask != null){
-            if (!Objects.equals(studentTasksService.getStatusByUserAndTask(user, prevTask).getName(), "Решена")){
-                return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.PREVIOUS_TASK_NOT_SOLVED);
-            }
-        }
-        if (Objects.equals(studentTasksService.getStatusByUserAndTask(user, task).getName(), "На проверке")){
-            return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.TASK_ON_TEACHER_REVIEW);
-        }
-        if (Objects.equals(studentTasksService.getStatusByUserAndTask(user, task).getName(), "На рассмотрении")){
-            return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.TASK_ON_TEACHER_CONSIDERATION);
-        }
-        if (Objects.equals(studentTasksService.getStatusByUserAndTask(user, task).getName(), "На тестировании")){
-            return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.TASK_ON_TESTING);
+        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        if (stTask == null){
+            stTask = studentTasksService.addNew(user, task);
         }
 
-        return new ResponseAboutTestingAllowed(true);
+        if (saveCodeToFiles(stTask, codes) == false){
+            return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
+        } else {
+            studentTasksService.setStatusOnReview(stTask);
+            return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),true);
+        }
+    }
+
+    public SendingOnReviewOrConsiderationResponse sendTaskOnConsideration(int serialNumberOfChapter, int serialNumberOfBlock,
+                                                                          int serialNumberOfTask, User user,
+                                                                          RBOnConsideration rbOnConsideration) {
+        Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        if (saveCodeToFiles(stTask, rbOnConsideration.getCodes()) == false){
+            return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
+        } else {
+            studentTasksService.setStatusOnConsideration(stTask);
+            return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),true);
+        }
+    }
+
+    public boolean saveCodeToFiles(StudentTask stTask, List<String> codes)  {
+        String path = getPathToSave(stTask);
+        if (Files.exists(Path.of(path))) {
+            try {
+                FileUtils.cleanDirectory(new File(path));
+            } catch (IOException e) {
+                log.error("Error during saving code", e);
+                return false;
+            }
+        }
+        else {
+            try {
+                Files.createDirectories(Paths.get(path));
+            } catch (IOException e) {
+                log.error("Error during saving code", e);
+                return false;
+            }
+        }
+        for(String code: codes){
+            String className = getClassName(code);
+            if(className == null) return false;
+            String fullPath = path + "//" + className + ".txt";
+            try {
+                File file = new File(fullPath);
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(code);
+                bw.close();
+            } catch (IOException e) {
+                log.error("Error during saving code", e);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //todo if class is enum, interface..
+    private String getClassName(String code){
+        int index = code.indexOf(" class ") ;
+        if (index == -1) return null;
+        int startClassNameIndex = index + 7;
+        while(code.charAt(startClassNameIndex) == ' '){
+            startClassNameIndex++;
+        }
+        StringBuilder className = new StringBuilder();
+        while (startClassNameIndex < code.length() &&
+                code.charAt(startClassNameIndex) != ' ' &&
+                code.charAt(startClassNameIndex) != '{') {
+            className.append(code.charAt(startClassNameIndex));
+            startClassNameIndex++;
+        }
+        return className.toString();
+    }
+
+    private String getPathToSave(StudentTask stTask){
+        StringBuilder path = new StringBuilder(CODE_STORAGE_PATH);
+        path.append('/')
+                .append(stTask.getUser().getId()).append('/')
+                .append(stTask.getTask().getBlock().getChapter().getSerialNumber()).append('/')
+                .append(stTask.getTask().getBlock().getSerialNumber()).append('/')
+                .append(stTask.getTask().getSerialNumber());
+        return path.toString();
+    }
+
+    public List<String> getClassesForTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user){
+        Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        if(stTask == null) return null;
+        String path = getPathToSave(stTask);
+        if (Files.exists(Path.of(path))) {
+            try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+                return paths
+                        .filter(Files::isRegularFile)
+                        .map(p -> {
+                            try {
+                                return Files.readString(p, StandardCharsets.UTF_8);
+                            } catch (IOException e) {
+                                log.error("Error during reading files", e);
+                                return null;
+                            }
+                        })
+                        .toList();
+            } catch (IOException ex){
+                log.error("Error during reading files", ex);
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+
+    public boolean cancelReview(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user) {
+        Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        studentTasksService.setStatusPassedTests(stTask);
+        return true;
+    }
+
+    public boolean cancelConsideration(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user) {
+        Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        studentTasksService.setStatusNotSolved(stTask);
+        return true;
     }
 }

@@ -54,16 +54,19 @@
           <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
         </div>
 
-        <div *ngIf="status?.name === 'Не прошла тесты'">
-          <div class="bc-clr-returned-not-passed-tests d-result">
-            <p class="p4" style="color: var(--c6); margin: 0">
-              Тестирование завершилось неудачей
+        <div *ngIf="status?.name === 'Не прошла тесты'"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div>
+            <div class="bc-clr-returned-not-passed-tests d-result">
+              <p class="p4" style="color: var(--c6); margin: 0">
+                Тестирование завершилось неудачей
+              </p>
+            </div>
+            <p class="p4" style="color: var(--c6); margin: 10px 0 0 0">
+              Код вашего решения был сохранён
             </p>
           </div>
-          <p class="p4" style="color: var(--c6); margin: 10px 0 0 0">
-            Код вашего решения был сохранён
-          </p>
-          <p class="p4" style="color: var(--c2); margin: 20px 0 0 0; cursor: pointer" (click)="toConsideration()">
+          <p class="p4" style="color: var(--c2); margin: 0; cursor: pointer" (click)="openModalDialogAboutConsideration()">
             Не согласны с результатами тестирования?
           </p>
         </div>
@@ -80,7 +83,7 @@
               Код вашего решения был сохранён
             </p>
           </div>
-          <button class="p4 d-to-review-button" (click)="saveAndSendToReview()">
+          <button class="p4 d-to-review-button" (click)="openModalDialogAboutReview()">
             Сохранить код и отправить на проверку
           </button>
         </div>
@@ -89,7 +92,7 @@
              style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
           <div>
             <div class="bc-clr-solved d-result">
-              <p class="p4" style="color: var(--c6); margin: 0">
+              <p class="p3" style="color: var(--c6); margin: 0">
                 Тестирование завершилось успешно
               </p>
             </div>
@@ -128,7 +131,7 @@
           </p>
           <div  style="display:flex; flex-direction: row; margin: 0">
             <p class="p4" style="color: var(--c6); margin: 10px 0 20px 0">Вы можете&nbsp;</p>
-            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="cancelReview()">
+            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="openModalDialogAboutCancelReview()">
               отменить запрос на проверку задачи.
             </p>
           </div>
@@ -140,8 +143,8 @@
           </p>
           <div  style="display:flex; flex-direction: row; margin: 0">
             <p class="p4" style="color: var(--c6); margin: 10px 0 20px 0">Вы можете&nbsp;</p>
-            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="cancelConsideration()">
-              отменить запрос о рассмотрении решения задачи.
+            <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="openModalDialogAboutCancelConsideration()">
+              отменить запрос на рассмотрение решения задачи.
             </p>
           </div>
         </div>
@@ -163,8 +166,6 @@
             <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
           </div>
         </div>
-
-
       </div>
     </div>
 
@@ -211,7 +212,7 @@
 
   <div *ngIf="isEditing === true" >
     <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%; margin: 15px 0 20px 0">
-      <button class="p4 d-violet-button" (click)="save()">Сохранить изменения</button>
+      <button class="p4 d-violet-button" (click)="saveNewDescription()">Сохранить изменения</button>
       <button class="p4 d-violet-button" (click)="saveAndTurnOffEditing()">Сохранить изменения и выйти из режима редактирования</button>
       <button class="p4 d-violet-button" (click)="turnOffEditing()">Выйти</button>
     </div>
@@ -219,5 +220,112 @@
   </div>
 
 
+  <div id="#modalOnReview" style="display: none" class="fixed-overlay">
+    <div class="modal">
+      <div class="modal_container">
+        <header>
+          <h3 style="margin: 0">Вы хотите отправить решение на проверку преподавателю?</h3>
+        </header>
+        <section  style="margin: 15px 0 15px 0">
+          <p class="p3" style="text-align: justify">После того, как вы отправите своё решение на проверку предодавателю, вы не сможете его изменять и тестировать.
+            У вас будет возможность отменить запрос до того, как преподаватель обработает его.</p>
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+          <button class="p4 d-white-button" (click)="saveCodeAndSendOnReview()">Сохранить код и отправить на проверку</button>
+          <button class="p4 d-violet-button" (click)="closeModalOnReview()">Не отправлять</button>
+        </footer>
+      </div>
+    </div>
+  </div>
 
+  <div id="#modalOnConsideration" style="display: none" class="fixed-overlay">
+    <div class="modal">
+      <div class="modal_container">
+        <header>
+          <h3 style="margin: 0">Вы хотите отправить решение на рассмотрение преподавателю?</h3>
+        </header>
+        <section  style="margin: 15px 0 15px 0">
+          <p class="p3" style="text-align: justify">Если вы не согласны с результатами тестирования вашего решения, то вы можете оспорить их.
+            Опишите вашу точку зрения в поле ниже. После отправки вашего запроса преподавателю статус задачи будет изменён на “На рассмотрении”.
+            Функция тестирования для данной задачи будет заблокирована до ответа преподавателя.
+            У вас будет возможность отменить запрос до того, как преподаватель обработает его.</p>
+        </section>
+        <textarea id="#messageToConsideration" class="textarea-message"></textarea>
+        <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+          <button class="p4 d-white-button" (click)="saveCodeAndSendOnConsideration()">Сохранить код и отправить на рассмотрение</button>
+          <button class="p4 d-violet-button" (click)="closeModalOnConsideration()">Не отправлять</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="#modalOnCancelReview" style="display: none" class="fixed-overlay">
+    <div class="modal">
+      <div class="modal_container">
+        <header>
+          <h3 style="margin: 0">Вы хотите отменить запрос на проверку вашего решения?</h3>
+        </header>
+        <section  style="margin: 15px 0 15px 0">
+          <p class="p3" style="text-align: justify">
+            Вы можете отменить запрос на проверку вашего решения. В этом случае вы снова сможете редактировать ваш код и тестировать его.
+          </p>
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+          <button class="p4 d-white-button" (click)="cancelReview()">Отменить запрос на проверку</button>
+          <button class="p4 d-violet-button" (click)="closeModalOnCancelReview()">Не отменять</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="#modalOnCancelConsideration" style="display: none" class="fixed-overlay">
+    <div class="modal">
+      <div class="modal_container">
+        <header>
+          <h3 style="margin: 0">Вы хотите отменить запрос на рассмотрение вашего решения?</h3>
+        </header>
+        <section  style="margin: 15px 0 15px 0">
+          <p class="p3" style="text-align: justify">
+            Вы можете отменить запрос на рассмотрениие вашего решения. В этом случае вы снова сможете редактировать ваш код и тестировать его.
+          </p>
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+          <button class="p4 d-white-button" (click)="cancelConsideration()">Отменить запрос на рассмотрение</button>
+          <button class="p4 d-violet-button" (click)="closeModalOnCancelConsideration()">Не отменять</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="#modalTestsPassedSuccessfully" style="display: none" class="fixed-overlay">
+    <div class="modal" style="width: 40%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
+        <div class="bc-clr-passed-tests d-result" style="align-items: center">
+          <p class="p4" style="color: var(--c6); margin: 0">
+            Тестирование завершилось успешно
+          </p>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <button class="p4 d-violet-button" (click)="closeModalTestsPassedSuccessfully()">ОК</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="#modalTestsPassedUnsuccessfully" style="display: none" class="fixed-overlay">
+    <div class="modal" style="width: 40%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div class="bc-clr-returned-not-passed-tests d-result" style="align-items: center">
+          <p class="p4" style="color: var(--c6); margin: 0">
+            Тестирование завершилось неудачей
+          </p>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <button class="p5 d-violet-button" (click)="closeModalTestsPassedUnsuccessfully()">ОК</button>
+        </footer>
+      </div>
+    </div>
+  </div>
 </div>

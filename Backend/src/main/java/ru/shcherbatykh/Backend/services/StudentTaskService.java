@@ -10,17 +10,21 @@ import ru.shcherbatykh.Backend.repositories.StudentTaskRepo;
 import java.util.Optional;
 
 @Service
-public class StudentTasksService {
+public class StudentTaskService {
     private final StudentTaskRepo studentTaskRepo;
     private final StatusService statusService;
 
-    public StudentTasksService(StudentTaskRepo studentTaskRepo, StatusService statusService) {
+    public StudentTaskService(StudentTaskRepo studentTaskRepo, StatusService statusService) {
         this.studentTaskRepo = studentTaskRepo;
         this.statusService = statusService;
     }
 
     public StudentTask getStudentTask(User user, Task task){
-        return studentTaskRepo.findStudentTaskByUserAndTask(user, task).orElse(null);
+      StudentTask stTask = studentTaskRepo.findStudentTaskByUserAndTask(user, task).orElse(null);
+        if (stTask == null){
+            stTask = addNew(user, task);
+        }
+        return stTask;
     }
 
     public StudentTask addNew(User user, Task task){

@@ -10,6 +10,7 @@ import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
 import {ITestingResultResponse} from "../dto_interfaces/ITestingResultResponse";
+import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -144,5 +145,30 @@ export class CollectionOfTasksService {
   getClasses(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<string[]> {
     return this.httpclient.get<string[]>(environment.apiUrl +
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getClasses`);
+  }
+
+  sendOnReview(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[]):
+    Observable<ISendingOnReviewOrConsiderationResponse> {
+    return this.httpclient.post<ISendingOnReviewOrConsiderationResponse>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onReview`,
+      codes);
+  }
+
+  sendOnConsideration(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string,
+                      codes: string[], message: string): Observable<ISendingOnReviewOrConsiderationResponse> {
+    let rbOnConsideration = {codes, message};
+    return this.httpclient.post<ISendingOnReviewOrConsiderationResponse>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onConsideration`,
+      rbOnConsideration);
+  }
+
+  cancelReview(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<any> {
+    return this.httpclient.get<any>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/cancelReview`);
+  }
+
+  cancelConsideration(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<any> {
+    return this.httpclient.get<any>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/cancelConsideration`);
   }
 }

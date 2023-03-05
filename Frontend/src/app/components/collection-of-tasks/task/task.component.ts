@@ -10,6 +10,7 @@ import {IStatus} from "../../../interfaces/IStatus";
 import {IResponseAboutTestingAllowed} from "../../../dto_interfaces/IResponseAboutTestingAllowed";
 import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
 import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
+import {ISendingOnReviewOrConsiderationResponse} from "../../../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 
 @Component({
   selector: 'app-task',
@@ -35,7 +36,7 @@ export class TaskComponent implements OnInit{
     height: 720,
     toolbar: 'undo redo | styles | fontfamily | fontsize | line_height_formats | forecolor | bold italic | alignleft aligncenter alignright alignjustify | numlist bullist | outdent indent | link image | code',
     init_instance_callback: (editor: { id: any; }) => {
-      this.setContent();
+      this.setDescriptionToEditor();
     },
   };
 
@@ -105,12 +106,12 @@ export class TaskComponent implements OnInit{
     });
   }
 
-  save(){
-    this.sendContent().subscribe();
+  saveNewDescription(){
+    this.sendNewDescription().subscribe();
   }
 
   saveAndTurnOffEditing() {
-    this.sendContent().subscribe((data: ITask) => {
+    this.sendNewDescription().subscribe((data: ITask) => {
       this.task = data;
       this.isEditing = false;
       this.ngOnInit();
@@ -122,12 +123,12 @@ export class TaskComponent implements OnInit{
     this.ngOnInit();
   }
 
-  setContent(){
+  setDescriptionToEditor(){
     // @ts-ignore
     tinymce.get('editorTask').setContent(this.task?.description);
   }
 
-  sendContent() : Observable<ITask>{
+  sendNewDescription() : Observable<ITask>{
     let description = tinymce.get('editorTask')?.getContent();
     // @ts-ignore
     return this.collectionOfTasksService.saveDescriptionOfTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, description);
@@ -147,6 +148,89 @@ export class TaskComponent implements OnInit{
   }
 
   saveCodeAndTesting() {
+    let codes: string[] = this.saveCodeToArray();
+    this.collectionOfTasksService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+    (data: ITestingResultResponse) => {
+      this.status = data.status;
+      this.testingResultResponse = data;
+
+      if(this.status?.name === 'Прошла тесты'){
+        let modal = document.getElementById("#modalTestsPassedSuccessfully");
+        modal?.setAttribute('style', "display:block");
+      } else if(this.status?.name === 'Не прошла тесты'){
+        let modal = document.getElementById("#modalTestsPassedUnsuccessfully");
+        modal?.setAttribute('style', "display:block");
+      }
+    },
+    (error) => {
+      console.log(error);
+      this.router.navigate(['/error']);
+    });
+  }
+
+  openModalDialogAboutReview() {
+    let modalOnReview = document.getElementById("#modalOnReview");
+    console.log(modalOnReview);
+    modalOnReview?.setAttribute('style', "display:block");
+  }
+
+  saveCodeAndSendOnReview(){
+    let codes: string[] = this.saveCodeToArray();
+    this.collectionOfTasksService.sendOnReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+    (data: ISendingOnReviewOrConsiderationResponse) => {
+      if(data.sendingSuccessfulCompleted){
+        this.status = data.status;
+        alert("Вы отправили решение задачи на проверку.");
+        this.closeModalOnReview();
+      } else {
+        alert("Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку");
+        this.closeModalOnReview();
+      }
+      this.ngOnInit();
+    },
+    (error) => {
+      console.log(error);
+      this.router.navigate(['/error']);
+    });
+  }
+
+  closeModalOnReview() {
+    let modalOnReview = (<HTMLInputElement>document.getElementById("#modalOnReview"));
+    modalOnReview.setAttribute('style', "display:none");
+  }
+
+  openModalDialogAboutConsideration() {
+    let modalOnReview = document.getElementById("#modalOnConsideration");
+    modalOnReview?.setAttribute('style', "display:block");
+  }
+
+  saveCodeAndSendOnConsideration(){
+    let codes: string[] = this.saveCodeToArray();
+    let message = (<HTMLInputElement>document.getElementById("#messageToConsideration"))?.value;
+    this.collectionOfTasksService.sendOnConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes, message).subscribe(
+    (data: ISendingOnReviewOrConsiderationResponse) => {
+      if(data.sendingSuccessfulCompleted){
+        this.status = data.status;
+        alert("Вы отправили решение задачи на рассмотрение.");
+        this.closeModalOnConsideration();
+      } else {
+        alert("Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку");
+        this.closeModalOnConsideration();
+      }
+      this.ngOnInit();
+    },
+    (error) => {
+      console.log(error);
+      this.router.navigate(['/error']);
+    });
+  }
+
+  closeModalOnConsideration() {
+    let modalOnConsideration = (<HTMLInputElement>document.getElementById("#modalOnConsideration"));
+    modalOnConsideration.setAttribute('style', "display:none");
+  }
+
+  saveCodeToArray(): string[]{
     let codes: string [] = [];
     for (let i = 0; i <= this.counterCodeTextArea; i++) {
       if(document.getElementById(i.toString()) != null){
@@ -154,17 +238,7 @@ export class TaskComponent implements OnInit{
         if(code.length > 0) codes.push(code);
       }
     }
-    this.collectionOfTasksService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
-      (data: ITestingResultResponse) => {
-        this.status = data.status;
-        this.testingResultResponse = data;
-        console.log(this.testingResultResponse);
-        console.log(this.status?.name == 'Не прошла тесты');
-      },
-      (error) => {
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
+    return codes;
   }
 
   removeTextArea(id: number) {
@@ -193,22 +267,61 @@ export class TaskComponent implements OnInit{
     less.setAttribute('style', "display:none");
   }
 
-
-  saveAndSendToReview() {
-    
+  openModalDialogAboutCancelReview() {
+    let modalOnCancelReview = document.getElementById("#modalOnCancelReview");
+    modalOnCancelReview?.setAttribute('style', "display:block");
   }
 
-  toConsideration() {
-
+  cancelReview(){
+    this.collectionOfTasksService.cancelReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+    (data: any) => {
+      alert("Вы отменили запрос на проверку решения.");
+      this.ngOnInit();
+    },
+    (error) => {
+      console.log(error);
+      this.router.navigate(['/error']);
+    });
+    this.closeModalOnCancelReview();
   }
 
-  cancelReview() {
-
+  closeModalOnCancelReview() {
+    let modalOnCancelReview = (<HTMLInputElement>document.getElementById("#modalOnCancelReview"));
+    modalOnCancelReview.setAttribute('style', "display:none");
   }
 
 
-  cancelConsideration() {
+  openModalDialogAboutCancelConsideration() {
+    let modalOnCancelConsideration = document.getElementById("#modalOnCancelConsideration");
+    modalOnCancelConsideration?.setAttribute('style', "display:block");
+  }
 
+  cancelConsideration(){
+    this.collectionOfTasksService.cancelConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+    (data: any) => {
+      alert("Вы отменили запрос на рассмотрение решения.");
+      this.ngOnInit();
+    },
+    (error) => {
+      console.log(error);
+      this.router.navigate(['/error']);
+    });
+    this.closeModalOnCancelConsideration();
+  }
+
+  closeModalOnCancelConsideration() {
+    let modalOnCancelConsideration = (<HTMLInputElement>document.getElementById("#modalOnCancelConsideration"));
+    modalOnCancelConsideration.setAttribute('style', "display:none");
+  }
+
+  closeModalTestsPassedSuccessfully() {
+    let modal = (<HTMLInputElement>document.getElementById("#modalTestsPassedSuccessfully"));
+    modal.setAttribute('style', "display:none");
+  }
+
+  closeModalTestsPassedUnsuccessfully() {
+    let modal = (<HTMLInputElement>document.getElementById("#modalTestsPassedUnsuccessfully"));
+    modal.setAttribute('style', "display:none");
   }
 }
 

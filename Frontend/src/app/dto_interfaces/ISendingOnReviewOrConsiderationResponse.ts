@@ -1,8 +1,8 @@
-
 import {IStatus} from "../interfaces/IStatus";
-export interface ITestingResultResponse{
+
+export interface ISendingOnReviewOrConsiderationResponse{
   status: IStatus;
-  testingSuccessfulCompleted: boolean;
+  sendingSuccessfulCompleted: boolean;
 
   //todo не получилось принять enum с бэка
   appError: string;
