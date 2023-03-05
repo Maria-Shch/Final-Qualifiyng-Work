@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.shcherbatykh.Backend.classes.Role;
+import ru.shcherbatykh.Backend.models.StudentTask;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.UserRepo;
 
@@ -34,5 +36,18 @@ public class UserService {
 
     public List<User> getUsers(){
         return userRepo.findAll();
+    }
+
+    public User getTeacher(StudentTask stTask){
+        User student = stTask.getUser();
+        if(student.getGroup() == null){
+            return getAdmin();
+        } else {
+            return student.getGroup().getTeacher();
+        }
+    }
+
+    public User getAdmin(){
+        return userRepo.getUserByRole(Role.ADMIN).orElse(null);
     }
 }

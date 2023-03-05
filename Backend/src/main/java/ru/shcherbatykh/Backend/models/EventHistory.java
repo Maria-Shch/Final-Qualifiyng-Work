@@ -1,6 +1,7 @@
 package ru.shcherbatykh.Backend.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "event_history")
 @Getter
 @Setter
+@NoArgsConstructor
 public class EventHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,4 +26,9 @@ public class EventHistory {
     @Column(name = "time")
     @CreationTimestamp
     private LocalDateTime time;
+
+    public EventHistory(EventType eventType, Request request) {
+        this.eventType = eventType;
+        this.request = request;
+    }
 }

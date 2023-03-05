@@ -6,4 +6,5 @@ import ru.shcherbatykh.Backend.models.EventType;
 
 @Repository
 public interface EventTypeRepo extends CrudRepository<EventType, Long> {
+    EventType findByName(String name);
 }

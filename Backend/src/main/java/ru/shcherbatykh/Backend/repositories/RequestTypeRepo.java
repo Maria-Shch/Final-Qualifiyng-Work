@@ -6,4 +6,5 @@ import ru.shcherbatykh.Backend.models.RequestType;
 
 @Repository
 public interface RequestTypeRepo extends CrudRepository<RequestType, Long> {
+    RequestType findByName(String name);
 }

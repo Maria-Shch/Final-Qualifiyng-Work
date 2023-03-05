@@ -6,4 +6,5 @@ import ru.shcherbatykh.Backend.models.RequestState;
 
 @Repository
 public interface RequestStateRepo extends CrudRepository<RequestState, Long> {
+    RequestState findByName(String name);
 }

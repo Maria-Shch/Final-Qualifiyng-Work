@@ -1,6 +1,7 @@
 package ru.shcherbatykh.Backend.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "requests")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,4 +41,20 @@ public class Request {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "closing_status_id")
     private ClosingStatus closingStatus;
+
+    public Request(StudentTask studentTask, User teacher, RequestType requestType, RequestState requestState) {
+        this.studentTask = studentTask;
+        this.teacher = teacher;
+        this.requestType = requestType;
+        this.requestState = requestState;
+    }
+
+    public Request(StudentTask studentTask, User teacher, RequestType requestType, RequestState requestState,
+                   String studentMsg) {
+        this.studentTask = studentTask;
+        this.teacher = teacher;
+        this.requestType = requestType;
+        this.requestState = requestState;
+        this.studentMsg = studentMsg;
+    }
 }

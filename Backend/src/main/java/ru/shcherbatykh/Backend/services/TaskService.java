@@ -34,13 +34,15 @@ public class TaskService {
     private final ChapterService chapterService;
     private final BlockService blockService;
     private final StudentTaskService studentTasksService;
+    private final RequestService requestService;
 
     public TaskService(TaskRepo taskRepo, ChapterService chapterService, BlockService blockService,
-                       StudentTaskService studentTasksService) {
+                       StudentTaskService studentTasksService, RequestService requestService) {
         this.taskRepo = taskRepo;
         this.chapterService = chapterService;
         this.blockService = blockService;
         this.studentTasksService = studentTasksService;
+        this.requestService = requestService;
     }
 
     public List<TaskOfBlock> getPracticeForNoAuthUser(int serialNumberOfChapter, int serialNumberOfBlock){
@@ -131,14 +133,11 @@ public class TaskService {
     public SendingOnReviewOrConsiderationResponse sendTaskOnReview(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (stTask == null){
-            stTask = studentTasksService.addNew(user, task);
-        }
-
         if (saveCodeToFiles(stTask, codes) == false){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnReview(stTask);
+            requestService.createRequestOnReview(stTask);
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),true);
         }
     }
@@ -152,6 +151,7 @@ public class TaskService {
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnConsideration(stTask);
+            requestService.createRequestOnConsideration(stTask, rbOnConsideration.getMessage());
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),true);
         }
     }
@@ -253,13 +253,15 @@ public class TaskService {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
         studentTasksService.setStatusPassedTests(stTask);
+        requestService.cancelRequest(stTask);
         return true;
     }
 
     public boolean cancelConsideration(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        studentTasksService.setStatusNotSolved(stTask);
+        studentTasksService.setStatusNotPassedTests(stTask);
+        requestService.cancelRequest(stTask);
         return true;
     }
 }

@@ -13,10 +13,12 @@ import java.util.Optional;
 public class StudentTaskService {
     private final StudentTaskRepo studentTaskRepo;
     private final StatusService statusService;
+    private final TaskStatusesHistoryService taskStatusesHistoryService;
 
-    public StudentTaskService(StudentTaskRepo studentTaskRepo, StatusService statusService) {
+    public StudentTaskService(StudentTaskRepo studentTaskRepo, StatusService statusService, TaskStatusesHistoryService taskStatusesHistoryService) {
         this.studentTaskRepo = studentTaskRepo;
         this.statusService = statusService;
+        this.taskStatusesHistoryService = taskStatusesHistoryService;
     }
 
     public StudentTask getStudentTask(User user, Task task){
@@ -38,42 +40,46 @@ public class StudentTaskService {
     }
 
     public void setStatusNotSolved(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("Не решена"));
+        Status oldStatus = sT.getCurrStatus();
+        Status newStatus = statusService.getStatusByName("Не решена");
+        sT.setCurrStatus(newStatus);
         studentTaskRepo.save(sT);
+        taskStatusesHistoryService.registerStatusChange(sT, oldStatus, newStatus);
+    }
+
+    public void setStatus(StudentTask sT, String status){
+        Status oldStatus = sT.getCurrStatus();
+        Status newStatus = statusService.getStatusByName(status);
+        sT.setCurrStatus(newStatus);
+        studentTaskRepo.save(sT);
+        taskStatusesHistoryService.registerStatusChange(sT, oldStatus, newStatus);
     }
 
     public void setStatusOnReview(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("На проверке"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "На проверке");
     }
 
     public void setStatusReturned(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("Возвращена преподавателем"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "Возвращена преподавателем");
     }
 
     public void setStatusSolved(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("Решена"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "Решена");
     }
 
     public void setStatusOnTesting(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("На тестировании"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "На тестировании");
     }
 
     public void setStatusNotPassedTests(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("Не прошла тесты"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "Не прошла тесты");
     }
 
     public void setStatusPassedTests(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("Прошла тесты"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "Прошла тесты");
     }
 
     public void setStatusOnConsideration(StudentTask sT){
-        sT.setCurrStatus(statusService.getStatusByName("На рассмотрении"));
-        studentTaskRepo.save(sT);
+        setStatus(sT, "На рассмотрении");
     }
 }

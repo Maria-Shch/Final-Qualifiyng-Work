@@ -1,6 +1,7 @@
 package ru.shcherbatykh.Backend.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "task_statuses_history")
 @Getter
 @Setter
+@NoArgsConstructor
 public class TaskStatusHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,4 +29,10 @@ public class TaskStatusHistory {
     @Column(name = "change_time")
     @CreationTimestamp
     private LocalDateTime changeTime;
+
+    public TaskStatusHistory(StudentTask studentTask, Status oldStatus, Status newStatus) {
+        this.studentTask = studentTask;
+        this.oldStatus = oldStatus;
+        this.newStatus = newStatus;
+    }
 }
