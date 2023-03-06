@@ -1,7 +1,7 @@
 <nav style="width: 1400px; display: flex; justify-content: space-between;">
   <a routerLink="/chapters" class="h3 a-none">К списку глав</a>
 
-  <a routerLink="/privateOffice" class="h3 a-none" style="text-decoration: none"
+  <a routerLink="/account" class="h3 a-none" style="text-decoration: none"
      *ngIf="userService.roleMatch(['USER','TEACHER','ADMIN'])"
   >Личный кабинет</a>
 

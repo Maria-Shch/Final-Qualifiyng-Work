@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ITask} from "../../../interfaces/ITask";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
@@ -20,7 +20,7 @@ export class TaskSwitcherComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private collectionOfTasksService: CollectionOfTasksService,
+    private taskService: TaskService,
     private router: Router,
   ) {}
 
@@ -33,7 +33,7 @@ export class TaskSwitcherComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfTask = this.route.snapshot.paramMap.get("serialNumberOfTask");
 
-      this.collectionOfTasksService.getNextTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+      this.taskService.getNextTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
       (data: ITask | null) => {
         this.nextTask = data;
         if (data != null){
@@ -42,7 +42,7 @@ export class TaskSwitcherComponent implements OnInit{
       },
       (error)=>{ toErrorPage(error, this.router);});
 
-      this.collectionOfTasksService.getPreviousTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+      this.taskService.getPreviousTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: ITask | null) => {
           this.previousTask = data;
           if (data != null){

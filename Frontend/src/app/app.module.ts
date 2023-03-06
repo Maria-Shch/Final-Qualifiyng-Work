@@ -11,8 +11,6 @@ import { EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import { LoginComponent } from './components/authorization/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { UserComponent } from './components/user/user.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {UserService} from "./services/user.service";
@@ -38,8 +36,6 @@ import { BlockSwitcherComponent } from './components/utils/block-switcher/block-
     LoginComponent,
     HeaderComponent,
     HomeComponent,
-    AdminComponent,
-    UserComponent,
     ForbiddenComponent,
     UpdateTokensComponent,
     RegistrationComponent,

@@ -1,43 +1,21 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../environments/enviroment";
-import {IChapter} from "../interfaces/IChapter";
-import {IBlock} from "../interfaces/IBlock";
 import {AuthorizationService} from "./authorization.service";
 import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
-import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
-import {ITestingResultResponse} from "../dto_interfaces/ITestingResultResponse";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CollectionOfTasksService {
+export class TaskService {
   constructor(
     private httpclient: HttpClient,
     private authService: AuthorizationService
-  ) { }
-
-  getChapters(): Observable<IChapter[]> {
-    return this.httpclient.get<IChapter[]>(environment.apiUrl + '/chapter/all', {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  getCountOfChapters(): Observable<number> {
-    return this.httpclient.get<number>(environment.apiUrl + '/chapters/count', {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  getBlocksOfChapter(serialNumberOfChapter: string): Observable<IBlock[]> {
-    return this.httpclient.get<IBlock[]>(environment.apiUrl + `/chapter/${serialNumberOfChapter}/blocks`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
+  ) {}
 
   getPractice(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<ITaskOfBlock[]> {
     if (this.authService.isLoggedIn()) {
@@ -49,40 +27,6 @@ export class CollectionOfTasksService {
         headers: new HttpHeaders({ 'No-Auth': 'True' })
       });
     }
-  }
-
-  getNameOfBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<string> {
-    return this.httpclient.get(environment.apiUrl +
-      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/name`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' }),
-      responseType: 'text'
-    });
-  }
-
-  getCountOfBlocks(serialNumberOfChapter: string): Observable<number> {
-    return this.httpclient.get<number>(environment.apiUrl +
-      `/chapters/${serialNumberOfChapter}/blocks/count`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  getBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<IBlock> {
-    return this.httpclient.get<IBlock>(environment.apiUrl +
-      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  saveTheoryOfBlock(serialNumberOfChapter: string, serialNumberOfBlock: string, textOfTheory: string) : Observable<IBlock> {
-    return this.httpclient.post<IBlock>(environment.apiUrl +
-      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/saveTheory`, textOfTheory);
-  }
-
-  getCountOfTasks(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<number> {
-    return this.httpclient.get<number>(environment.apiUrl +
-      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/tasks/count`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
   }
 
   getTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string) : Observable<ITask> {
@@ -103,11 +47,6 @@ export class CollectionOfTasksService {
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/status`);
   }
 
-  isTestingAllowed(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<IResponseAboutTestingAllowed> {
-    return this.httpclient.get<IResponseAboutTestingAllowed>(environment.apiUrl +
-      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/isTestingAllowed`);
-  }
-
   getPreviousTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<ITask | null> {
     return this.httpclient.get<ITask | null>(environment.apiUrl +
       `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/previousTask`, {
@@ -120,26 +59,6 @@ export class CollectionOfTasksService {
       `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/nextTask`, {
       headers: new HttpHeaders({ 'No-Auth': 'True' })
     });
-  }
-
-  getPreviousBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<IBlock | null> {
-    return this.httpclient.get<IBlock | null>(environment.apiUrl +
-      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/previousBlock`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  getNextBlock(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<IBlock | null> {
-    return this.httpclient.get<IBlock | null>(environment.apiUrl +
-      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/nextBlock`, {
-      headers: new HttpHeaders({ 'No-Auth': 'True' })
-    });
-  }
-
-  sendOnTesting(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[]): Observable<ITestingResultResponse> {
-    return this.httpclient.post<ITestingResultResponse>(environment.apiUrl +
-      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onTesting`,
-      codes);
   }
 
   getClasses(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<string[]> {

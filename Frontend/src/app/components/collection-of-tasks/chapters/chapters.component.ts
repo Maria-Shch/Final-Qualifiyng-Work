@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {IChapter} from "../../../interfaces/IChapter";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
+import {ChapterService} from "../../../services/chapter.service";
 
 @Component({
   selector: 'app-chapters',
@@ -12,12 +13,12 @@ import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 export class ChaptersComponent {
   chapters:IChapter[] = [];
   constructor(
-    private collectionOfTasksService: CollectionOfTasksService,
+    private chapterService: ChapterService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.collectionOfTasksService.getChapters().subscribe(
+    this.chapterService.getChapters().subscribe(
     (data: IChapter[]) => {
       this.chapters = data;
     },

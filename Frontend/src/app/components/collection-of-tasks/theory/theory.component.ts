@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import tinymce from "tinymce";
 import {IBlock} from "../../../interfaces/IBlock";
 import {UserService} from "../../../services/user.service";
 import {Observable} from "rxjs";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
+import {BlockService} from "../../../services/block.service";
 
 
 @Component({
@@ -34,7 +35,8 @@ export class TheoryComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private collectionOfTasksService: CollectionOfTasksService,
+    private taskService: TaskService,
+    private blockService: BlockService,
     private router: Router,
     public userService: UserService
   ) {}
@@ -46,7 +48,7 @@ export class TheoryComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfBlock = this.route.snapshot.paramMap.get("serialNumberOfBlock");
 
-      this.collectionOfTasksService.getBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
+      this.blockService.getBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
       (data : IBlock) => {
         this.block = data;
         if (document.getElementById('textTheory') != null){
@@ -55,7 +57,7 @@ export class TheoryComponent implements OnInit{
         }
       });
 
-      this.collectionOfTasksService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
+      this.blockService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
       (count: number) => {
         if (this.serialNumberOfBlock === count.toString()) this.isBlockLast = true;
         else this.isBlockLast = false;
@@ -89,6 +91,6 @@ export class TheoryComponent implements OnInit{
   sendContent() : Observable<IBlock>{
     let theory = tinymce.get('editor')?.getContent();
     // @ts-ignore
-    return this.collectionOfTasksService.saveTheoryOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock, theory);
+    return this.blockService.saveTheoryOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock, theory);
   }
 }

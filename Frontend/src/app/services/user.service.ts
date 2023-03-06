@@ -9,7 +9,11 @@ import {environment} from "../environments/enviroment";
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private httpclient: HttpClient, private authService: AuthorizationService) {}
+  constructor(
+    private httpclient: HttpClient,
+    private authService: AuthorizationService
+  ) {}
+
   public isPresent(username: string) : Observable<boolean> {
     return this.httpclient.post<boolean>(environment.apiUrl + '/user/isPresent',
       username,
@@ -21,23 +25,6 @@ export class UserService {
       newUser,
       {headers: new HttpHeaders({ 'No-Auth': 'True' })}
     );
-  }
-  public forUser() {
-    return this.httpclient.get(environment.apiUrl + '/hello/user', {
-      responseType: 'text',
-    });
-  }
-
-  public forAdmin() {
-    return this.httpclient.get(environment.apiUrl + '/hello/admin', {
-      responseType: 'text',
-    });
-  }
-
-  public forAll() {
-    return this.httpclient.get(environment.apiUrl + '/hello/all', {
-      responseType: 'text',
-    });
   }
 
   public roleMatch(allowedRoles: string[]): boolean  {

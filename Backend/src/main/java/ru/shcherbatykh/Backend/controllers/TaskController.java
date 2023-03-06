@@ -48,11 +48,6 @@ public class TaskController {
         return taskService.getPracticeForAuthUser(serialNumberOfChapter, serialNumberOfBlock, authService.getUser().orElse(null));
     }
 
-    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count")
-    public int getCountOfTasks(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock){
-        return taskService.getCountOfTasks(serialNumberOfChapter, serialNumberOfBlock);
-    }
-
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}")
     public Task getTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
                                 @PathVariable int serialNumberOfTask){

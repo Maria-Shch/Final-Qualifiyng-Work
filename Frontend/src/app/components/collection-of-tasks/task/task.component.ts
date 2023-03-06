@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import {ITask} from "../../../interfaces/ITask";
 import tinymce from "tinymce";
 import {Observable} from "rxjs";
@@ -12,6 +12,7 @@ import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
 import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
 import {ISendingOnReviewOrConsiderationResponse} from "../../../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
+import {TestingService} from "../../../services/testing.service";
 
 @Component({
   selector: 'app-task',
@@ -49,9 +50,10 @@ export class TaskComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private collectionOfTasksService: CollectionOfTasksService,
+    private taskService: TaskService,
     private router: Router,
     public userService: UserService,
+    private testingService: TestingService,
     public authService: AuthorizationService
   ) {}
 
@@ -64,7 +66,7 @@ export class TaskComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfTask = this.route.snapshot.paramMap.get("serialNumberOfTask");
 
-      this.collectionOfTasksService.getTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+      this.taskService.getTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
       (data: ITask) => {
         this.task = data;
         if (document.getElementById('description') != null){
@@ -75,19 +77,19 @@ export class TaskComponent implements OnInit{
       (error)=>{ toErrorPage(error, this.router);});
 
       if (this.authService.isLoggedIn()) {
-        this.collectionOfTasksService.getStatusOfTask(this.serialNumberOfChapter,this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+        this.taskService.getStatusOfTask(this.serialNumberOfChapter,this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IStatus) => {
           this.status = data;
         },
         (error)=>{ toErrorPage(error, this.router);});
 
-        this.collectionOfTasksService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+        this.testingService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IResponseAboutTestingAllowed) => {
           this.responseAboutTestingAllowed = data;
         },
         (error)=>{ toErrorPage(error, this.router);});
 
-        this.collectionOfTasksService.getClasses(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+        this.taskService.getClasses(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: string[]) => {
           if(data == null || data.length === 0){
             this.codeTextAreas = [{id: 0, content: ""}];
@@ -126,7 +128,7 @@ export class TaskComponent implements OnInit{
   sendNewDescription() : Observable<ITask>{
     let description = tinymce.get('editorTask')?.getContent();
     // @ts-ignore
-    return this.collectionOfTasksService.saveDescriptionOfTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, description);
+    return this.taskService.saveDescriptionOfTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, description);
   }
 
   addEmptyTextAreaForCode() {
@@ -144,7 +146,7 @@ export class TaskComponent implements OnInit{
 
   saveCodeAndTesting() {
     let codes: string[] = this.saveCodeToArray();
-    this.collectionOfTasksService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+    this.testingService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
     (data: ITestingResultResponse) => {
       this.status = data.status;
       this.testingResultResponse = data;
@@ -164,7 +166,7 @@ export class TaskComponent implements OnInit{
 
   saveCodeAndSendOnReview(){
     let codes: string[] = this.saveCodeToArray();
-    this.collectionOfTasksService.sendOnReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+    this.taskService.sendOnReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
     (data: ISendingOnReviewOrConsiderationResponse) => {
       if(data.sendingSuccessfulCompleted){
         this.status = data.status;
@@ -189,7 +191,7 @@ export class TaskComponent implements OnInit{
   saveCodeAndSendOnConsideration(){
     let codes: string[] = this.saveCodeToArray();
     let message = (<HTMLInputElement>document.getElementById("#messageToConsideration"))?.value;
-    this.collectionOfTasksService.sendOnConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes, message).subscribe(
+    this.taskService.sendOnConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes, message).subscribe(
     (data: ISendingOnReviewOrConsiderationResponse) => {
       if(data.sendingSuccessfulCompleted){
         this.status = data.status;
@@ -249,7 +251,7 @@ export class TaskComponent implements OnInit{
   }
 
   cancelReview(){
-    this.collectionOfTasksService.cancelReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+    this.taskService.cancelReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
     (data: any) => {
       alert("Вы отменили запрос на проверку решения.");
       this.ngOnInit();
@@ -267,7 +269,7 @@ export class TaskComponent implements OnInit{
   }
 
   cancelConsideration(){
-    this.collectionOfTasksService.cancelConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
+    this.taskService.cancelConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
     (data: any) => {
       alert("Вы отменили запрос на рассмотрение решения.");
       this.ngOnInit();

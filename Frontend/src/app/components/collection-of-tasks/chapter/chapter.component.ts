@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import {IBlock} from "../../../interfaces/IBlock";
 import {IChapter} from "../../../interfaces/IChapter";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
+import {BlockService} from "../../../services/block.service";
+import {ChapterService} from "../../../services/chapter.service";
 
 @Component({
   selector: 'app-chapter',
@@ -18,7 +20,8 @@ export class ChapterComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private collectionOfTasksService: CollectionOfTasksService,
+    private chapterService: ChapterService,
+    private blockService: BlockService,
     private router: Router
   ) {}
 
@@ -27,14 +30,14 @@ export class ChapterComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfChapter = this.route.snapshot.paramMap.get("serialNumberOfChapter");
 
-      this.collectionOfTasksService.getCountOfChapters().subscribe(
+      this.chapterService.getCountOfChapters().subscribe(
       (count: number) => {
         if (this.serialNumberOfChapter === count.toString()) this.isChapterLast = true;
         else this.isChapterLast = false;
       },
       (error)=>{ toErrorPage(error, this.router);});
 
-      this.collectionOfTasksService.getBlocksOfChapter(this.serialNumberOfChapter).subscribe(
+      this.blockService.getBlocksOfChapter(this.serialNumberOfChapter).subscribe(
       (data: IBlock[]) => {
         this.blocks = data;
         this.chapter = this.blocks[1].chapter;

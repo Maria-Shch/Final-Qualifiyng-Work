@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {TaskService} from "../../../services/task.service";
 import {ITaskOfBlock} from "../../../dto_interfaces/ITaskOfBlock";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
+import {BlockService} from "../../../services/block.service";
 
 @Component({
   selector: 'app-practice',
@@ -18,7 +19,8 @@ export class PracticeComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private collectionOfTasksService: CollectionOfTasksService,
+    private taskService: TaskService,
+    private blockService: BlockService,
     private router: Router
   ) {}
 
@@ -29,17 +31,17 @@ export class PracticeComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfBlock = this.route.snapshot.paramMap.get("serialNumberOfBlock");
 
-      this.collectionOfTasksService.getNameOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
+      this.blockService.getNameOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
       (data : string) => {
         this.blockName = data;
       });
 
-      this.collectionOfTasksService.getPractice(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
+      this.taskService.getPractice(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
         (data : ITaskOfBlock[]) => {
         this.tasksOfBlock = data;
       });
 
-      this.collectionOfTasksService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
+      this.blockService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
         (count: number) => {
           if (this.serialNumberOfBlock === count.toString()) this.isBlockLast = true;
           else this.isBlockLast = false;
