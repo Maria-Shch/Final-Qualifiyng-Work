@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
 import {IBlock} from "../../../interfaces/IBlock";
 import {IChapter} from "../../../interfaces/IChapter";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-chapter',
@@ -31,20 +32,14 @@ export class ChapterComponent implements OnInit{
         if (this.serialNumberOfChapter === count.toString()) this.isChapterLast = true;
         else this.isChapterLast = false;
       },
-      (error)=>{
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
+      (error)=>{ toErrorPage(error, this.router);});
 
       this.collectionOfTasksService.getBlocksOfChapter(this.serialNumberOfChapter).subscribe(
       (data: IBlock[]) => {
         this.blocks = data;
         this.chapter = this.blocks[1].chapter;
       },
-      (error)=>{
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
+      (error)=>{ toErrorPage(error, this.router);});
     });
   }
 

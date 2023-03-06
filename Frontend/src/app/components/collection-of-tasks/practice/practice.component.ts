@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
 import {ITaskOfBlock} from "../../../dto_interfaces/ITaskOfBlock";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-practice',
@@ -43,10 +44,7 @@ export class PracticeComponent implements OnInit{
           if (this.serialNumberOfBlock === count.toString()) this.isBlockLast = true;
           else this.isBlockLast = false;
         },
-        (error)=>{
-          console.log(error);
-          this.router.navigate(['/error']);
-        });
+      (error)=>{ toErrorPage(error, this.router);});
     });
   }
 

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {IChapter} from "../../../interfaces/IChapter";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-chapters',
@@ -20,10 +21,7 @@ export class ChaptersComponent {
     (data: IChapter[]) => {
       this.chapters = data;
     },
-    (error)=>{
-      console.log(error);
-      this.router.navigate(['/error']);
-    });
+    (error)=>{ toErrorPage(error, this.router);});
   }
 
   public toChapter(serialNumber: number){

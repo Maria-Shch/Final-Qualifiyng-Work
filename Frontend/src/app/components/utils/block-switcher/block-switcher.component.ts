@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {IBlock} from "../../../interfaces/IBlock";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-block-switcher',
@@ -37,10 +38,7 @@ export class BlockSwitcherComponent {
             this.linkToNextBlock = `/chapter/${data.chapter.serialNumber}/block/${data.serialNumber}/${this.section}`;
           }
         },
-        (error) => {
-          console.log(error);
-          this.router.navigate(['/error']);
-        });
+      (error)=>{ toErrorPage(error, this.router);});
 
       this.collectionOfTasksService.getPreviousBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
         (data: IBlock | null) => {
@@ -49,10 +47,7 @@ export class BlockSwitcherComponent {
             this.linkToPreviousBlock = `/chapter/${data.chapter.serialNumber}/block/${data.serialNumber}/${this.section}`;
           }
         },
-        (error) => {
-          console.log(error);
-          this.router.navigate(['/error']);
-        });
+      (error)=>{ toErrorPage(error, this.router);});
     });
   }
 }

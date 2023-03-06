@@ -3,6 +3,7 @@ import {AuthorizationService} from "../../../services/authorization.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
 import {IAuthResponse} from "../../../dto_interfaces/IAuthResponse";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-login',
@@ -36,11 +37,7 @@ export class LoginComponent {
             this.errorMessage = response.errorMessage;
           }
         },
-        (error) => {
-          this.router.navigate(['/error']);
-          console.log(error);
-        }
-      );
+      (error)=>{ toErrorPage(error, this.router);});
     }
   }
 

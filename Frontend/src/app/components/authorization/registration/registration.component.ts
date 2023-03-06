@@ -6,6 +6,7 @@ import {FormUtils} from "../../../utils/FormUtils";
 import {UserService} from "../../../services/user.service";
 import {IUser} from "../../../interfaces/IUser";
 import {Router} from "@angular/router";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-registration',
@@ -53,10 +54,7 @@ export class RegistrationComponent implements OnInit {
           (data :IUser) =>{
             this.router.navigate(['/login']);
           },
-          (error)=>{
-            this.router.navigate(['/error']);
-            console.log(error);
-          });
+          (error)=>{ toErrorPage(error, this.router);});
         }
       });
     }

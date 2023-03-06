@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ITask} from "../../../interfaces/ITask";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CollectionOfTasksService} from "../../../services/collection-of-tasks.service";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-task-switcher',
@@ -39,10 +40,7 @@ export class TaskSwitcherComponent implements OnInit{
           this.linkToNextTask = `/chapter/${data.block.chapter.serialNumber}/block/${data.block.serialNumber}/task/${data.serialNumber}`;
         }
       },
-      (error) => {
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
+      (error)=>{ toErrorPage(error, this.router);});
 
       this.collectionOfTasksService.getPreviousTask(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: ITask | null) => {
@@ -51,10 +49,7 @@ export class TaskSwitcherComponent implements OnInit{
             this.linkToPreviousTask = `/chapter/${data.block.chapter.serialNumber}/block/${data.block.serialNumber}/task/${data.serialNumber}`;
           }
         },
-        (error) => {
-          console.log(error);
-          this.router.navigate(['/error']);
-        });
+      (error)=>{ toErrorPage(error, this.router);});
     });
   }
 }

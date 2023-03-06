@@ -19,14 +19,14 @@
         <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="a-img icon-book"></a>
         <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/practice" class="p4 a-none" style="color: var(--c6); margin: 0">К списку задач</a>
       </div>
-      <button *ngIf="userService.roleMatch(['ADMIN']) && isEditing === false"
-              (click)="this.isEditing = true"
+      <button *ngIf="userService.roleMatch(['ADMIN']) && isEditingDescriptionByAdmin === false"
+              (click)="this.isEditingDescriptionByAdmin = true"
               class="p4 d-violet-button to-editor">
         Редактировать
       </button>
     </div>
   </div>
-  <div *ngIf="isEditing === false" style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 50px;">
+  <div *ngIf="isEditingDescriptionByAdmin === false" style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 50px;">
     <div style="display: flex; flex-direction: column; margin-bottom: 30px">
       <div id="description" style="padding: 0 30px 0 0;"></div>
 
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 15px; width: 995px">
-          <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextArea()">+ Новое окно</button>
+          <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextAreaForCode()">+ Новое окно</button>
           <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
         </div>
 
@@ -210,7 +210,7 @@
     </div>
   </div>
 
-  <div *ngIf="isEditing === true" >
+  <div *ngIf="isEditingDescriptionByAdmin === true" >
     <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%; margin: 15px 0 20px 0">
       <button class="p4 d-violet-button" (click)="saveNewDescription()">Сохранить изменения</button>
       <button class="p4 d-violet-button" (click)="saveAndTurnOffEditing()">Сохранить изменения и выйти из режима редактирования</button>
@@ -219,8 +219,7 @@
     <editor [init]="editorConfig" id="editorTask"></editor>
   </div>
 
-
-  <div id="#modalOnReview" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalOnReview" class="fixed-overlay">
     <div class="modal">
       <div class="modal_container">
         <header>
@@ -238,7 +237,7 @@
     </div>
   </div>
 
-  <div id="#modalOnConsideration" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalOnConsideration" class="fixed-overlay">
     <div class="modal">
       <div class="modal_container">
         <header>
@@ -259,7 +258,7 @@
     </div>
   </div>
 
-  <div id="#modalOnCancelReview" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalOnCancelReview" class="fixed-overlay">
     <div class="modal">
       <div class="modal_container">
         <header>
@@ -278,7 +277,7 @@
     </div>
   </div>
 
-  <div id="#modalOnCancelConsideration" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalOnCancelConsideration" class="fixed-overlay">
     <div class="modal">
       <div class="modal_container">
         <header>
@@ -297,7 +296,7 @@
     </div>
   </div>
 
-  <div id="#modalTestsPassedSuccessfully" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalTestsPassedSuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
@@ -313,7 +312,7 @@
     </div>
   </div>
 
-  <div id="#modalTestsPassedUnsuccessfully" style="display: none" class="fixed-overlay">
+  <div *ngIf="showModalTestsPassedUnsuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column;">

@@ -5,6 +5,7 @@ import tinymce from "tinymce";
 import {IBlock} from "../../../interfaces/IBlock";
 import {UserService} from "../../../services/user.service";
 import {Observable} from "rxjs";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 
 @Component({
@@ -59,10 +60,7 @@ export class TheoryComponent implements OnInit{
         if (this.serialNumberOfBlock === count.toString()) this.isBlockLast = true;
         else this.isBlockLast = false;
       },
-      (error)=>{
-        console.log(error);
-        this.router.navigate(['/error']);
-      });
+      (error)=>{ toErrorPage(error, this.router);});
     });
   }
 

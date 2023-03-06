@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
+import {toErrorPage} from "../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-user',
@@ -21,20 +22,12 @@ export class UserComponent {
       (response) => {
         this.messageUser = response;
       },
-      (error)=>{
-        this.router.navigate(['/error']);
-        console.log(error);
-      }
-    );
+    (error)=>{ toErrorPage(error, this.router);});
 
     this.userService.forAll().subscribe(
       (response) => {
         this.messageAll = response;
       },
-      (error)=>{
-        this.router.navigate(['/error']);
-        console.log(error);
-      }
-    );
+    (error)=>{ toErrorPage(error, this.router);});
   }
 }
