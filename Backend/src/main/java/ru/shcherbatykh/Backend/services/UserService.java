@@ -10,6 +10,7 @@ import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.UserRepo;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,11 @@ public class UserService {
     }
 
     @Transactional
+    public Optional<User> findById(Long id){
+        return userRepo.findById(id);
+    }
+
+    @Transactional
     public User addUser(User newUser) {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         //todo it's not thread safe when two users with the same username sign up at the same time
@@ -39,8 +45,11 @@ public class UserService {
     }
 
     public User getTeacher(StudentTask stTask){
-        User student = stTask.getUser();
-        if(student.getGroup() == null){
+        return getTeacher(stTask.getUser());
+    }
+
+    public User getTeacher(User student){
+        if (student.getGroup() == null){
             return getAdmin();
         } else {
             return student.getGroup().getTeacher();
@@ -49,5 +58,32 @@ public class UserService {
 
     public User getAdmin(){
         return userRepo.getUserByRole(Role.ADMIN).orElse(null);
+    }
+
+    public User updateEditableParams(User userWithNewParams) {
+        boolean hasBeenUpdated = false;
+        User oldUser = findById(userWithNewParams.getId()).orElse(null);
+        if (oldUser != null){
+            if (!Objects.equals(oldUser.getName(), userWithNewParams.getName())) {
+                oldUser.setName(userWithNewParams.getName());
+                hasBeenUpdated = true;
+            }
+            if (!Objects.equals(oldUser.getLastname(), userWithNewParams.getLastname())) {
+                oldUser.setLastname(userWithNewParams.getLastname());
+                hasBeenUpdated = true;
+            }
+            if (!Objects.equals(oldUser.getPatronymic(), userWithNewParams.getPatronymic())) {
+                oldUser.setPatronymic(userWithNewParams.getPatronymic());
+                hasBeenUpdated = true;
+            }
+            if (!Objects.equals(oldUser.getUsername(), userWithNewParams.getUsername())) {
+                oldUser.setUsername(userWithNewParams.getUsername());
+                hasBeenUpdated = true;
+            }
+        }
+
+        if (hasBeenUpdated) {
+            return userRepo.save(oldUser);
+        } else return oldUser;
     }
 }

@@ -14,6 +14,18 @@ export class UserService {
     private authService: AuthorizationService
   ) {}
 
+  public getUser() : Observable<IUser> {
+    return this.httpclient.get<IUser>(environment.apiUrl + '/user/get');
+  }
+
+  public getTeacher() : Observable<IUser> {
+    return this.httpclient.get<IUser>(environment.apiUrl + '/user/teacher');
+  }
+
+  public updateEditableUserdata(user: IUser) : Observable<IUser> {
+    return this.httpclient.post<IUser>(environment.apiUrl + '/user/updateEditable', user);
+  }
+
   public isPresent(username: string) : Observable<boolean> {
     return this.httpclient.post<boolean>(environment.apiUrl + '/user/isPresent',
       username,

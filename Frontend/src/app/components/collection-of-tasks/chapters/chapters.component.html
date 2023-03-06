@@ -1,8 +1,8 @@
 <app-header></app-header>
 <div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
   <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
-    <img src="../../../../assets/icons/book.png" height="30px" width="auto">
-    <h2 style="var(--c6); margin-left: 10px">Главы сборника</h2>
+    <img src="../../../../assets/icons/book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Главы сборника</h2>
   </div>
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start;">
     <div *ngFor="let chapter of chapters" class="d-chapter" (click)="toChapter(chapter.serialNumber)">

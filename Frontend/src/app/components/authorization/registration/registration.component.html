@@ -16,7 +16,7 @@
   <h5 *ngIf="isRepeatedUsername" class="error">
     Пользователь с такой электронной почтой уже существует</h5>
 
-  <input type="text" formControlName="name" id="name" placeholder="Имя" class="input-params p4 required-input">
+  <input type="text" formControlName="name" id="name" placeholder="Имя" required class="input-params p4 required-input">
   <input type="text" formControlName="lastname" id="lastname" placeholder="Фамилия" required class="input-params p4 required-input">
   <input type="text" formControlName="patronymic" id="patronymic" placeholder="Отчество" required class="input-params p4 required-input">
   <input type="text" nodel formControlName="username" id="username" placeholder="Электронная почта" required class="input-params p4 required-input">
