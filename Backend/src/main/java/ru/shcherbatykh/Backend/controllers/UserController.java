@@ -39,6 +39,12 @@ public class UserController {
         return userService.getTeacher(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/admin")
+    public User getAdmin(){
+        return userService.getAdmin();
+    }
+
     @GetMapping("/all")
     public List<User> getUsers(){
         return userService.getUsers();

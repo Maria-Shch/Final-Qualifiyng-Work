@@ -22,6 +22,10 @@ export class UserService {
     return this.httpclient.get<IUser>(environment.apiUrl + '/user/teacher');
   }
 
+  public getAdmin() : Observable<IUser> {
+    return this.httpclient.get<IUser>(environment.apiUrl + '/user/admin');
+  }
+
   public updateEditableUserdata(user: IUser) : Observable<IUser> {
     return this.httpclient.post<IUser>(environment.apiUrl + '/user/updateEditable', user);
   }

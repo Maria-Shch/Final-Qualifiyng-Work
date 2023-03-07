@@ -1,8 +1,12 @@
 <app-header></app-header>
 <div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
   <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
-    <img src="../../../../assets/icons/student.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
-    <h2 style="var(--c6);">Личный кабинет студента</h2>
+    <img *ngIf="user?.role === 'USER'" src="../../../../assets/icons/student.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 *ngIf="user?.role === 'USER'" style="var(--c6);">Личный кабинет студента</h2>
+
+    <img *ngIf="user?.role === 'TEACHER' || user?.role === 'ADMIN'" src="../../../../assets/icons/teacher.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 *ngIf="user?.role === 'TEACHER'" style="var(--c6);">Личный кабинет преподавателя</h2>
+    <h2 *ngIf="user?.role === 'ADMIN'" style="var(--c6);">Личный кабинет администратора</h2>
   </div>
 
   <div style="margin-left: 45px">
@@ -10,7 +14,7 @@
           lastname.errors?.['required'] ||
           patronymic.errors?.['required'] ||
           username.errors?.['required']) &&
-          hasBeenSubmitted" class="error">
+        hasBeenSubmitted" class="error">
       Заполните все поля</h5>
     <h5 *ngIf="username.errors?.['email'] && hasBeenSubmitted" class="error">
       Поле 'Электронная почта' заполнено неверно</h5>
@@ -22,64 +26,74 @@
   <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 45px">
     <form [formGroup]="personalDataForm" (ngSubmit)="onSubmit()" class="form-registration" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Фамилия</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Фамилия</p>
         <input type="text"
                formControlName="lastname"
                id="lastname"
                placeholder="Фамилия"
                required
                class="input-params p4"
-               style="padding: 12px; margin: 6px 0 15px 0;">
+               style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Имя</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Имя</p>
         <input type="text"
                formControlName="name"
                id="name"
                placeholder="Имя"
                required
                class="input-params p4"
-               style="padding: 12px; margin: 6px 0 15px 0;">
+               style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Отчество</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Отчество</p>
         <input type="text"
                formControlName="patronymic"
                id="patronymic"
                placeholder="Отчество"
                required
                class="input-params p4"
-               style="padding: 12px; margin: 6px 0 15px 0;">
+               style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Почта</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Почта</p>
         <input type="text"
                formControlName="username"
                id="username"
                placeholder="Электронная почта"
                required
                class="input-params p4"
-               style="padding: 12px; margin: 6px 0 15px 0;">
+               style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
 
       <input type="submit" value="Сохранить" class="i-submit h5" style="width: 190px; margin: 10px 0 0 0">
     </form>
-    <div style="display: flex; flex-direction: column">
+    <div *ngIf="user?.role === 'USER'" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Группа</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Группа</p>
         <input type="text"
                readonly
                value="{{user?.group === null ? 'Без группы' : user?.group?.name}}"
                class="input-params p4"
-               style="padding: 10px; margin: 6px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p4" style="margin: 0 0 0 10px;">Преподаватель</p>
+        <p class="p5" style="margin: 0 0 0 10px;">Преподаватель</p>
         <input type="text"
                readonly
                value="{{teacher}}"
                class="input-params p4"
-               style="padding: 10px; margin: 6px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </div>
+    <div *ngIf="user?.role === 'TEACHER'" style="display: flex; flex-direction: column">
+      <div style="display:flex; flex-direction: column">
+        <p class="p5" style="margin: 0 0 0 10px;">Администратор системы</p>
+        <input type="text"
+               readonly
+               value="{{admin}}"
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
       </div>
     </div>
   </div>

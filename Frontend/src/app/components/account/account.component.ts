@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit{
 
   user: IUser | null = null;
   teacher: string = '';
+  admin: string = '';
   hasBeenSubmitted: boolean= false;
   isRepeatedUsername: boolean = false;
   personalDataForm: FormGroup = new FormGroup({
@@ -35,6 +36,12 @@ export class AccountComponent implements OnInit{
   ngOnInit(): void {
     this.userService.getUser().subscribe((data: IUser) => {
       this.user = data;
+
+      if (this.user?.role != 'USER'){
+        this.userService.getAdmin().subscribe((data: IUser) => {
+          this.admin = data.lastname + ' ' + data.name.charAt(0) + '. ' + data.patronymic.charAt(0) + '.';
+        });
+      }
 
       this.personalDataForm = new FormGroup({
         name: new FormControl<string>(this.user!.name, [Validators.required]),
