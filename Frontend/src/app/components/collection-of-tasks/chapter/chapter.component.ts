@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {TaskService} from "../../../services/task.service";
 import {IBlock} from "../../../interfaces/IBlock";
 import {IChapter} from "../../../interfaces/IChapter";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";

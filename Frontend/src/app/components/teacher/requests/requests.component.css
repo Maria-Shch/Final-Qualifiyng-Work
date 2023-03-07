@@ -1,0 +1,48 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.d-request{
+  background: var(--c5);
+  border-radius: 10px;
+  margin: 0 0 20px 0;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.d-request:hover{
+  background: var(--c16);
+  box-shadow: var(--box-shadow-div);
+}
+
+.div-status{
+  align-items: center;
+  display: flex;
+  padding: 7px 15px;
+  border-radius: 8px;
+  margin: 0 10px 0 0;
+}
+
+.p-link{
+  color: var(--c6);
+  margin: 0;
+}
+
+.p-link:hover, p-link:active{
+  color: var(--c6);
+  text-decoration: underline var(--c6);
+  cursor: pointer;
+}
+
+.filter{
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  background: var(--c5);
+  padding: 20px;
+  width: 300px;
+  border-radius: 30px;
+  height: fit-content;
+}

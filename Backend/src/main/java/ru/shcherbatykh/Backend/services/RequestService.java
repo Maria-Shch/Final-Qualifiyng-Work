@@ -1,5 +1,8 @@
 package ru.shcherbatykh.Backend.services;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.Backend.models.Request;
 import ru.shcherbatykh.Backend.models.StudentTask;
@@ -7,6 +10,7 @@ import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.RequestRepo;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RequestService {
@@ -51,5 +55,25 @@ public class RequestService {
 
     public Request getOpenRequest(StudentTask stTask){
         return requestRepo.getRequestByStudentTaskAndClosingTime(stTask, null);
+    }
+
+    public long getCountOfRequestsByTeacher(User teacher){
+        return requestRepo.countAllByTeacher(teacher);
+    }
+
+    public List<Request> getRequestsByTeacherAndPageNumber(User teacher, int pageNumber) {
+        Pageable sortedByCreationTimeDesc =
+                PageRequest.of(pageNumber, 10, Sort.by("creationTime").descending());
+        return requestRepo.findAllByTeacher(teacher, sortedByCreationTimeDesc);
+    }
+
+    public List<Request> setToNullSomeFields(List<Request> requests){
+        for(Request request: requests){
+            request.getStudentTask().getTask().setDescription(null);
+            request.getStudentTask().getTask().getBlock().setTextTheory(null);
+            request.getStudentTask().getUser().setPassword(null);
+            request.getStudentTask().getUser().getGroup().setTeacher(null);
+        }
+        return requests;
     }
 }

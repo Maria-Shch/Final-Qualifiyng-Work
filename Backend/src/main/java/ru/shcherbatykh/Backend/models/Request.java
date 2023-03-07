@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.shcherbatykh.Backend.utils.CommonUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,6 +43,9 @@ public class Request {
     @JoinColumn(name = "closing_status_id")
     private ClosingStatus closingStatus;
 
+    @Transient
+    private String creationTimeToPrint;
+
     public Request(StudentTask studentTask, User teacher, RequestType requestType, RequestState requestState) {
         this.studentTask = studentTask;
         this.teacher = teacher;
@@ -56,5 +60,11 @@ public class Request {
         this.requestType = requestType;
         this.requestState = requestState;
         this.studentMsg = studentMsg;
+    }
+
+
+    @PostLoad
+    public void init() {
+        creationTimeToPrint = CommonUtils.getCreationTimeToPrint(creationTime);
     }
 }

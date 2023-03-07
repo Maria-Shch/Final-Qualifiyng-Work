@@ -13,6 +13,7 @@ import {PracticeComponent} from "./components/collection-of-tasks/practice/pract
 import {TheoryComponent} from "./components/collection-of-tasks/theory/theory.component";
 import {TaskComponent} from "./components/collection-of-tasks/task/task.component";
 import {AccountComponent} from "./components/account/account.component";
+import {RequestsComponent} from "./components/teacher/requests/requests.component";
 
 const routes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
     { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent },
     { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent},
     { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask', component: TaskComponent},
-    { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}}
+    { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}},
+    { path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
 ];
 
 @NgModule({

@@ -30,6 +30,7 @@ import { TaskComponent } from './components/collection-of-tasks/task/task.compon
 import { TaskSwitcherComponent } from './components/utils/task-switcher/task-switcher.component';
 import { BlockSwitcherComponent } from './components/utils/block-switcher/block-switcher.component';
 import { AccountComponent } from './components/account/account.component';
+import { RequestsComponent } from './components/teacher/requests/requests.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AccountComponent } from './components/account/account.component';
     TaskComponent,
     TaskSwitcherComponent,
     BlockSwitcherComponent,
-    AccountComponent
+    AccountComponent,
+    RequestsComponent
   ],
   imports: [
     BrowserModule,

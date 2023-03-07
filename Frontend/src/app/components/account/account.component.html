@@ -26,7 +26,7 @@
   <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 45px">
     <form [formGroup]="personalDataForm" (ngSubmit)="onSubmit()" class="form-registration" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Фамилия</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Фамилия</p>
         <input type="text"
                formControlName="lastname"
                id="lastname"
@@ -36,7 +36,7 @@
                style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Имя</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Имя</p>
         <input type="text"
                formControlName="name"
                id="name"
@@ -46,7 +46,7 @@
                style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Отчество</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Отчество</p>
         <input type="text"
                formControlName="patronymic"
                id="patronymic"
@@ -56,7 +56,7 @@
                style="padding: 12px; margin: 2px 0 15px 0;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Почта</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Почта</p>
         <input type="text"
                formControlName="username"
                id="username"
@@ -70,7 +70,7 @@
     </form>
     <div *ngIf="user?.role === 'USER'" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Группа</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Группа</p>
         <input type="text"
                readonly
                value="{{user?.group === null ? 'Без группы' : user?.group?.name}}"
@@ -78,7 +78,7 @@
                style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
       </div>
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Преподаватель</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Преподаватель</p>
         <input type="text"
                readonly
                value="{{teacher}}"
@@ -88,7 +88,7 @@
     </div>
     <div *ngIf="user?.role === 'TEACHER'" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
-        <p class="p5" style="margin: 0 0 0 10px;">Администратор системы</p>
+        <p class="p6" style="margin: 0 0 0 10px;">Администратор системы</p>
         <input type="text"
                readonly
                value="{{admin}}"

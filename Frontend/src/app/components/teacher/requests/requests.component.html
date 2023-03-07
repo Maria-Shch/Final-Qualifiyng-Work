@@ -1,0 +1,70 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: row; justify-content: space-between; margin: 60px 0 20px 0">
+  <div class="filter">
+    <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
+    <p class="h5" style="color: var(--c6);">Группа</p>
+    <p class="h5" style="color: var(--c6);">Тип запроса</p>
+    <p class="h5" style="color: var(--c6);">Состояние запроса</p>
+  </div>
+  <div style="display: flex; flex-direction: column; width: 900px">
+    <div *ngFor="let request of requests" class="d-request" (click)="toRequest(request.id)">
+      <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 10px;">
+        <div style="display:flex; flex-direction: row">
+          <div class="div-status" [ngClass]="{
+             'bc-clr-not-viewed' : request.requestState.name === 'Не просмотрен',
+             'bc-clr-viewed' : request.requestState.name === 'Просмотрен',
+             'bc-clr-not-canceled' : request.requestState.name === 'Отменён',
+             'bc-clr-not-completed' : request.requestState.name === 'Обработан'
+            }">
+            <p class="p5" style="color: var(--c6); margin: 0">{{request.requestState.name}}</p>
+          </div>
+          <div class="div-status"  [ngClass]="{
+             'bc-clr-consideration' : request.requestType.name === 'На рассмотрение',
+             'bc-clr-review' : request.requestType.name === 'На проверку'
+            }">
+            <p class="p5" style="color: var(--c6); margin: 0">{{request.requestType.name}}</p>
+          </div>
+        </div>
+        <p class="p4" style="color: #646464; margin: 0">{{request.creationTimeToPrint}}</p>
+      </div>
+      <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}
+                     /block/{{request.studentTask.task.block.serialNumber}}
+                     /task/{{request.studentTask.task.serialNumber}}'
+        class="h5" style="color: var(--c2); font-size: 20px;">
+        {{'Задача ' + request.studentTask.task.block.chapter.serialNumber + '. ' +
+        request.studentTask.task.block.serialNumber + '. ' +
+        request.studentTask.task.serialNumber + '. ' +
+         request.studentTask.task.name}}
+      </a>
+      <div style="display: flex; flex-direction: row; margin-top: 10px">
+        <p class="p4" style="color: var(--c6); margin: 0">от&nbsp;</p>
+        <a routerLink='/user/{{request.studentTask.user.id}}'
+          class="p4" style="color: var(--c2); margin: 0">
+          {{request.studentTask.user.lastname + ' ' + request.studentTask.user.name}}&nbsp;
+        </a>
+        <p class="p4" style="color: var(--c6); margin: 0">
+          {{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ')'}}
+        </p>
+      </div>
+    </div>
+    <div *ngIf="countPages > 1">
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage == 1">
+        <p (click)="nextPage(numberOfCurrentRequestPage)" class="p4 p-link">Следующая страница</p>
+        <p class="a-img icon-next"></p>
+      </div>
+
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage != 1 && numberOfCurrentRequestPage != countPages">
+        <p class="a-img icon-previous" ></p>
+        <p (click)="previousPage(numberOfCurrentRequestPage)" class="p4 p-link">Предыдущая страница</p>
+        <hr class="hr">
+        <p (click)="nextPage(numberOfCurrentRequestPage)" class="p4 p-link">Следующая страница</p>
+        <p class="a-img icon-next"></p>
+      </div>
+
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage == countPages">
+        <p class="a-img icon-previous" ></p>
+        <p (click)="previousPage(numberOfCurrentRequestPage)" class="p4 p-link">Предыдущая страница</p>
+      </div>
+    </div>
+  </div>
+</div>

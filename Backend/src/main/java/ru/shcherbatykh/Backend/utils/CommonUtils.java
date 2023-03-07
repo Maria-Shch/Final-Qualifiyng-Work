@@ -2,6 +2,7 @@ package ru.shcherbatykh.Backend.utils;
 
 import ru.shcherbatykh.Backend.models.Group;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CommonUtils {
@@ -22,5 +23,15 @@ public class CommonUtils {
             .append(group.getGroupNumber());
 
         return name.toString();
+    }
+
+    public static String getCreationTimeToPrint(LocalDateTime creationTime) {
+        int DD = creationTime.getDayOfMonth();
+        int MM = creationTime.getMonthValue();
+        int YY = creationTime.getYear();
+
+        int HH = creationTime.getHour();
+        int MN = creationTime.getMinute();
+        return String.format("%02d:%02d %02d.%02d.%02d", HH, MN, DD, MM, YY);
     }
 }

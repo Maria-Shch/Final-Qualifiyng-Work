@@ -5,7 +5,7 @@
      *ngIf="userService.roleMatch(['USER','TEACHER','ADMIN'])"
   >Личный кабинет</a>
 
-  <a routerLink="/checkTasks" class="h3 a-none"
+  <a routerLink="/requests" class="h3 a-none"
      *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
   >Проверка решений</a>
 
