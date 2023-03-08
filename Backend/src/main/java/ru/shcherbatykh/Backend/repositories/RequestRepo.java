@@ -1,6 +1,7 @@
 package ru.shcherbatykh.Backend.repositories;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.shcherbatykh.Backend.models.Request;
@@ -17,4 +18,8 @@ public interface RequestRepo extends PagingAndSortingRepository<Request, Long> {
     List<Request> findAllByTeacher(User teacher, Pageable pageable);
 
     long countAllByTeacher(User teacher);
+
+    int count(Specification<Request> specification);
+
+    List<Request> findAll(Specification<Request> specification, Pageable pageable);
 }

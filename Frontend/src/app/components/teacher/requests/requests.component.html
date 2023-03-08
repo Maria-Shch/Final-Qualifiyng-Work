@@ -1,12 +1,20 @@
 <app-header></app-header>
-<div style="width: var(--width-main-container); display: flex; flex-direction: row; justify-content: space-between; margin: 60px 0 20px 0">
+<div style="width: var(--width-main-container); display: flex; flex-direction: row; justify-content: space-around; margin: 60px 0 20px 0">
   <div class="filter">
     <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
-    <p class="h5" style="color: var(--c6);">Группа</p>
-    <p class="h5" style="color: var(--c6);">Тип запроса</p>
-    <p class="h5" style="color: var(--c6);">Состояние запроса</p>
+    <p class="h5" style="color: var(--c6); margin: 15px 0 5px 0">Группа</p>
+    <app-checkbox-group [options]="groupsOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+    <p class="h5" style="color: var(--c6);  margin: 15px 0 5px 0">Тип запроса</p>
+    <app-checkbox-group [options]="requestTypesOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+    <p class="h5" style="color: var(--c6);  margin: 15px 0 5px 0">Состояние запроса</p>
+    <app-checkbox-group [options]="requestStatesOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
   </div>
   <div style="display: flex; flex-direction: column; width: 900px">
+    <p *ngIf="requests.length === 0" class="h3" style="color: var(--c2); text-align: center; margin: 10px 0 0 0;" >
+      Запросы отсутствуют
+    </p>
     <div *ngFor="let request of requests" class="d-request" (click)="toRequest(request.id)">
       <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 10px;">
         <div style="display:flex; flex-direction: row">
@@ -48,12 +56,12 @@
       </div>
     </div>
     <div *ngIf="countPages > 1">
-      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage == 1">
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage === 0">
         <p (click)="nextPage(numberOfCurrentRequestPage)" class="p4 p-link">Следующая страница</p>
         <p class="a-img icon-next"></p>
       </div>
 
-      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage != 1 && numberOfCurrentRequestPage != countPages">
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage != 0 && numberOfCurrentRequestPage != countPages-1">
         <p class="a-img icon-previous" ></p>
         <p (click)="previousPage(numberOfCurrentRequestPage)" class="p4 p-link">Предыдущая страница</p>
         <hr class="hr">
@@ -61,7 +69,7 @@
         <p class="a-img icon-next"></p>
       </div>
 
-      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage == countPages">
+      <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage == countPages-1">
         <p class="a-img icon-previous" ></p>
         <p (click)="previousPage(numberOfCurrentRequestPage)" class="p4 p-link">Предыдущая страница</p>
       </div>

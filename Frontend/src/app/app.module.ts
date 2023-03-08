@@ -31,6 +31,7 @@ import { TaskSwitcherComponent } from './components/utils/task-switcher/task-swi
 import { BlockSwitcherComponent } from './components/utils/block-switcher/block-switcher.component';
 import { AccountComponent } from './components/account/account.component';
 import { RequestsComponent } from './components/teacher/requests/requests.component';
+import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkbox-group.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { RequestsComponent } from './components/teacher/requests/requests.compon
     TaskSwitcherComponent,
     BlockSwitcherComponent,
     AccountComponent,
-    RequestsComponent
+    RequestsComponent,
+    CheckboxGroupComponent
   ],
   imports: [
     BrowserModule,
