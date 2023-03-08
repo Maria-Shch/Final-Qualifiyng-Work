@@ -1,4 +1,4 @@
-<div *ngFor="let item of options" style="display: flex; flex-direction: row; margin: 7px 0 7px 0">
-  <input type="checkbox" [(ngModel)]="item.checked">
-  <p style="color: var(--c6); margin: 0 0 0 5px;">{{item.label}}</p>
+<div *ngFor="let item of options" style="display: flex; flex-direction: row; margin: 15px 0 15px 0;align-items: center; height: 17px;">
+  <input class="custom-checkbox" style="height: 17px; width: 17px; margin: 0 10px 0 10px;" type="checkbox" [(ngModel)]="item.checked">
+  <p class="p4" style="color: var(--c6); margin: 0 0 0 5px;">{{item.label}}</p>
 </div>

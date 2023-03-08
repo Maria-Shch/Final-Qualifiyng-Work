@@ -19,11 +19,13 @@ export class RequestsComponent implements OnInit{
   countPages: number = 0;
   numberOfCurrentRequestPage = 0;
   requests: IRequest[] = [];
+  filter: IFilter | null = null;
   requestTypesOptions = new Array<CheckboxItem>();
   requestStatesOptions = new Array<CheckboxItem>();
   groupsOptions = new Array<CheckboxItem>();
+  orders: string[] = ['Сначала новые', 'Сначала старые'];
+  order: string = this.orders[0];
 
-  filter: IFilter | null = null;
 
   constructor(
     private requestService: RequestService,
@@ -71,10 +73,12 @@ export class RequestsComponent implements OnInit{
   }
 
   onChangeFilter(value: any) {
+    let ascending: boolean = this.order === 'Сначала новые' ? false : true;
     this.filter = {
       groupIds: this.groupsOptions.filter(x => x.checked).map(x => x.value),
       requestTypeIds: this.requestTypesOptions.filter(x => x.checked).map(x => x.value),
       requestStateIds: this.requestStatesOptions.filter(x => x.checked).map(x => x.value),
+      ascending: ascending
     }
 
     this.requestService.getCountRequestsAfterFiltering(this.filter).subscribe((data: number) => {

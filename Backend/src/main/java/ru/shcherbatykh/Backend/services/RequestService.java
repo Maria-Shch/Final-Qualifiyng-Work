@@ -88,8 +88,14 @@ public class RequestService {
     }
 
     public List<Request> getRequestsByPageNumberAndFilter(User teacher, int pageNumber, Filter filter) {
+        Sort sort;
+        if (filter.isAscending()){
+           sort = Sort.by("creationTime").ascending();
+        } else {
+            sort = Sort.by("creationTime").descending();
+        }
         Pageable sortedByCreationTimeDesc =
-                PageRequest.of(pageNumber, 10, Sort.by("creationTime").descending());
+                PageRequest.of(pageNumber, 10, sort);
         return requestRepo.findAll(getSpecification(teacher, filter), sortedByCreationTimeDesc);
     }
 

@@ -2,14 +2,22 @@
 <div style="width: var(--width-main-container); display: flex; flex-direction: row; justify-content: space-around; margin: 60px 0 20px 0">
   <div class="filter">
     <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
-    <p class="h5" style="color: var(--c6); margin: 15px 0 5px 0">Группа</p>
+    <p class="h5" style="color: var(--c6); margin: 15px 0 0 10px">Группа</p>
     <app-checkbox-group [options]="groupsOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
 
-    <p class="h5" style="color: var(--c6);  margin: 15px 0 5px 0">Тип запроса</p>
+    <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Тип запроса</p>
     <app-checkbox-group [options]="requestTypesOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
 
-    <p class="h5" style="color: var(--c6);  margin: 15px 0 5px 0">Состояние запроса</p>
+    <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Состояние запроса</p>
     <app-checkbox-group [options]="requestStatesOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+    <p class="h4" style="color: var(--c2); text-align: center; margin: 15px 0 0 0">Сортировка</p>
+    <mat-radio-group
+      [(ngModel)]="order" (change)="onChangeFilter($event)">
+      <mat-radio-button class="radio" *ngFor="let order of orders" [value]="order">
+        <p class="p4" style="color: var(--c6); margin: 0;">{{order}}</p>
+      </mat-radio-button>
+    </mat-radio-group>
   </div>
   <div style="display: flex; flex-direction: column; width: 900px">
     <p *ngIf="requests.length === 0" class="h3" style="color: var(--c2); text-align: center; margin: 10px 0 0 0;" >

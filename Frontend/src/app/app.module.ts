@@ -32,6 +32,7 @@ import { BlockSwitcherComponent } from './components/utils/block-switcher/block-
 import { AccountComponent } from './components/account/account.component';
 import { RequestsComponent } from './components/teacher/requests/requests.component';
 import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkbox-group.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkb
     HttpClientModule,
     RouterModule,
     ReactiveFormsModule,
-    EditorModule
+    EditorModule,
+    MatRadioModule
   ],
   providers: [
     AuthGuard,

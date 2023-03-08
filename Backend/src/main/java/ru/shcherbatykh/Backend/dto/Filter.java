@@ -11,4 +11,5 @@ public class Filter {
     private List<Long> groupIds;
     private List<Long> requestTypeIds;
     private List<Long> requestStateIds;
+    private boolean ascending;
 }
