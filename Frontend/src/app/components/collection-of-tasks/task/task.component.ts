@@ -146,14 +146,14 @@ export class TaskComponent implements OnInit{
 
   saveCodeAndTesting() {
     let codes: string[] = this.saveCodeToArray();
-    this.testingService.sendOnTesting(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+    this.testingService.sendOnTestingForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
     (data: ITestingResultResponse) => {
       this.status = data.status;
       this.testingResultResponse = data;
 
-      if (this.status?.name === 'Прошла тесты'){
+      if (this.testingResultResponse.testingSuccessfulCompleted){
         this.openModalTestsPassedSuccessfully();
-      } else if(this.status?.name === 'Не прошла тесты'){
+      } else if(!this.testingResultResponse.testingSuccessfulCompleted){
         this.openModalTestsPassedUnsuccessfully();
       }
     },

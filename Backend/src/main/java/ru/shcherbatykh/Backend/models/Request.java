@@ -46,6 +46,9 @@ public class Request {
     @Transient
     private String creationTimeToPrint;
 
+    @Transient
+    private String closingTimeToPrint;
+
     public Request(StudentTask studentTask, User teacher, RequestType requestType, RequestState requestState) {
         this.studentTask = studentTask;
         this.teacher = teacher;
@@ -62,9 +65,10 @@ public class Request {
         this.studentMsg = studentMsg;
     }
 
-
-    @PostLoad
+    @PostLoad @PostUpdate
     public void init() {
         creationTimeToPrint = CommonUtils.getCreationTimeToPrint(creationTime);
+        if (closingTime != null)
+            closingTimeToPrint = CommonUtils.getCreationTimeToPrint(closingTime);
     }
 }

@@ -16,4 +16,5 @@ export interface IRequest{
   closingTime: Date | null;
   closingStatus: IClosingStatus | null;
   creationTimeToPrint: string;
+  closingTimeToPrint: string;
 }

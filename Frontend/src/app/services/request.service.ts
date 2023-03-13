@@ -35,4 +35,15 @@ export class RequestService {
   public getRequests(pageNumber: number, filter: IFilter | null) : Observable<IRequest[]> {
     return this.httpclient.post<IRequest[]>(environment.apiUrl + `/request/get/${pageNumber}`, filter);
   }
+  public getRequest(id: number) : Observable<IRequest> {
+    return this.httpclient.get<IRequest>(environment.apiUrl + `/request/${id}`);
+  }
+
+  public rejectSolution(requestId: number, teacherMsg: string) : Observable<IRequest>{
+    return this.httpclient.post<IRequest>(environment.apiUrl + `/request/reject/${requestId}`, teacherMsg);
+  }
+
+  public acceptSolution(requestId: number, teacherMsg: string) : Observable<IRequest>{
+    return this.httpclient.post<IRequest>(environment.apiUrl + `/request/accept/${requestId}`, teacherMsg);
+  }
 }

@@ -14,21 +14,23 @@ import {TheoryComponent} from "./components/collection-of-tasks/theory/theory.co
 import {TaskComponent} from "./components/collection-of-tasks/task/task.component";
 import {AccountComponent} from "./components/account/account.component";
 import {RequestsComponent} from "./components/teacher/requests/requests.component";
+import {RequestComponent} from "./components/teacher/request/request.component";
 
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'forbidden', component: ForbiddenComponent },
-    { path: 'update/tokens', component: UpdateTokensComponent },
-    { path: 'registration', component: RegistrationComponent },
-    { path: 'error', component: ErrorComponent },
-    { path: 'chapters', component: ChaptersComponent },
-    { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent },
-    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent },
-    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent},
-    { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask', component: TaskComponent},
-    { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}},
-    { path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'forbidden', component: ForbiddenComponent },
+  { path: 'update/tokens', component: UpdateTokensComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'error', component: ErrorComponent },
+  { path: 'chapters', component: ChaptersComponent },
+  { path: 'chapter/:serialNumberOfChapter', component: ChapterComponent },
+  { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/practice', component: PracticeComponent },
+  { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/theory', component: TheoryComponent},
+  { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask', component: TaskComponent},
+  { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}},
+  { path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
+  { path: 'request/:id', component: RequestComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
 ];
 
 @NgModule({

@@ -14,7 +14,7 @@
     <p class="h4" style="color: var(--c2); text-align: center; margin: 15px 0 0 0">Сортировка</p>
     <mat-radio-group
       [(ngModel)]="order" (change)="onChangeFilter($event)">
-      <mat-radio-button class="radio" *ngFor="let order of orders" [value]="order">
+      <mat-radio-button *ngFor="let order of orders" [value]="order">
         <p class="p4" style="color: var(--c6); margin: 0;">{{order}}</p>
       </mat-radio-button>
     </mat-radio-group>
@@ -29,8 +29,8 @@
           <div class="div-status" [ngClass]="{
              'bc-clr-not-viewed' : request.requestState.name === 'Не просмотрен',
              'bc-clr-viewed' : request.requestState.name === 'Просмотрен',
-             'bc-clr-not-canceled' : request.requestState.name === 'Отменён',
-             'bc-clr-not-completed' : request.requestState.name === 'Обработан'
+             'bc-clr-canceled' : request.requestState.name === 'Отменён',
+             'bc-clr-completed' : request.requestState.name === 'Обработан'
             }">
             <p class="p5" style="color: var(--c6); margin: 0">{{request.requestState.name}}</p>
           </div>
@@ -72,7 +72,7 @@
       <div class="d-row" style="align-items: end;" *ngIf="numberOfCurrentRequestPage != 0 && numberOfCurrentRequestPage != countPages-1">
         <p class="a-img icon-previous" ></p>
         <p (click)="previousPage(numberOfCurrentRequestPage)" class="p4 p-link">Предыдущая страница</p>
-        <hr class="hr">
+        <hr class="hr" style="margin-bottom: 4px;">
         <p (click)="nextPage(numberOfCurrentRequestPage)" class="p4 p-link">Следующая страница</p>
         <p class="a-img icon-next"></p>
       </div>

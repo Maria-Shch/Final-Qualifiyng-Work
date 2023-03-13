@@ -3,14 +3,14 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.Filter;
-import ru.shcherbatykh.Backend.models.*;
-import ru.shcherbatykh.Backend.services.AuthService;
-import ru.shcherbatykh.Backend.services.RequestService;
-import ru.shcherbatykh.Backend.services.RequestStateService;
-import ru.shcherbatykh.Backend.services.RequestTypeService;
+import ru.shcherbatykh.Backend.models.Request;
+import ru.shcherbatykh.Backend.models.RequestState;
+import ru.shcherbatykh.Backend.models.RequestType;
+import ru.shcherbatykh.Backend.models.User;
+import ru.shcherbatykh.Backend.services.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/request")
@@ -19,13 +19,18 @@ public class RequestController {
     private final AuthService authService;
     private final RequestStateService requestStateService;
     private final RequestTypeService requestTypeService;
+    private final TaskService taskService;
+    private final StudentTaskService studentTaskService;
 
     public RequestController(RequestService requestService, AuthService authService,
-                             RequestStateService requestStateService, RequestTypeService requestTypeService) {
+                             RequestStateService requestStateService, RequestTypeService requestTypeService,
+                             TaskService taskService, StudentTaskService studentTaskService) {
         this.requestService = requestService;
         this.authService = authService;
         this.requestStateService = requestStateService;
         this.requestTypeService = requestTypeService;
+        this.taskService = taskService;
+        this.studentTaskService = studentTaskService;
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
@@ -66,5 +71,35 @@ public class RequestController {
             requests = requestService.getRequestsByPageNumberAndFilter(teacher, pageNumber, filter);
         }
         return requestService.setToNullSomeFields(requests);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/{id}")
+    public Request getRequestById(@PathVariable long id) {
+        User teacher = authService.getUser().orElse(null);
+        Request request = requestService.findById(id);
+        if(request != null && request.getTeacher().getId() == teacher.getId()){
+            if (Objects.equals(request.getRequestState().getName(), "Не просмотрен")){
+                return requestService.markRequestViewed(request);
+            } else return request;
+        } else return null;
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/getClasses/{idStudentTask}")
+    public List<String> getCodes(@PathVariable long idStudentTask) {
+        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask));
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @PostMapping("/reject/{requestId}")
+    public Request rejectSolution(@PathVariable int requestId, @RequestBody(required = false) String teacherMsg) {
+        return requestService.rejectSolution(requestId, teacherMsg);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @PostMapping("/accept/{requestId}")
+    public Request acceptSolution(@PathVariable int requestId, @RequestBody(required = false) String teacherMsg) {
+        return requestService.acceptSolution(requestId, teacherMsg);
     }
 }

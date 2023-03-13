@@ -16,7 +16,6 @@ import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RequestService {
@@ -25,14 +24,19 @@ public class RequestService {
     private final RequestTypeService requestTypeService;
     private final RequestStateService requestStateService;
     private final EventHistoryService eventHistoryService;
+    private final ClosingStatusService closingStatusService;
+    private final StudentTaskService studentTaskService;
 
     public RequestService(RequestRepo requestRepo, UserService userService, RequestTypeService requestTypeService,
-                          RequestStateService requestStateService, EventHistoryService eventHistoryService) {
+                          RequestStateService requestStateService, EventHistoryService eventHistoryService,
+                          ClosingStatusService closingStatusService, StudentTaskService studentTaskService) {
         this.requestRepo = requestRepo;
         this.userService = userService;
         this.requestTypeService = requestTypeService;
         this.requestStateService = requestStateService;
         this.eventHistoryService = eventHistoryService;
+        this.closingStatusService = closingStatusService;
+        this.studentTaskService = studentTaskService;
     }
 
     public void createRequestOnReview(StudentTask stTask){
@@ -75,13 +79,21 @@ public class RequestService {
 
     public List<Request> setToNullSomeFields(List<Request> requests){
         for(Request request: requests){
-            request.getStudentTask().getTask().setDescription(null);
-            request.getStudentTask().getTask().getBlock().setTextTheory(null);
-            request.getStudentTask().getUser().setPassword(null);
-            request.getStudentTask().getUser().getGroup().setTeacher(null);
+            setToNullSomeFields(request);
         }
         return requests;
     }
+
+    public Request setToNullSomeFields(Request request){
+        request.getStudentTask().getTask().setDescription(null);
+        request.getStudentTask().getTask().getBlock().setTextTheory(null);
+        request.getStudentTask().getUser().setPassword(null);
+        if ( request.getStudentTask().getUser().getGroup() != null){
+            request.getStudentTask().getUser().getGroup().setTeacher(null);
+        }
+        return request;
+    }
+
 
     public int getCountRequestsAfterFiltering(User teacher, Filter filter) {
         return requestRepo.count(getSpecification(teacher, filter));
@@ -156,4 +168,36 @@ public class RequestService {
         };
     }
 
+    public Request findById(long id) {
+        return requestRepo.findById(id).orElse(null);
+    }
+
+    public Request markRequestViewed(Request request){
+        request.setRequestState(requestStateService.getRSSeen());
+        return requestRepo.save(request);
+    }
+
+    public Request rejectSolution(int requestId, String teacherMsg) {
+        Request request = closingRequest(requestId, teacherMsg);
+        request.setClosingStatus(closingStatusService.getCSSolutionRejected());
+        eventHistoryService.registerEventTeacherRejected(request);
+        studentTaskService.setStatusRejected(request.getStudentTask());
+        return setToNullSomeFields(requestRepo.save(request));
+    }
+
+    public Request acceptSolution(int requestId, String teacherMsg) {
+        Request request = closingRequest(requestId, teacherMsg);
+        request.setClosingStatus(closingStatusService.getCSSolutionAccepted());
+        eventHistoryService.registerEventTeacherAccepted(request);
+        studentTaskService.setStatusSolved(request.getStudentTask());
+        return setToNullSomeFields(requestRepo.save(request));
+    }
+
+    private Request closingRequest(int requestId, String teacherMsg){
+        Request request = findById(requestId);
+        request.setRequestState(requestStateService.getRSProcessed());
+        request.setTeacherMsg(teacherMsg);
+        request.setClosingTime(LocalDateTime.now());
+        return request;
+    }
 }

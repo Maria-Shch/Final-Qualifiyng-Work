@@ -30,10 +30,16 @@ public class TestingController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
-    @PostMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/onTesting")
-    public TestingResultResponse onTesting(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
-                                           @PathVariable int serialNumberOfTask, @RequestBody List<String> codes) {
-        return testingService.testing(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
+    @PostMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/onTestingS")
+    public TestingResultResponse onTestingForStudent(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+                                                     @PathVariable int serialNumberOfTask, @RequestBody List<String> codes) {
+        return testingService.testingForStudent(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
                 authService.getUser().orElse(null), codes);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @PostMapping("/{studentTaskId}/onTestingT")
+    public TestingResultResponse onTestingForTeacher(@PathVariable long studentTaskId, @RequestBody List<String> codes) {
+        return testingService.testingForTeacher(studentTaskId, codes);
     }
 }

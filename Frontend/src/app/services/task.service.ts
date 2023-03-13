@@ -7,6 +7,7 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
+import {IStudentTask} from "../interfaces/IStudentTask";
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,10 @@ export class TaskService {
   getClasses(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<string[]> {
     return this.httpclient.get<string[]>(environment.apiUrl +
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getClasses`);
+  }
+
+  getClassesByStudentTaskId(studentTaskId: number): Observable<string[]> {
+    return this.httpclient.get<string[]>(environment.apiUrl + `/request/getClasses/${studentTaskId}`);
   }
 
   sendOnReview(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[]):

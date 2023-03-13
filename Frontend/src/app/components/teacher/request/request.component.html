@@ -1,0 +1,190 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: space-around; margin: 60px 0 20px 0">
+  <h2 style="color: var(--c2); margin: 0 0 15px 0">Запрос</h2>
+  <p *ngIf="request == null"> У вас нет доступа к этому запросу, либо запроса не существует</p>
+
+  <div *ngIf="request != null" style="display: flex; flex-direction: column">
+    <div style="display:flex; flex-direction: row; width: 100%; justify-content: space-between">
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">От</p>
+          <div class="d-info">
+            <a routerLink='/user/{{request.studentTask.user.id}}'
+               class="p4" style="color: var(--c2); margin: 0">
+              {{request.studentTask.user.lastname + ' ' + request.studentTask.user.name}}&nbsp;
+            </a>
+            <p class="p4" style="color: var(--c6); margin: 0">
+              {{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ')'}}
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">Задача</p>
+          <div class="d-info">
+            <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}
+                         /block/{{request.studentTask.task.block.serialNumber}}
+                         /task/{{request.studentTask.task.serialNumber}}'
+               class="p4" style="color: var(--c2); margin: 0">
+              {{'Задача ' + request.studentTask.task.block.chapter.serialNumber + '. ' +
+            request.studentTask.task.block.serialNumber + '. ' +
+            request.studentTask.task.serialNumber + '. ' +
+            request.studentTask.task.name}}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">Тип запроса</p>
+          <div class="div-status"  [ngClass]="{
+             'bc-clr-consideration' : request.requestType.name === 'На рассмотрение',
+             'bc-clr-review' : request.requestType.name === 'На проверку'
+            }">
+            <p class="p4" style="color: var(--c6); margin: 0; text-align: center">{{request.requestType.name}}</p>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">Состояние запроса</p>
+          <div class="div-status" [ngClass]="{
+             'bc-clr-not-viewed' : request.requestState.name === 'Не просмотрен',
+             'bc-clr-viewed' : request.requestState.name === 'Просмотрен',
+             'bc-clr-canceled' : request.requestState.name === 'Отменён',
+             'bc-clr-completed' : request.requestState.name === 'Обработан'
+            }">
+            <p class="p4" style="color: var(--c6); margin: 0; text-align: center">{{request.requestState.name}}</p>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">Когда создан</p>
+          <div class="d-info">
+            <p class="p4" style="color: var(--c6); margin: 0">
+              {{request.creationTimeToPrint}}
+            </p>
+          </div>
+        </div>
+        <div *ngIf="request.closingTime != null" style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+          <p class="p6" style="margin: 0 0 0 10px;">Когда обработан</p>
+          <div class="d-info">
+            <p class="p4" style="color: var(--c6); margin: 0">
+              {{request.closingTimeToPrint}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="request.closingStatus != null" style="display: flex; flex-direction: column; margin: 0 0 15px 0">
+        <p class="p6" style="margin: 0 0 0 10px;">Возвращён в статусе</p>
+        <div class="div-status" [ngClass]="{
+             'bc-clr-completed' : request.closingStatus.name === 'Решение принято',
+             'bc-clr-canceled' : request.closingStatus.name === 'Решение отклонено'
+            }">
+          <p class="p4" style="color: var(--c6); margin: 0; text-align: center">{{request.closingStatus.name}}</p>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column;  width: 985px">
+      <div *ngIf="request.requestType.name == 'На рассмотрение'" style="margin: 15px 0 0 0">
+        <h4 style="color: var(--c2); margin: 15px 0 10px 0">Комментарий студента</h4>
+        <p *ngIf="request.studentMsg?.length != 0" class="p4" style="margin: 0; text-align: justify">
+          {{request.studentMsg}}
+        </p>
+        <p *ngIf="request.studentMsg?.length == 0" class="p4" style="margin: 0; text-align: justify">
+          Студент не оставил комментарий.
+        </p>
+      </div>
+      <div *ngIf="request.requestState.name == 'Просмотрен'" style="margin: 35px 0 0 0">
+        <p class="p4" style="color: var(--c2); margin: 0 0 20px 0;">
+          Вы можете редактировать код студента, при этом внесённые вами изменения не будут сохранены
+        </p>
+        <div *ngFor="let codeTA of codeTextAreas"
+             style="display: flex; flex-direction: row; align-items: start; justify-content: space-between; width: 1050px;">
+          <textarea class="textarea-code"
+                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                    id="{{codeTA.id}}"
+          >{{codeTA.content}}</textarea>
+          <div style="display:flex; flex-direction: column">
+            <button id="more{{codeTA.id}}" class="b-violet-cycle b-more" (click)="more(codeTA.id)"></button>
+            <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
+            <button class="b-violet-cycle b-delete" (click)="removeTextArea(codeTA.id)"></button>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 15px; width: 995px">
+          <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextAreaForCode()">+ Новое окно</button>
+          <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 150px" (click)="testing()">Проверить</button>
+        </div>
+
+        <div *ngIf="testingResultResponse!= null && !testingResultResponse?.testingSuccessfulCompleted"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div class="bc-clr-returned-not-passed-tests d-result">
+            <p class="p4" style="color: var(--c6); margin: 0">
+              Тестирование завершилось неудачей
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="testingResultResponse!= null && testingResultResponse?.testingSuccessfulCompleted"
+             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
+          <div class="bc-clr-passed-tests d-result">
+            <p class="p4" style="color: var(--c6); margin: 0">
+              Тестирование завершилось успешно
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; margin: 30px 0 0 0">
+          <h4 style="color: var(--c2); margin: 15px 0 10px 0">Ваш комментарий</h4>
+          <textarea class="textarea-msg"
+                    id="teacherMsg"
+                    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+          <div style="display: flex; flex-direction: row; justify-content: space-around">
+            <button class="h5 but red" (click)="returnSolution()">Вернуть решение</button>
+            <button class="h5 but green" (click)="confirmSolution()">Принять решение</button>
+          </div>
+        </div>
+
+
+      </div>
+      <div *ngIf="request.requestState.name == 'Обработан'" style="margin: 15px 0 0 0">
+        <h4 style="color: var(--c2); margin: 15px 0 10px 0">Комментарий преподавателя</h4>
+        <p *ngIf="request.teacherMsg?.length != 0" class="p4" style="margin: 0; text-align: justify">
+          {{request.teacherMsg}}
+        </p>
+        <p *ngIf="request.teacherMsg == null" class="p4" style="margin: 0; text-align: justify">
+          Преподаватель не оставил комментарий.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showModalTestsPassedSuccessfully" class="fixed-overlay">
+    <div class="modal" style="width: 40%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
+        <div class="bc-clr-passed-tests d-result" style="align-items: center">
+          <p class="p4" style="color: var(--c6); margin: 0">
+            Тестирование завершилось успешно
+          </p>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <button class="p4 d-violet-button" (click)="closeModalTestsPassedSuccessfully()">ОК</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showModalTestsPassedUnsuccessfully" class="fixed-overlay">
+    <div class="modal" style="width: 40%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div class="bc-clr-returned-not-passed-tests d-result" style="align-items: center">
+          <p class="p4" style="color: var(--c6); margin: 0">
+            Тестирование завершилось неудачей
+          </p>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <button class="p5 d-violet-button" (click)="closeModalTestsPassedUnsuccessfully()">ОК</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>

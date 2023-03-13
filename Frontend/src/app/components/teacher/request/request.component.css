@@ -1,0 +1,64 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.d-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 0 10px 0 0;
+  background-color: var(--c5);
+  width: fit-content;
+}
+
+.div-status{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 0 10px 0 0;
+  width: fit-content;
+  min-width: 115px;
+}
+
+.textarea-msg{
+  font-family: 'Inter';
+  font-style: normal;
+  min-height: 85px;
+  margin: 0 0 20px 0;
+  border: 1px solid #e8e8ee;
+  border-radius: 8px;
+  color: var(--c6);
+  width: 985px;
+  max-width: 985px;
+  background-color: var(--c5);
+  padding: 10px 15px;
+}
+
+.but{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: end;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  gap: 10px;
+  border-radius: 8px;
+  color: var(--c1);
+  cursor: pointer;
+}
+
+.red{
+  border: 3px solid var(--c12);
+  background-color: var(--c12);
+}
+
+.green{
+  border: 3px solid var(--c17);
+  background-color: var(--c17);
+}

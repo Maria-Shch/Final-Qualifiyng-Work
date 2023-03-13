@@ -48,14 +48,14 @@ public class TestingService {
         return new ResponseAboutTestingAllowed(true);
     }
 
-    public TestingResultResponse testing(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
+    public TestingResultResponse testingForStudent(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
         if(stTask == null){
             stTask = studentTasksService.addNew(user, task);
         }
 
-        if (taskService.saveCodeToFiles(stTask, codes) == false){
+        if (taskService.saveCodeToFiles(stTask, codes, true) == false){
             return new TestingResultResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnTesting(stTask);
@@ -69,6 +69,18 @@ public class TestingService {
             } else {
                 studentTasksService.setStatusNotPassedTests(stTask);
                 return new TestingResultResponse(stTask.getCurrStatus(), false, AppError.APP_ERR_002);
+            }
+        }
+    }
+
+    public TestingResultResponse testingForTeacher(long studentTaskId, List<String> codes) {
+        if (taskService.saveCodeToFiles(studentTasksService.findById(studentTaskId), codes, false) == false){
+            return new TestingResultResponse(null,false, AppError.APP_ERR_001);
+        } else {
+            if(IS_TESTS_PASSED){
+                return new TestingResultResponse(null, true);
+            } else {
+                return new TestingResultResponse(null, false, AppError.APP_ERR_002);
             }
         }
     }

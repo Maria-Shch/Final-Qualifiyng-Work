@@ -33,6 +33,7 @@ import { AccountComponent } from './components/account/account.component';
 import { RequestsComponent } from './components/teacher/requests/requests.component';
 import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkbox-group.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { RequestComponent } from './components/teacher/request/request.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {MatRadioModule} from '@angular/material/radio';
     BlockSwitcherComponent,
     AccountComponent,
     RequestsComponent,
-    CheckboxGroupComponent
+    CheckboxGroupComponent,
+    RequestComponent
   ],
   imports: [
     BrowserModule,

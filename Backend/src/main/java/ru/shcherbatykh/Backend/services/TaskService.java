@@ -130,10 +130,11 @@ public class TaskService {
         return getTask(sNOfChapter, sNOfBlock, getCountOfTasks(sNOfChapter, sNOfBlock));
     }
 
-    public SendingOnReviewOrConsiderationResponse sendTaskOnReview(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user, List<String> codes){
+    public SendingOnReviewOrConsiderationResponse sendTaskOnReview(int serialNumberOfChapter, int serialNumberOfBlock,
+                                                                   int serialNumberOfTask, User user, List<String> codes){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (saveCodeToFiles(stTask, codes) == false){
+        if (saveCodeToFiles(stTask, codes, true) == false){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnReview(stTask);
@@ -147,7 +148,7 @@ public class TaskService {
                                                                           RBOnConsideration rbOnConsideration) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (saveCodeToFiles(stTask, rbOnConsideration.getCodes()) == false){
+        if (saveCodeToFiles(stTask, rbOnConsideration.getCodes(), true) == false){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnConsideration(stTask);
@@ -156,8 +157,8 @@ public class TaskService {
         }
     }
 
-    public boolean saveCodeToFiles(StudentTask stTask, List<String> codes)  {
-        String path = getPathToSave(stTask);
+    public boolean saveCodeToFiles(StudentTask stTask, List<String> codes, boolean isStrategyOfSavingForStudent)  {
+        String path = getPathToSave(stTask, isStrategyOfSavingForStudent);
         if (Files.exists(Path.of(path))) {
             try {
                 FileUtils.cleanDirectory(new File(path));
@@ -211,8 +212,11 @@ public class TaskService {
         return className.toString();
     }
 
-    private String getPathToSave(StudentTask stTask){
+    private String getPathToSave(StudentTask stTask, boolean isStrategyOfSavingForStudent){
         StringBuilder path = new StringBuilder(CODE_STORAGE_PATH);
+        if (!isStrategyOfSavingForStudent){
+            path.append('/').append("requestsCodes");
+        }
         path.append('/')
                 .append(stTask.getUser().getId()).append('/')
                 .append(stTask.getTask().getBlock().getChapter().getSerialNumber()).append('/')
@@ -224,8 +228,12 @@ public class TaskService {
     public List<String> getClassesForTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        return getClassesForTask(stTask);
+    }
+
+    public List<String> getClassesForTask(StudentTask stTask){
         if(stTask == null) return null;
-        String path = getPathToSave(stTask);
+        String path = getPathToSave(stTask, true);
         if (Files.exists(Path.of(path))) {
             try (Stream<Path> paths = Files.walk(Paths.get(path))) {
                 return paths

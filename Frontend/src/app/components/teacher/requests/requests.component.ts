@@ -55,7 +55,7 @@ export class RequestsComponent implements OnInit{
   }
 
   toRequest(id: number) {
-
+    this.router.navigate([`/request/${id}`]);
   }
 
   nextPage(numberOfCurrentRequestPage: number) {

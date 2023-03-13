@@ -26,7 +26,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="isEditingDescriptionByAdmin === false" style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 50px;">
+  <div *ngIf="isEditingDescriptionByAdmin === false" style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 38px;">
     <div style="display: flex; flex-direction: column; margin-bottom: 30px">
       <div id="description" style="padding: 0 30px 0 0;"></div>
 
@@ -169,7 +169,7 @@
       </div>
     </div>
 
-    <div style="display: flex; flex-direction: column;  width: 170px">
+    <div style="display: flex; flex-direction: column;  width: 170px; max-width: 170px; margin: 16px 0 0 0;">
       <div *ngIf="authService.isLoggedIn()" class="d-status"
            [ngClass]="{
          'bc-clr-default' : status?.name === 'Не решена' || status === null,
@@ -226,7 +226,7 @@
           <h3 style="margin: 0">Вы хотите отправить решение на проверку преподавателю?</h3>
         </header>
         <section  style="margin: 15px 0 15px 0">
-          <p class="p3" style="text-align: justify">После того, как вы отправите своё решение на проверку предодавателю, вы не сможете его изменять и тестировать.
+          <p class="p4" style="text-align: justify">После того, как вы отправите своё решение на проверку предодавателю, вы не сможете его изменять и тестировать.
             У вас будет возможность отменить запрос до того, как преподаватель обработает его.</p>
         </section>
         <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
@@ -244,7 +244,7 @@
           <h3 style="margin: 0">Вы хотите отправить решение на рассмотрение преподавателю?</h3>
         </header>
         <section  style="margin: 15px 0 15px 0">
-          <p class="p3" style="text-align: justify">Если вы не согласны с результатами тестирования вашего решения, то вы можете оспорить их.
+          <p class="p4" style="text-align: justify">Если вы не согласны с результатами тестирования вашего решения, то вы можете оспорить их.
             Опишите вашу точку зрения в поле ниже. После отправки вашего запроса преподавателю статус задачи будет изменён на “На рассмотрении”.
             Функция тестирования для данной задачи будет заблокирована до ответа преподавателя.
             У вас будет возможность отменить запрос до того, как преподаватель обработает его.</p>
@@ -265,7 +265,7 @@
           <h3 style="margin: 0">Вы хотите отменить запрос на проверку вашего решения?</h3>
         </header>
         <section  style="margin: 15px 0 15px 0">
-          <p class="p3" style="text-align: justify">
+          <p class="p4" style="text-align: justify">
             Вы можете отменить запрос на проверку вашего решения. В этом случае вы снова сможете редактировать ваш код и тестировать его.
           </p>
         </section>
@@ -284,7 +284,7 @@
           <h3 style="margin: 0">Вы хотите отменить запрос на рассмотрение вашего решения?</h3>
         </header>
         <section  style="margin: 15px 0 15px 0">
-          <p class="p3" style="text-align: justify">
+          <p class="p4" style="text-align: justify">
             Вы можете отменить запрос на рассмотрениие вашего решения. В этом случае вы снова сможете редактировать ваш код и тестировать его.
           </p>
         </section>
@@ -301,7 +301,7 @@
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
         <div class="bc-clr-passed-tests d-result" style="align-items: center">
-          <p class="p5" style="color: var(--c6); margin: 0">
+          <p class="p4" style="color: var(--c6); margin: 0">
             Тестирование завершилось успешно
           </p>
         </div>
