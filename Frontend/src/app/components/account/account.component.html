@@ -9,7 +9,7 @@
     <h2 *ngIf="user?.role === 'ADMIN'" style="var(--c6);">Личный кабинет администратора</h2>
   </div>
 
-  <div style="margin-left: 45px">
+  <div style="margin-left: 35px">
     <h5 *ngIf="(name.errors?.['required'] ||
           lastname.errors?.['required'] ||
           patronymic.errors?.['required'] ||
@@ -23,7 +23,7 @@
   </div>
 
 
-  <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 45px">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 35px">
     <form [formGroup]="personalDataForm" (ngSubmit)="onSubmit()" class="form-registration" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
         <p class="p6" style="margin: 0 0 0 10px;">Фамилия</p>
@@ -94,6 +94,125 @@
                value="{{admin}}"
                class="input-params p4"
                style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="requestHistories != null" style="margin: 10px 0 0 30px;">
+    <h2 style="var(--c6);">История</h2>
+    <div *ngFor="let history of requestHistories"  class="d-history" (click)="openModalWithInfo(history.id)">
+      <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 10px">
+        <a routerLink='/chapter/{{history.request.studentTask.task.block.chapter.serialNumber}}
+        /block/{{history.request.studentTask.task.block.serialNumber}}
+        /task/{{history.request.studentTask.task.serialNumber}}'
+        class="h4 a-task-name">
+          {{'Задача ' + history.request.studentTask.task.block.chapter.serialNumber + '. ' +
+          history.request.studentTask.task.block.serialNumber + '. ' +
+          history.request.studentTask.task.serialNumber + '. ' +
+          history.request.studentTask.task.name}}
+        </a>
+
+        <p class="p4" style="color: #646464; margin: 0">{{history.timeToPrint}}</p>
+      </div>
+      <div>
+        <p *ngIf="history.eventType.id == 1" class="p4" style="margin: 0">
+          Вы отправили решение на рассмотрение преподавателю.
+        </p>
+        <p *ngIf="history.eventType.id == 2" class="p4" style="margin: 0">
+          Вы отправили решение на проверку преподавателю.
+        </p>
+        <p *ngIf="history.eventType.id == 3" class="p4" style="margin: 0">
+          Преподаватель принял ваше решение.
+        </p>
+        <p *ngIf="history.eventType.id == 4" class="p4" style="margin: 0">
+          Преподаватель отклонил ваше решение.
+        </p>
+        <p *ngIf="history.eventType.id == 5 && history.request.requestType.name == 'На рассмотрение'" class="p4" style="margin: 0">
+          Вы отменили свой запрос на рассмотрение решения.
+        </p>
+        <p *ngIf="history.eventType.id == 5 && history.request.requestType.name == 'На проверку'" class="p4" style="margin: 0">
+          Вы отменили свой запрос на проверку решения.
+        </p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div *ngIf="showModal" class="fixed-overlay">
+    <div class="modal" style="width: 50%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div style=" width: 100%">
+          <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 10px;">
+            <a routerLink='/chapter/{{historyInModal!.request.studentTask.task.block.chapter.serialNumber}}
+              /block/{{historyInModal!.request.studentTask.task.block.serialNumber}}
+              /task/{{historyInModal!.request.studentTask.task.serialNumber}}'
+                class="h4 a-task-name">
+              {{'Задача ' + historyInModal!.request.studentTask.task.block.chapter.serialNumber + '. ' +
+              historyInModal!.request.studentTask.task.block.serialNumber + '. ' +
+              historyInModal!.request.studentTask.task.serialNumber + '. ' +
+              historyInModal!.request.studentTask.task.name}}
+            </a>
+            <p class="p4" style="color: #646464; margin: 0">{{historyInModal!.timeToPrint}}</p>
+          </div>
+          <div  *ngIf="historyInModal!.eventType.id == 1">
+            <div *ngIf="historyInModal!.request.studentMsg != null">
+              <p class="p4" style="margin: 0">
+                Вы отправили решение на рассмотрение преподавателю со следующим комментарием:
+              </p>
+              <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.studentMsg + '"'}}</p>
+            </div>
+            <div  *ngIf="historyInModal!.request.studentMsg == null">
+              <p class="p4" style="margin: 0">
+                Вы отправили решение на рассмотрение преподавателю.
+              </p>
+            </div>
+          </div>
+          <div *ngIf="historyInModal!.eventType.id == 2">
+            <p class="p4" style="margin: 0">
+              Вы отправили решение на проверку преподавателю.
+            </p>
+          </div>
+          <div *ngIf="historyInModal!.eventType.id == 3">
+            <div *ngIf="historyInModal!.request.teacherMsg != null">
+              <p class="p4" style="margin: 0">
+                Преподаватель принял ваше решение со следующим комментарием:
+              </p>
+              <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.teacherMsg + '"'}}</p>
+            </div>
+            <div  *ngIf="historyInModal!.request.teacherMsg == null">
+              <p class="p4" style="margin: 0">
+                Преподаватель принял ваше решение.
+              </p>
+            </div>
+          </div>
+          <div  *ngIf="historyInModal!.eventType.id == 4">
+            <div *ngIf="historyInModal!.request.teacherMsg != null">
+              <p class="p4" style="margin: 0">
+                Преподаватель отклонил ваше решение со следующим комментарием:
+              </p>
+              <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.teacherMsg + '"'}}</p>
+            </div>
+            <div *ngIf="historyInModal!.request.teacherMsg == null">
+              <p class="p4" style="margin: 0">
+                Преподаватель отклонил ваше решение.
+              </p>
+            </div>
+          </div>
+          <div *ngIf="historyInModal!.eventType.id == 5 && historyInModal!.request.requestType.name == 'На рассмотрение'" >
+            <p class="p4" style="margin: 0">
+              Вы отменили свой запрос на рассмотрение решения.
+            </p>
+          </div>
+          <div  *ngIf="historyInModal!.eventType.id == 5 && historyInModal!.request.requestType.name == 'На проверку'" >
+            <p class="p4" style="margin: 0">
+              Вы отменили свой запрос на проверку решения.
+            </p>
+          </div>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: end; width: 100%;">
+          <button class="p5 d-violet-button" (click)="closeModal()">Закрыть</button>
+        </footer>
       </div>
     </div>
   </div>

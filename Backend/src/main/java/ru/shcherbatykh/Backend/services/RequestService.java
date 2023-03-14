@@ -88,6 +88,7 @@ public class RequestService {
         request.getStudentTask().getTask().setDescription(null);
         request.getStudentTask().getTask().getBlock().setTextTheory(null);
         request.getStudentTask().getUser().setPassword(null);
+        request.getTeacher().setPassword(null);
         if ( request.getStudentTask().getUser().getGroup() != null){
             request.getStudentTask().getUser().getGroup().setTeacher(null);
         }
@@ -199,5 +200,14 @@ public class RequestService {
         request.setTeacherMsg(teacherMsg);
         request.setClosingTime(LocalDateTime.now());
         return request;
+    }
+
+    public List<EventHistory> getHistoryOfRequests(User user, int pageNumber) {
+        List<EventHistory> histories = eventHistoryService.getHistoryByUserAndPageNumber(user, pageNumber);
+        for(EventHistory history: histories){
+            Request newRequest = setToNullSomeFields(history.getRequest());
+            history.setRequest(newRequest);
+        }
+        return histories;
     }
 }

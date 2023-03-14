@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.shcherbatykh.Backend.utils.CommonUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,8 +28,16 @@ public class EventHistory {
     @CreationTimestamp
     private LocalDateTime time;
 
+    @Transient
+    private String timeToPrint;
+
     public EventHistory(EventType eventType, Request request) {
         this.eventType = eventType;
         this.request = request;
+    }
+
+    @PostLoad
+    public void init() {
+        timeToPrint = CommonUtils.getCreationTimeToPrint(time);
     }
 }

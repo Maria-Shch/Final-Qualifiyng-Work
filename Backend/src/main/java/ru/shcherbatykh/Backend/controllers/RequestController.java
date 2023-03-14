@@ -3,10 +3,7 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.Filter;
-import ru.shcherbatykh.Backend.models.Request;
-import ru.shcherbatykh.Backend.models.RequestState;
-import ru.shcherbatykh.Backend.models.RequestType;
-import ru.shcherbatykh.Backend.models.User;
+import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.services.*;
 
 import java.util.List;
@@ -101,5 +98,12 @@ public class RequestController {
     @PostMapping("/accept/{requestId}")
     public Request acceptSolution(@PathVariable int requestId, @RequestBody(required = false) String teacherMsg) {
         return requestService.acceptSolution(requestId, teacherMsg);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @GetMapping("/getHistory/{pageNumber}")
+    public List<EventHistory> getHistoryOfRequests(@PathVariable int pageNumber) {
+        User user = authService.getUser().orElse(null);
+        return requestService.getHistoryOfRequests(user, pageNumber);
     }
 }

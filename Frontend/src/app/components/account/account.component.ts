@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {FormUtils} from "../../utils/FormUtils";
 import {IUser} from "../../interfaces/IUser";
 import {toErrorPage} from "../../utils/ToErrorPageFunc";
+import {RequestService} from "../../services/request.service";
+import {IEventHistory} from "../../interfaces/IEventHistory";
 
 @Component({
   selector: 'app-account',
@@ -19,6 +21,11 @@ export class AccountComponent implements OnInit{
   admin: string = '';
   hasBeenSubmitted: boolean= false;
   isRepeatedUsername: boolean = false;
+  requestHistories: IEventHistory[] = [];
+  currentPageOfHistory: number = 0;
+  showModal: boolean = false;
+  historyInModal: IEventHistory | undefined | null = null;
+
   personalDataForm: FormGroup = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
     lastname: new FormControl<string>('', [Validators.required]),
@@ -29,7 +36,8 @@ export class AccountComponent implements OnInit{
   constructor(
     private groupService: GroupService,
     private userService: UserService,
-    private router:Router
+    private router:Router,
+    private requestService: RequestService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +60,10 @@ export class AccountComponent implements OnInit{
 
     this.userService.getTeacher().subscribe((data: IUser) => {
       this.teacher = data.lastname + ' ' + data.name.charAt(0) + '. ' + data.patronymic.charAt(0) + '.';
+    });
+
+    this.requestService.getHistoryOfRequests(this.currentPageOfHistory).subscribe((data: IEventHistory[]) => {
+      this.requestHistories = data;
     });
   }
 
@@ -94,5 +106,14 @@ export class AccountComponent implements OnInit{
   }
   get username(){
     return this.personalDataForm.controls.username as FormControl;
+  }
+
+  openModalWithInfo(id: number) {
+    this.historyInModal = this.requestHistories.find(x => x.id == id);
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

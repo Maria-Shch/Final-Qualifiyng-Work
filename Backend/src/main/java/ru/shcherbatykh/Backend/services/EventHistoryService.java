@@ -1,9 +1,18 @@
 package ru.shcherbatykh.Backend.services;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.Backend.models.EventHistory;
 import ru.shcherbatykh.Backend.models.Request;
+import ru.shcherbatykh.Backend.models.StudentTask;
+import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.EventHistoryRepo;
+
+import javax.persistence.criteria.Join;
+import java.util.List;
 
 @Service
 public class EventHistoryService {
@@ -38,5 +47,18 @@ public class EventHistoryService {
     public void registerEventUserCanceledRequest(Request request){
         EventHistory eventHistory = new EventHistory(eventTypeService.getETStudentCanceled(), request);
         eventHistoryRepo.save(eventHistory);
+    }
+
+    public List<EventHistory> getHistoryByUserAndPageNumber(User user, int pageNumber) {
+        Pageable sortedByTimeDesc = PageRequest.of(pageNumber, 5, Sort.by("time").descending());
+        return eventHistoryRepo.findAll(getSpecificationForGettingHistoryByUser(user.getId()), sortedByTimeDesc);
+    }
+
+    private Specification<EventHistory> getSpecificationForGettingHistoryByUser(Long userId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Request, EventHistory> request = root.join("request");
+            Join<StudentTask, Join<Request, EventHistory>> stTask = request.join("studentTask");
+            return criteriaBuilder.equal(stTask.get("user"), userId) ;
+        };
     }
 }
