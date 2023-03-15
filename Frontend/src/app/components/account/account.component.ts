@@ -25,6 +25,7 @@ export class AccountComponent implements OnInit{
   currentPageOfHistory: number = 0;
   showModal: boolean = false;
   historyInModal: IEventHistory | undefined | null = null;
+  isPresentOtherHistories: boolean = false;
 
   personalDataForm: FormGroup = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
@@ -64,6 +65,11 @@ export class AccountComponent implements OnInit{
 
     this.requestService.getHistoryOfRequests(this.currentPageOfHistory).subscribe((data: IEventHistory[]) => {
       this.requestHistories = data;
+      if (data.length < 5 || data.length == 0 || data == null) {
+        this.isPresentOtherHistories = false;
+      } else {
+        this.isPresentOtherHistories = true;
+      }
     });
   }
 
@@ -115,5 +121,22 @@ export class AccountComponent implements OnInit{
 
   closeModal() {
     this.showModal = false;
+  }
+
+  loadHistories() {
+    this.requestService.getHistoryOfRequests(this.currentPageOfHistory + 1).subscribe((data: IEventHistory[]) => {
+      console.log(data);
+      console.log(data.length == 0);
+      console.log(data == null);
+      for (let i = 0; i < data.length; i++) {
+        this.requestHistories.push(data[i]);
+      }
+      if (data.length < 5 || data.length == 0) {
+        this.isPresentOtherHistories = false;
+      } else {
+        this.isPresentOtherHistories = true;
+      }
+      this.currentPageOfHistory+=1;
+    });
   }
 }

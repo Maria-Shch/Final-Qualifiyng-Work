@@ -135,7 +135,11 @@
         </p>
       </div>
     </div>
-    
+    <button *ngIf="isPresentOtherHistories"
+            (click)="loadHistories()"
+            class="h5 d-violet-button" style="width: 200px; margin: 25px 0 25px 0;">
+      Загрузить ещё
+    </button>
   </div>
 
   <div *ngIf="showModal" class="fixed-overlay">
