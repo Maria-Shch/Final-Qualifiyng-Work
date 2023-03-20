@@ -26,7 +26,6 @@ export class RequestsComponent implements OnInit{
   orders: string[] = ['Сначала новые', 'Сначала старые'];
   order: string = this.orders[0];
 
-
   constructor(
     private requestService: RequestService,
     private groupService: GroupService,
@@ -43,7 +42,7 @@ export class RequestsComponent implements OnInit{
         });
       }
     });
-    this.groupService.getGroups().subscribe((data: IGroup[]) => {
+    this.groupService.getAllGroups().subscribe((data: IGroup[]) => {
       this.groupsOptions = data.map(x => new CheckboxItem(x.id, x.name, false));
     });
     this.requestService.getRequestTypes().subscribe((data: IRequestType[]) => {

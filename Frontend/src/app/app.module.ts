@@ -7,6 +7,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { LoginComponent } from './components/authorization/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -34,6 +35,8 @@ import { RequestsComponent } from './components/teacher/requests/requests.compon
 import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkbox-group.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { RequestComponent } from './components/teacher/request/request.component';
+import { StudentsGroupsComponent } from './components/teacher/students-groups/students-groups.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -59,7 +62,8 @@ import { RequestComponent } from './components/teacher/request/request.component
     AccountComponent,
     RequestsComponent,
     CheckboxGroupComponent,
-    RequestComponent
+    RequestComponent,
+    StudentsGroupsComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +74,9 @@ import { RequestComponent } from './components/teacher/request/request.component
     RouterModule,
     ReactiveFormsModule,
     EditorModule,
-    MatRadioModule
+    MatRadioModule,
+    MatExpansionModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthGuard,

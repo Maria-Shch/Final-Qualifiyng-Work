@@ -1,0 +1,69 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/students.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Ваши группы</h2>
+  </div>
+  <div style="display: flex; flex-direction: row; width: 100%; flex-direction: column; justify-content: space-between; ">
+    <div *ngFor="let groupWithUsersStatInfo of groupsWithUsersStatInfo"  class="div-group">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title >
+              <div  style="display: flex; flex-direction: row; align-items: end">
+                <h3>{{'Группа ' + groupWithUsersStatInfo.group.name}}</h3>
+                <h4>{{'&nbsp;&nbsp;(' + groupWithUsersStatInfo.group.year + ')'}}</h4>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <table class="table-header">
+              <tr class="tr-table-row">
+                <td class="td-student-number"><h5 style="margin: 0">№</h5></td>
+                <td class="td-student"><h5 style="margin: 0">Студент</h5></td>
+                <td class="td-task"><h5 style="margin:  0">Последняя решённая задача</h5></td>
+                <td class="td-count"><h5 style="margin:  0">Количество решённых задач</h5></td>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <table class="table-header">
+              <tr *ngFor="let userStatInfo of groupWithUsersStatInfo.userStatInfos; let i = index"
+                  class="tr-table-row"
+                  [ngClass]="{'bc-clr-light' : i%2 === 0,'bc-clr-dark' : i%2 != 0}">
+                <td class="td-student-number">
+                  <h5 style="margin: 0">{{i+1}}</h5>
+                </td>
+                <td class="td-student">
+                  <a routerLink='/user/{{userStatInfo.user.id}}'
+                     class="p4" style="color: var(--c2); margin: 0">
+                    {{userStatInfo.user.lastname + ' ' + userStatInfo.user.name}}&nbsp;
+                  </a>
+                </td>
+                <td *ngIf="userStatInfo.lastSolvedTask != null" class="td-task">
+                  <a routerLink='/chapter/{{userStatInfo.lastSolvedTask.block.chapter.serialNumber}}
+                     /block/{{userStatInfo.lastSolvedTask.block.serialNumber}}
+                     /task/{{userStatInfo.lastSolvedTask.serialNumber}}
+                     /student/{{userStatInfo.user.id}}'
+                     class="p4" style="color: var(--c2); margin: 0">
+                    {{'Задача ' + userStatInfo.lastSolvedTask.block.chapter.serialNumber + '. ' +
+                    userStatInfo.lastSolvedTask.block.serialNumber + '. ' +
+                    userStatInfo.lastSolvedTask.serialNumber + '. ' +
+                    userStatInfo.lastSolvedTask.name}}
+                  </a>
+                </td>
+                <td *ngIf="userStatInfo.lastSolvedTask == null" class="td-task">
+                  <p class="p4" style="color: var(--c6); margin: 0">Нет решённых задач</p>
+                </td>
+                <td class="td-count">
+                  <p class="p4" style="color: var(--c6); margin: 0">{{userStatInfo.countOfSolvedTasks}}</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

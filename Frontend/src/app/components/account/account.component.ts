@@ -125,9 +125,6 @@ export class AccountComponent implements OnInit{
 
   loadHistories() {
     this.requestService.getHistoryOfRequests(this.currentPageOfHistory + 1).subscribe((data: IEventHistory[]) => {
-      console.log(data);
-      console.log(data.length == 0);
-      console.log(data == null);
       for (let i = 0; i < data.length; i++) {
         this.requestHistories.push(data[i]);
       }

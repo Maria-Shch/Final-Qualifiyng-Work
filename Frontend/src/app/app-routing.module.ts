@@ -15,6 +15,7 @@ import {TaskComponent} from "./components/collection-of-tasks/task/task.componen
 import {AccountComponent} from "./components/account/account.component";
 import {RequestsComponent} from "./components/teacher/requests/requests.component";
 import {RequestComponent} from "./components/teacher/request/request.component";
+import {StudentsGroupsComponent} from "./components/teacher/students-groups/students-groups.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -30,7 +31,8 @@ const routes: Routes = [
   { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask', component: TaskComponent},
   { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}},
   { path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
-  { path: 'request/:id', component: RequestComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
+  { path: 'request/:id', component: RequestComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
+  { path: 'studentsGroups', component: StudentsGroupsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
 ];
 
 @NgModule({

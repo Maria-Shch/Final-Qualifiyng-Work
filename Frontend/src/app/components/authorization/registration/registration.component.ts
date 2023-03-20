@@ -35,7 +35,7 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.groupService.getGroups().subscribe((data: IGroup[]) =>{
+    this.groupService.getAllGroups().subscribe((data: IGroup[]) =>{
       this.groups = data;
     });
   }

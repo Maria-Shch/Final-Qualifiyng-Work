@@ -60,7 +60,6 @@ export class RequestComponent implements OnInit{
     this.requestService.rejectSolution(this.request?.id, this.getTeacherMsg()).subscribe(
       (data: IRequest) => {
         this.request = data;
-        console.log(this.request);
       },
       (error)=>{ toErrorPage(error, this.router);});
   }
@@ -70,7 +69,6 @@ export class RequestComponent implements OnInit{
     this.requestService.acceptSolution(this.request?.id, this.getTeacherMsg()).subscribe(
       (data: IRequest) => {
         this.request = data;
-        console.log(this.request);
       },
       (error)=>{ toErrorPage(error, this.router);});
   }

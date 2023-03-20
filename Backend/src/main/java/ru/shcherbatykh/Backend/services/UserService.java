@@ -1,14 +1,17 @@
 package ru.shcherbatykh.Backend.services;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.Backend.classes.Role;
+import ru.shcherbatykh.Backend.models.Group;
 import ru.shcherbatykh.Backend.models.StudentTask;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.UserRepo;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -85,5 +88,21 @@ public class UserService {
         if (hasBeenUpdated) {
             return userRepo.save(oldUser);
         } else return oldUser;
+    }
+
+    public List<User> getSortedUsersOfGroup(Group group){
+        List<User> users = userRepo.findAllByGroup(group, orderByLastnameNamePatronymicAsc());
+        for(User user: users){
+            user.setPassword(null);
+        }
+        return users.stream()
+                .sorted(Comparator.comparing(User::getLastname))
+                .toList();
+    }
+
+    private Sort orderByLastnameNamePatronymicAsc() {
+        return Sort.by(Sort.Direction.ASC, "lastname")
+                .and(Sort.by(Sort.Direction.ASC, "name"))
+                .and(Sort.by(Sort.Direction.ASC, "patronymic"));
     }
 }
