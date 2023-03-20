@@ -37,6 +37,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { RequestComponent } from './components/teacher/request/request.component';
 import { StudentsGroupsComponent } from './components/teacher/students-groups/students-groups.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { StudentSolutionComponent } from './components/teacher/student-solution/student-solution.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     RequestsComponent,
     CheckboxGroupComponent,
     RequestComponent,
-    StudentsGroupsComponent
+    StudentsGroupsComponent,
+    StudentSolutionComponent
   ],
   imports: [
     BrowserModule,

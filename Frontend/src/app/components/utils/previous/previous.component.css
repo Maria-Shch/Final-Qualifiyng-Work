@@ -5,11 +5,3 @@
   align-items: end;
   margin: 0 10px 0 10px;
 }
-
-.icon-previous{
-  background: url("../../../../assets/icons/previous.png") no-repeat;
-  background-size: 18px;
-  width: 18px;
-  height: 18px;
-  margin: 0 10px 0 10px;
-}

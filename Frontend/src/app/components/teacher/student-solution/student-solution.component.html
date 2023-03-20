@@ -1,0 +1,82 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: space-around; margin: 60px 0 20px 0">
+  <div style="display: flex; flex-direction: row">
+    <h4 style="color: var(--c6); margin: 0">Решение задачи от &nbsp;</h4>
+    <a routerLink='/user/{{studentTask?.user?.id}}'
+       class="h4" style="color: var(--c2); margin: 0">
+      {{studentTask?.user?.lastname + ' ' + studentTask?.user?.name}}
+    </a>
+    <h4 style="color: var(--c6); margin: 0">
+      &nbsp; {{studentTask?.user?.group === null ? '(Без группы)' : '(' + studentTask?.user?.group?.name + ')'}}
+    </h4>
+  </div>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 15px 10px 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center; margin-top: 20px">
+      <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+      <h3 style="color: var(--c6); margin:0">Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{studentTask?.task?.serialNumber}}. &nbsp;</h3>
+    </div>
+    <app-task-switcher [forUser]="true"></app-task-switcher>
+  </div>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-right: 38px;">
+    <div style="display: flex; flex-direction: column; margin-bottom: 30px">
+      <h3 style="color: var(--c6); margin: 0">{{studentTask?.task?.name}}</h3>
+      <div id="description" style="padding: 0 30px 0 0;"></div>
+      <p *ngIf="counterCodeTextArea == 0" class="p4" style="color: var(--c2); margin: 0 0 20px 0;">
+        Студент еще не решал эту задачу.
+      </p>
+      <div *ngIf="counterCodeTextArea != 0">
+        <div *ngFor="let codeTA of codeTextAreas" style="display: flex; flex-direction: row; align-items: start; justify-content: space-between; padding: 0 30px 0 0;">
+        <textarea class="textarea-code"
+                  oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+                  id="{{codeTA.id}}"
+                  readonly
+        >{{codeTA.content}}</textarea>
+          <div style="display:flex; flex-direction: column">
+            <button id="more{{codeTA.id}}" class="b-violet-cycle b-more" (click)="more(codeTA.id)"></button>
+            <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column;  width: 170px; max-width: 170px; margin: 16px 0 0 0;">
+      <div class="d-status"
+           [ngClass]="{
+         'bc-clr-default' : studentTask?.currStatus?.name === 'Не решена' || studentTask?.currStatus === null,
+         'bc-clr-returned-not-passed-tests' : studentTask?.currStatus?.name === 'Не прошла тесты' || studentTask?.currStatus?.name === 'Возвращена преподавателем',
+         'bc-clr-consideration' : studentTask?.currStatus?.name === 'На рассмотрении',
+         'bc-clr-review' : studentTask?.currStatus?.name === 'На проверке',
+         'bc-clr-solved' : studentTask?.currStatus?.name === 'Решена',
+         'bc-clr-passed-tests' : studentTask?.currStatus?.name === 'Прошла тесты',
+         'bc-clr-on-testing' : studentTask?.currStatus?.name === 'На тестировании'
+         }">
+        <p class="p4" style="margin: 0; text-align: center; color: var(--c6)">{{studentTask?.currStatus ?.name}}</p>
+      </div>
+
+      <div *ngIf="studentTask?.task?.previousTasks?.length === 0" class="d-previous-tasks">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Задача не требует решения других задач</p>
+      </div>
+
+      <div *ngIf="studentTask?.task?.previousTasks?.length != 0"
+           class="d-previous-tasks">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Предыдущие задачи</p>
+        <a *ngFor="let prevTask of studentTask?.task?.previousTasks"
+           style="text-decoration: revert; color: var(--c2); text-align: center;"
+           routerLink="/chapter/{{prevTask.previousTask.block.chapter.serialNumber}}/block/{{prevTask.previousTask.block.serialNumber}}/task/{{prevTask.previousTask.serialNumber}}/student/{{studentTask?.user?.id}}">
+          {{prevTask.previousTask.name}}
+        </a>
+      </div>
+
+      <div class="d-check present-check" *ngIf="studentTask?.task?.manualCheckRequired == true">
+        <p  class="p4" style="margin: 0; color: var(--c6); text-align: center">
+          Задача требует подтверждения решения преподавателем
+        </p>
+      </div>
+      <div class="d-check none-check" *ngIf="studentTask?.task?.manualCheckRequired == false">
+        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">
+          Задача не требует подтверждения решения преподавателем
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

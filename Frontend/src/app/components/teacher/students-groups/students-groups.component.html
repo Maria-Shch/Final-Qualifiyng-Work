@@ -38,14 +38,11 @@
                 <td class="td-student">
                   <a routerLink='/user/{{userStatInfo.user.id}}'
                      class="p4" style="color: var(--c2); margin: 0">
-                    {{userStatInfo.user.lastname + ' ' + userStatInfo.user.name}}&nbsp;
+                    {{userStatInfo.user.lastname + ' ' + userStatInfo.user.name}}
                   </a>
                 </td>
                 <td *ngIf="userStatInfo.lastSolvedTask != null" class="td-task">
-                  <a routerLink='/chapter/{{userStatInfo.lastSolvedTask.block.chapter.serialNumber}}
-                     /block/{{userStatInfo.lastSolvedTask.block.serialNumber}}
-                     /task/{{userStatInfo.lastSolvedTask.serialNumber}}
-                     /student/{{userStatInfo.user.id}}'
+                  <a routerLink="/chapter/{{userStatInfo.lastSolvedTask.block.chapter.serialNumber}}/block/{{userStatInfo.lastSolvedTask.block.serialNumber}}/task/{{userStatInfo.lastSolvedTask.serialNumber}}/student/{{userStatInfo.user.id}}"
                      class="p4" style="color: var(--c2); margin: 0">
                     {{'Задача ' + userStatInfo.lastSolvedTask.block.chapter.serialNumber + '. ' +
                     userStatInfo.lastSolvedTask.block.serialNumber + '. ' +

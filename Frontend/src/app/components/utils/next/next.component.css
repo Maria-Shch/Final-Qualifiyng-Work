@@ -5,11 +5,3 @@
   align-items: end;
   margin: 0 10px 0 10px;
 }
-
-.icon-next{
-  background: url("../../../../assets/icons/next.png") no-repeat;
-  background-size: 18px;
-  width: 18px;
-  height: 18px;
-  margin: 0 10px 0 10px;
-}

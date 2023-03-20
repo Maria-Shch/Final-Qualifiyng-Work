@@ -7,7 +7,6 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
-import {IStudentTask} from "../interfaces/IStudentTask";
 
 @Injectable({
   providedIn: 'root'

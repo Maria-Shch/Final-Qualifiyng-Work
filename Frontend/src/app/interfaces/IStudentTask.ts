@@ -6,6 +6,6 @@ export interface IStudentTask{
   id: number;
   user: IUser;
   task: ITask;
-  status: IStatus;
+  currStatus: IStatus;
 }
 

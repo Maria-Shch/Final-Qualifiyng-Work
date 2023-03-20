@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ITask} from "../../../interfaces/ITask";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TaskService} from "../../../services/task.service";
@@ -10,9 +10,12 @@ import {toErrorPage} from "../../../utils/ToErrorPageFunc";
   styleUrls: ['./task-switcher.component.css']
 })
 export class TaskSwitcherComponent implements OnInit{
+  @Input()
+  forUser: boolean = false;
   serialNumberOfChapter: string = "";
   serialNumberOfBlock: string = "";
   serialNumberOfTask: string = "";
+  userId: string = "";
   nextTask: ITask | null = null;
   previousTask: ITask | null = null;
   linkToNextTask: string = "";
@@ -38,6 +41,11 @@ export class TaskSwitcherComponent implements OnInit{
         this.nextTask = data;
         if (data != null){
           this.linkToNextTask = `/chapter/${data.block.chapter.serialNumber}/block/${data.block.serialNumber}/task/${data.serialNumber}`;
+          if (this.forUser){
+            // @ts-ignore
+            this.userId = this.route.snapshot.paramMap.get("id");
+            this.linkToNextTask = this.linkToNextTask + `/student/${this.userId}`;
+          }
         }
       },
       (error)=>{ toErrorPage(error, this.router);});
@@ -47,6 +55,11 @@ export class TaskSwitcherComponent implements OnInit{
           this.previousTask = data;
           if (data != null){
             this.linkToPreviousTask = `/chapter/${data.block.chapter.serialNumber}/block/${data.block.serialNumber}/task/${data.serialNumber}`;
+            if (this.forUser){
+              // @ts-ignore
+              this.userId = this.route.snapshot.paramMap.get("id");
+              this.linkToPreviousTask = this.linkToPreviousTask + `/student/${this.userId}`;
+            }
           }
         },
       (error)=>{ toErrorPage(error, this.router);});

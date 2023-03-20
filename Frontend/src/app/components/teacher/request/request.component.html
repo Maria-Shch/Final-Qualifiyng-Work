@@ -21,14 +21,12 @@
         <div style="display: flex; flex-direction: column; margin: 0 0 15px 0">
           <p class="p6" style="margin: 0 0 0 10px;">Задача</p>
           <div class="d-info">
-            <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}
-                         /block/{{request.studentTask.task.block.serialNumber}}
-                         /task/{{request.studentTask.task.serialNumber}}'
+            <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}/block/{{request.studentTask.task.block.serialNumber}}/task/{{request.studentTask.task.serialNumber}}'
                class="p4" style="color: var(--c2); margin: 0">
               {{'Задача ' + request.studentTask.task.block.chapter.serialNumber + '. ' +
-            request.studentTask.task.block.serialNumber + '. ' +
-            request.studentTask.task.serialNumber + '. ' +
-            request.studentTask.task.name}}
+              request.studentTask.task.block.serialNumber + '. ' +
+              request.studentTask.task.serialNumber + '. ' +
+              request.studentTask.task.name}}
             </a>
           </div>
         </div>

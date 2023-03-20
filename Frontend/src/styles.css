@@ -310,7 +310,7 @@ h5, .h5 {
   background-size: 18px;
   width: 18px;
   height: 18px;
-  margin: 0 10px 0 10px;
+  margin: 5px 10px 0 10px;
 }
 
 .icon-previous{
@@ -318,7 +318,7 @@ h5, .h5 {
   background-size: 18px;
   width: 18px;
   height: 18px;
-  margin: 0 10px 0 10px;
+  margin: 5px 10px 0 10px;
 }
 textarea::-webkit-scrollbar {
   width: 6px;
@@ -404,4 +404,48 @@ textarea::-webkit-scrollbar-thumb {
   padding: 30px;
   background-color: #fff;
   border-radius: 8px;
+}
+
+.d-status{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 5px;
+  gap: 17px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.d-previous-tasks{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 5px;
+  gap: 8px;
+  border-radius: 8px;
+  background: var(--c5);
+}
+
+.d-check{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 5px;
+  gap: 17px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.present-check{
+  background: var(--c11);
+}
+
+.none-check{
+  background: var(--c5);
 }

@@ -8,6 +8,7 @@ import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -23,7 +24,11 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
     @GetMapping("/get")
     public User getUser(){
-        return authService.getUser().orElse(null);
+        Optional<User> user = authService.getUser();
+        if(user.isPresent()) {
+            user.get().setPassword(null);
+            return user.get();
+        } return null;
     }
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")

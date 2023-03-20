@@ -43,9 +43,7 @@
         </div>
         <p class="p4" style="color: #646464; margin: 0">{{request.creationTimeToPrint}}</p>
       </div>
-      <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}
-                     /block/{{request.studentTask.task.block.serialNumber}}
-                     /task/{{request.studentTask.task.serialNumber}}'
+      <a routerLink='/chapter/{{request.studentTask.task.block.chapter.serialNumber}}/block/{{request.studentTask.task.block.serialNumber}}/task/{{request.studentTask.task.serialNumber}}'
         class="h5" style="color: var(--c2); font-size: 20px;">
         {{'Задача ' + request.studentTask.task.block.chapter.serialNumber + '. ' +
         request.studentTask.task.block.serialNumber + '. ' +
