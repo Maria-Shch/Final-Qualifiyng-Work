@@ -64,4 +64,10 @@ public class UserController {
     public User registerNewUser (@RequestBody User newUser) {
         return userService.addUser(newUser);
     }
+
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @GetMapping("/get/{id}")
+    public User getUserById(@PathVariable long id){
+        return userService.findById(id).orElse(null);
+    }
 }

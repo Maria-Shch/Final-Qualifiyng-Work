@@ -17,6 +17,7 @@ import {RequestsComponent} from "./components/teacher/requests/requests.componen
 import {RequestComponent} from "./components/teacher/request/request.component";
 import {StudentsGroupsComponent} from "./components/teacher/students-groups/students-groups.component";
 import {StudentSolutionComponent} from "./components/teacher/student-solution/student-solution.component";
+import {StudentAccountComponent} from "./components/teacher/student-account/student-account.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
   { path: 'request/:id', component: RequestComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'studentsGroups', component: StudentsGroupsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask/student/:id',
-    component: StudentSolutionComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}}
+    component: StudentSolutionComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
+  { path: 'user/:id', component: StudentAccountComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
 ];
 
 @NgModule({

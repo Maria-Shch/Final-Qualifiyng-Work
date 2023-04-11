@@ -19,4 +19,8 @@ public interface StudentTaskRepo extends CrudRepository<StudentTask, Long> {
     int countAllByUserAndCurrStatus(User user, Status currStatus);
 
     List<StudentTask> findAll(Specification specification, Pageable pageable);
+
+    List<StudentTask> findAll(Specification specification);
+
+    int count(Specification specification);
 }

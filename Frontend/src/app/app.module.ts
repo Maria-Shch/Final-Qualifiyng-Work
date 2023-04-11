@@ -38,6 +38,7 @@ import { RequestComponent } from './components/teacher/request/request.component
 import { StudentsGroupsComponent } from './components/teacher/students-groups/students-groups.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { StudentSolutionComponent } from './components/teacher/student-solution/student-solution.component';
+import { StudentAccountComponent } from './components/teacher/student-account/student-account.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { StudentSolutionComponent } from './components/teacher/student-solution/
     CheckboxGroupComponent,
     RequestComponent,
     StudentsGroupsComponent,
-    StudentSolutionComponent
+    StudentSolutionComponent,
+    StudentAccountComponent
   ],
   imports: [
     BrowserModule,

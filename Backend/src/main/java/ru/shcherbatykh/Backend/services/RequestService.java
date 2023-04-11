@@ -112,7 +112,7 @@ public class RequestService {
         return requestRepo.findAll(getSpecification(teacher, filter), sortedByCreationTimeDesc);
     }
 
-    public Specification<Request> getSpecification(User teacher, Filter filter) {
+    private Specification<Request> getSpecification(User teacher, Filter filter) {
 
         Specification<Request> specification = hasTeacher(teacher.getId());
 

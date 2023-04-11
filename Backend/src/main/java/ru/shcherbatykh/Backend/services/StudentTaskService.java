@@ -3,26 +3,38 @@ package ru.shcherbatykh.Backend.services;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.Backend.dto.BlockAndStatInfo;
+import ru.shcherbatykh.Backend.dto.ChapterAndStatInfo;
+import ru.shcherbatykh.Backend.dto.StudentProgress;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.repositories.StudentTaskRepo;
+import ru.shcherbatykh.Backend.repositories.TaskRepo;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StudentTaskService {
+    private final TaskRepo taskRepo;
     private final StudentTaskRepo studentTaskRepo;
     private final StatusService statusService;
     private final TaskStatusesHistoryService taskStatusesHistoryService;
+    private final ChapterService chapterService;
+    private final BlockService blockService;
 
-    public StudentTaskService(StudentTaskRepo studentTaskRepo, StatusService statusService, 
-                              TaskStatusesHistoryService taskStatusesHistoryService) {
+    public StudentTaskService(TaskRepo taskRepo, StudentTaskRepo studentTaskRepo, StatusService statusService,
+                              TaskStatusesHistoryService taskStatusesHistoryService, ChapterService chapterService,
+                              BlockService blockService) {
+        this.taskRepo = taskRepo;
         this.studentTaskRepo = studentTaskRepo;
         this.statusService = statusService;
         this.taskStatusesHistoryService = taskStatusesHistoryService;
+        this.chapterService = chapterService;
+        this.blockService = blockService;
     }
 
     public StudentTask getStudentTask(User user, Task task){
@@ -114,6 +126,110 @@ public class StudentTaskService {
             query.orderBy(criteriaBuilder.desc(chapter.get("serialNumber")),
                     criteriaBuilder.desc(block.get("serialNumber")),
                     criteriaBuilder.desc(task.get("serialNumber")));
+            return predicate;
+        };
+    }
+
+    public StudentProgress getStudentProgress(User user){
+        StudentProgress studentProgress = new StudentProgress();
+        List<ChapterAndStatInfo> chapterAndStatInfoList = new ArrayList<>();
+
+        List<Chapter> chapters = chapterService.getChaptersSortBySerialNumber();
+        for (Chapter chapter: chapters){
+            ChapterAndStatInfo chapterAndStatInfo = new ChapterAndStatInfo();
+            chapterAndStatInfo.setChapter(chapter);
+            chapterAndStatInfo.setCountOfSolvedTasks(getCountSolvedTasksByUserAndChapter(user, chapter));
+            chapterAndStatInfo.setCountOfAllTasks(getCountTasksByChapter(chapter));
+            List<BlockAndStatInfo> blockAndStatInfoList = new ArrayList<>();
+
+            List<Block> blocks = blockService.getBlocksOfChapterWithoutTheory(chapter.getSerialNumber());
+            for(Block block: blocks){
+                BlockAndStatInfo blockAndStatInfo = new BlockAndStatInfo();
+                blockAndStatInfo.setBlock(block);
+                blockAndStatInfo.setCountOfSolvedTasks(getCountSolvedTasksByUserAndBlock(user, block));
+                blockAndStatInfo.setCountOfAllTasks(taskRepo.countByBlock(block));
+
+                //todo clear user info
+                List<StudentTask> studentTaskList = getStudentTasksByUserAndBlock(user, block);
+                blockAndStatInfo.setStudentTaskList(studentTaskList);
+
+                blockAndStatInfoList.add(blockAndStatInfo);
+            }
+            chapterAndStatInfo.setBlockAndStatInfoList(blockAndStatInfoList);
+
+            chapterAndStatInfoList.add(chapterAndStatInfo);
+        }
+        studentProgress.setChapterAndStatInfoList(chapterAndStatInfoList);
+        return studentProgress;
+    }
+
+    public List<StudentTask> getStudentTasksByUserAndBlock(User user, Block block){
+        return studentTaskRepo.findAll(getSpecificationByUserAndBlock(user.getId(), block.getId()));
+    }
+
+    private Specification<StudentTask> getSpecificationByUserAndBlock(Long userId, Long blockId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Task, StudentTask> task = root.join("task");
+            Join<Block, Join<Task, StudentTask>> block = task.join("block");
+            Predicate user = criteriaBuilder.equal(root.get("user"), userId);
+            Predicate blockPr = criteriaBuilder.equal(task.get("block"), blockId);
+            Predicate predicate = criteriaBuilder.and(user, blockPr);
+            query.orderBy(criteriaBuilder.asc(block.get("serialNumber")),
+                    criteriaBuilder.asc(task.get("serialNumber")));
+            return predicate;
+        };
+    }
+
+    public int getCountSolvedTasksByUserAndBlock(User user, Block block){
+        return studentTaskRepo.count(getSpecificationForSolvedTasksByUserAndBlock(user.getId(), block.getId(),
+                statusService.getStatusByName("Решена").getId()));
+    }
+
+    private Specification<StudentTask> getSpecificationForSolvedTasksByUserAndBlock(Long userId, Long blockId, Long statusId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Task, StudentTask> task = root.join("task");
+            Join<Block, Join<Task, StudentTask>> block = task.join("block");
+            Predicate user = criteriaBuilder.equal(root.get("user"), userId);
+            Predicate status = criteriaBuilder.equal(root.get("currStatus"), statusId);
+            Predicate blockPr = criteriaBuilder.equal(task.get("block"), blockId);
+            Predicate predicate = criteriaBuilder.and(user, status, blockPr);
+            query.orderBy(criteriaBuilder.asc(block.get("serialNumber")),
+                    criteriaBuilder.asc(task.get("serialNumber")));
+            return predicate;
+        };
+    }
+
+    public int getCountSolvedTasksByUserAndChapter(User user, Chapter chapter){
+        return studentTaskRepo.count(getSpecificationForSolvedTasksByUserAndChapter(user.getId(), chapter.getId(),
+                statusService.getStatusByName("Решена").getId()));
+    }
+
+    private Specification<StudentTask> getSpecificationForSolvedTasksByUserAndChapter(Long userId, Long chapterId, Long statusId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Task, StudentTask> task = root.join("task");
+            Join<Block, Join<Task, StudentTask>> block = task.join("block");
+            Join<Chapter, Join<Block, Join<Task, StudentTask>>> chapter = block.join("chapter");
+            Predicate user = criteriaBuilder.equal(root.get("user"), userId);
+            Predicate status = criteriaBuilder.equal(root.get("currStatus"), statusId);
+            Predicate blockPr = criteriaBuilder.equal(block.get("chapter"), chapterId);
+            Predicate predicate = criteriaBuilder.and(user, status, blockPr);
+            query.orderBy(criteriaBuilder.asc(chapter.get("serialNumber")),
+                    criteriaBuilder.asc(block.get("serialNumber")),
+                    criteriaBuilder.asc(task.get("serialNumber")));
+            return predicate;
+        };
+    }
+
+    public int getCountTasksByChapter(Chapter chapter){
+        return taskRepo.count(getSpecificationTasksByChapter(chapter.getId()));
+    }
+
+    private Specification<Task> getSpecificationTasksByChapter(Long chapterId){
+        return (root, query, criteriaBuilder) -> {
+            Join<Block, Task> block = root.join("block");
+            Join<Chapter, Join<Block, Task>> chapter = block.join("chapter");
+            Predicate chapterIdPr = criteriaBuilder.equal(block.get("chapter"), chapterId);
+            Predicate predicate = criteriaBuilder.and(chapterIdPr);
             return predicate;
         };
     }

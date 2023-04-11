@@ -42,6 +42,7 @@ body {
   --c16: #e8e8fd;
   --c17: rgb(62 195 50);
   --c18: rgb(62 111 221);
+  --c19: #d1c3e375;
 
   --imgXY-back: 18px;
   --imgXY-login-logout: 40px;
@@ -51,6 +52,7 @@ body {
 
   --box-shadow-header: 0px 6px 20px 7px #D6CEE6;
   --box-shadow-div: 0px 10px 15px 0px #D6CEE6;
+  --box-shadow-panel: 0px 8px 8px 0px #e8e2f3;
 }
 
 *:focus {
@@ -257,6 +259,10 @@ h5, .h5 {
 
 .bc-clr-default{
   background: var(--c5);
+}
+
+.bc-clr-default2{
+  background: var(--c14);
 }
 
 /*Не прошла тесты, возвращена преподавателем*/

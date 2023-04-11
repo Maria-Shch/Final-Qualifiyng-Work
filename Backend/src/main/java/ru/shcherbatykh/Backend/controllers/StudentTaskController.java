@@ -1,10 +1,10 @@
 package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.shcherbatykh.Backend.dto.StudentProgress;
 import ru.shcherbatykh.Backend.models.StudentTask;
 import ru.shcherbatykh.Backend.models.Task;
 import ru.shcherbatykh.Backend.models.User;
@@ -27,13 +27,19 @@ public class StudentTaskController {
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/student/{userId}")
     public StudentTask getStudentTask(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
-                                      @PathVariable int serialNumberOfTask, @PathVariable long userId){
+                                      @PathVariable int serialNumberOfTask, @PathVariable long userId) {
         User user = userService.findById(userId).orElse(null);
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         if (user == null || task == null) return null;
         else {
-            StudentTask studentTask = studentTaskService.getStudentTask(user, task);
-            return studentTask;
+            return studentTaskService.getStudentTask(user, task);
         }
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/student/{userId}/progress")
+    public StudentProgress getStudentProgress( @PathVariable long userId) {
+        User user = userService.findById(userId).orElse(null);
+        return studentTaskService.getStudentProgress(user);
     }
 }

@@ -1,0 +1,143 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/info.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="color: var(--c6);">Информация о студенте</h2>
+  </div>
+
+  <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 35px">
+    <form [formGroup]="personalDataForm" class="form-registration" style="display: flex; flex-direction: column">
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Фамилия</p>
+        <input type="text"
+               formControlName="lastname"
+               id="lastname"
+               placeholder="Фамилия"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Имя</p>
+        <input type="text"
+               formControlName="name"
+               id="name"
+               placeholder="Имя"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Отчество</p>
+        <input type="text"
+               formControlName="patronymic"
+               id="patronymic"
+               placeholder="Отчество"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Почта</p>
+        <input type="text"
+               formControlName="username"
+               id="username"
+               placeholder="Электронная почта"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </form>
+    <div *ngIf="user?.role === 'USER'" style="display: flex; flex-direction: column">
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Группа</p>
+        <input type="text"
+               readonly
+               value="{{user?.group === null ? 'Без группы' : user?.group?.name}}"
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Преподаватель</p>
+        <input type="text"
+               readonly
+               value="{{teacher}}"
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; margin-left: 35px">
+    <h3 style="color: var(--c2);">Прогресс решения задач</h3>
+  </div>
+
+  <div style="margin-left: 35px">
+    <div *ngFor="let chapterAndStatInfo of studentProgress?.chapterAndStatInfoList" class="div-chapter">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div style="display: flex; flex-direction: row; align-items: end; justify-content: space-between; width: 100%;">
+                <a routerLink='/chapter/{{chapterAndStatInfo.chapter.serialNumber}}'
+                   class="h4" style="color: var(--c2); font-size: 20px;">
+                  {{'Глава ' + chapterAndStatInfo.chapter.serialNumber + '. ' + chapterAndStatInfo.chapter.name}}
+                </a>
+                <p class="p4" style="color: var(--c6); margin: 0">
+                  {{'Решено ' + chapterAndStatInfo.countOfSolvedTasks + '/' + chapterAndStatInfo.countOfAllTasks}}
+                </p>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngFor="let blockAndStatInfo of chapterAndStatInfo.blockAndStatInfoList"  class="div-block">
+            <mat-accordion>
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div  style="display: flex; flex-direction: row; align-items: end; justify-content: space-between; width: 100%">
+                      <a routerLink='/chapter/{{chapterAndStatInfo.chapter.serialNumber}}/block/{{blockAndStatInfo.block.serialNumber}}/theory'
+                         class="p3" style="color: var(--c2); font-size: 20px;">
+                        {{'Блок ' + chapterAndStatInfo.chapter.serialNumber + '. ' + blockAndStatInfo.block.serialNumber + '. ' + blockAndStatInfo.block.name}}
+                      </a>
+                      <p class="p4" style="color: var(--c6); margin: 0">
+                        {{'Решено ' + blockAndStatInfo.countOfSolvedTasks + '/' + blockAndStatInfo.countOfAllTasks}}
+                      </p>
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngFor="let studentTask of blockAndStatInfo.studentTaskList"  class="div-task">
+                  <a *ngIf="studentTask.currStatus.name != 'Не решена'" routerLink='/chapter/{{chapterAndStatInfo.chapter.serialNumber}}/block/{{blockAndStatInfo.block.serialNumber}}/task/{{studentTask.task.serialNumber}}/student/{{studentTask.user.id}}'
+                     class="p4" style="color: var(--c2); font-size: 20px; margin: 0">
+                    {{'Задача ' + chapterAndStatInfo.chapter.serialNumber + '. ' + blockAndStatInfo.block.serialNumber + '. ' + studentTask.task.serialNumber + '. ' + studentTask.task.name}}
+                  </a>
+                  <p *ngIf="studentTask.currStatus.name == 'Не решена'"
+                     class="p4" style="color: var(--c6); font-size: 20px;margin: 0">
+                    {{'Задача ' + chapterAndStatInfo.chapter.serialNumber + '. ' + blockAndStatInfo.block.serialNumber + '. ' + studentTask.task.serialNumber + '. ' + studentTask.task.name}}
+                  </p>
+                  <div class="d-status"
+                       [ngClass]="{
+                       'bc-clr-default2' : studentTask.currStatus?.name === 'Не решена' || studentTask.currStatus === null,
+                       'bc-clr-returned-not-passed-tests' : studentTask.currStatus?.name === 'Не прошла тесты' || studentTask.currStatus?.name === 'Возвращена преподавателем',
+                       'bc-clr-consideration' : studentTask.currStatus?.name === 'На рассмотрении',
+                       'bc-clr-review' : studentTask.currStatus?.name === 'На проверке',
+                       'bc-clr-solved' : studentTask.currStatus?.name === 'Решена',
+                       'bc-clr-passed-tests' : studentTask.currStatus?.name === 'Прошла тесты',
+                       'bc-clr-on-testing' : studentTask.currStatus?.name === 'На тестировании'
+                       }">
+                    <p class="p5" style="margin: 0; text-align: center; color: var(--c6)">{{studentTask.currStatus?.name}}</p>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
