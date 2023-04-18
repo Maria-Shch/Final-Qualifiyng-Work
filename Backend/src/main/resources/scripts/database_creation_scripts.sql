@@ -163,6 +163,15 @@ CREATE TABLE event_history(
     FOREIGN KEY (request_id) REFERENCES requests (id)
 );
 
+
+CREATE TABLE years(
+     id serial PRIMARY KEY,
+     name int NOT NULL
+);
+
+ALTER TABLE groups ADD year_id int;
+ALTER TABLE groups
+    ADD CONSTRAINT fk_groups_years FOREIGN KEY (year_id) REFERENCES years (id);
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');

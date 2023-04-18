@@ -4,6 +4,11 @@ import {IGroup} from "../interfaces/IGroup";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../environments/enviroment";
 import {IGroupWithUsersStatInfo} from "../dto_interfaces/IGroupWithUsersStatInfo";
+import {IRequestType} from "../interfaces/IRequestType";
+import {IYear} from "../interfaces/IYear";
+import {IFaculty} from "../interfaces/IFaculty";
+import {IUser} from "../interfaces/IUser";
+import {IUserStatInfo} from "../dto_interfaces/IUserStatInfo";
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +20,16 @@ export class GroupService {
     });
   }
 
-  getGroupsWithUsersStatInfo(): Observable<IGroupWithUsersStatInfo[]> {
+  getGroupsWithUsersStatInfoForTeacher(): Observable<IGroupWithUsersStatInfo[]> {
     return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forTeacher');
+  }
+
+  getGroupsWithUsersStatInfoForAdmin(): Observable<IGroupWithUsersStatInfo[]> {
+    return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forAdmin');
+  }
+
+  getStudentsWithoutGroupWithStatInfo(): Observable<IUserStatInfo[]>{
+    return this.httpclient.get<IUserStatInfo[]>(environment.apiUrl + '/group/all/studentsWithoutGroup/forAdmin');
   }
 
   setParamsToNullExcludeId(group: IGroup): IGroup{
@@ -30,5 +43,13 @@ export class GroupService {
     group.teacher = null;
     group.year = null;
     return group;
+  }
+
+  getYears(): Observable<IYear[]> {
+    return this.httpclient.get<IYear[]>(environment.apiUrl + '/group/years');
+  }
+
+  getFaculties(): Observable<IFaculty[]> {
+    return this.httpclient.get<IFaculty[]>(environment.apiUrl + '/group/faculties');
   }
 }

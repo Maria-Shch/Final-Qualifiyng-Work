@@ -9,14 +9,13 @@ import {IGroupWithUsersStatInfo} from "../../../dto_interfaces/IGroupWithUsersSt
 })
 export class StudentsGroupsComponent implements OnInit{
   groupsWithUsersStatInfo: IGroupWithUsersStatInfo[] = [];
-  panelOpenState = false;
 
   constructor(
     private groupService: GroupService
   ) {}
 
   ngOnInit(): void {
-    this.groupService.getGroupsWithUsersStatInfo().subscribe((data: IGroupWithUsersStatInfo[]) => {
+    this.groupService.getGroupsWithUsersStatInfoForTeacher().subscribe((data: IGroupWithUsersStatInfo[]) => {
       this.groupsWithUsersStatInfo = data;
     });
   }

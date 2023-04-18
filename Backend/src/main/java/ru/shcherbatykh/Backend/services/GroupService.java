@@ -39,6 +39,17 @@ public class GroupService {
         List<Group> groups = getGroupsByTeacher(teacher).stream()
                 .sorted(Comparator.comparing(Group::getName))
                 .toList();
+        return convertGroupsToGroupsWithUsersStatInfo(groups);
+    }
+
+    public List<GroupWithUsersStatInfo> getGroupsWithUsersByAdmin() {
+        List<Group> groups = getGroups().stream()
+                .sorted(Comparator.comparing(Group::getName))
+                .toList();
+        return convertGroupsToGroupsWithUsersStatInfo(groups);
+    }
+
+    public List<GroupWithUsersStatInfo> convertGroupsToGroupsWithUsersStatInfo(List<Group> groups){
         List<GroupWithUsersStatInfo> groupWithUsersStatInfos = new ArrayList<>();
         for(Group group: groups){
             GroupWithUsersStatInfo groupWithUsersStatInfo = new GroupWithUsersStatInfo();

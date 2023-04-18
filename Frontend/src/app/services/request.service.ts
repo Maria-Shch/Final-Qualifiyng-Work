@@ -5,7 +5,7 @@ import {environment} from "../environments/enviroment";
 import {IRequest} from "../interfaces/IRequest";
 import {IRequestType} from "../interfaces/IRequestType";
 import {IRequestState} from "../interfaces/IRequestState";
-import {IFilter} from "../dto_interfaces/IFilter";
+import {IFilterRequests} from "../dto_interfaces/IFilterRequests";
 import {IEventHistory} from "../interfaces/IEventHistory";
 
 @Injectable({
@@ -29,11 +29,11 @@ export class RequestService {
     return this.httpclient.get<IRequestState[]>(environment.apiUrl + `/request/states`);
   }
 
-  public getCountRequestsAfterFiltering(filter: IFilter) : Observable<number> {
+  public getCountRequestsAfterFiltering(filter: IFilterRequests) : Observable<number> {
     return this.httpclient.post<number>(environment.apiUrl + `/request/count/filter`, filter);
   }
 
-  public getRequests(pageNumber: number, filter: IFilter | null) : Observable<IRequest[]> {
+  public getRequests(pageNumber: number, filter: IFilterRequests | null) : Observable<IRequest[]> {
     return this.httpclient.post<IRequest[]>(environment.apiUrl + `/request/get/${pageNumber}`, filter);
   }
   public getRequest(id: number) : Observable<IRequest> {

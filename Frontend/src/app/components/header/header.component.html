@@ -10,14 +10,18 @@
   >Проверка решений</a>
 
   <a routerLink="/studentsGroups" class="h3 a-none"
-     *ngIf="userService.roleMatch(['TEACHER', 'ADMIN'])"
+     *ngIf="userService.roleMatch(['TEACHER'])"
+  >Студенты и группы</a>
+
+  <a routerLink="/allStudentsGroups" class="h3 a-none"
+     *ngIf="userService.roleMatch(['ADMIN'])"
   >Студенты и группы</a>
 
   <a routerLink="/teachers" class="h3 a-none"
      *ngIf="userService.roleMatch(['ADMIN'])"
   >Преподаватели</a>
 
-  <a *ngIf="! isLoggedIn()" routerLink="/login" class="a-img icon-login"></a>
+  <a *ngIf="!isLoggedIn()" routerLink="/login" class="a-img icon-login"></a>
   <button *ngIf="isLoggedIn()" type="button" (click)="logout()" class="a-img icon-logout"></button>
 </nav>
 

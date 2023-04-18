@@ -1,0 +1,62 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/students.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Все группы</h2>
+  </div>
+  <div style="display:flex; flex-direction: row; justify-content: space-between; width: 100%">
+    <div style="display: flex; flex-direction: column; width: 265px; align-items: center; margin-left: 20px;">
+      <div class="filter">
+        <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
+        <p class="h5" style="color: var(--c6); margin: 15px 0 0 10px">Год</p>
+        <app-checkbox-group [options]="yearOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+        <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Направление</p>
+        <app-checkbox-group [options]="facultyOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+        <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Преподаватель</p>
+        <app-checkbox-group [options]="teacherOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+      </div>
+      <button (click)="createNewGroup()"
+              class="h5 d-violet-button" style="width: 100%; margin: 25px 0 25px 0;">
+        Создать новую группу
+      </button>
+    </div>
+    <div style="display: flex; flex-direction: column; width: 965px">
+      <app-students-without-group-drop-down-list
+        [studentsWithoutGroupWithStatInfo]="studentsWithoutGroupWithStatInfo"
+        [admin]="admin">
+      </app-students-without-group-drop-down-list>
+      <div *ngFor=" let groupWithUsersStatInfo of groupsWithUsersStatInfo"
+           style="display: flex; flex-direction: row; align-items: center; margin-bottom: 25px;">
+        <app-group-drop-down-list [groupWithUsersStatInfo]="groupWithUsersStatInfo" [isAdmin]="true">
+        </app-group-drop-down-list>
+        <button class="b-edit" (click)="openModalEditGroup(groupWithUsersStatInfo.group!.id!)"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalEditGroup" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container" style="padding: 20px">
+      <header class="header-modal">
+        <button class="b-close" (click)="this.showModalEditGroup=false"></button>
+      </header>
+      <section style="margin: 15px 0 0 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+          Изменить название или преподавателя
+        </button>
+        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+          Добавить или удалить студентов
+        </button>
+        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+          Расформировать группу
+        </button>
+        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+          Удалить группу
+        </button>
+      </section>
+    </div>
+  </div>
+</div>

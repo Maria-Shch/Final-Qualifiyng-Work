@@ -3,6 +3,7 @@ import {ILevelOfEdu} from "./ILevelOfEdu";
 import {IProfile} from "./IProfile";
 import {IFaculty} from "./IFaculty";
 import {IFormOfEdu} from "./IFormOfEdu";
+import {IYear} from "./IYear";
 
 export interface IGroup {
   id: number | null;
@@ -12,7 +13,7 @@ export interface IGroup {
   formOfEdu: IFormOfEdu | null;
   courseNumber: number | null;
   groupNumber: number | null;
-  year: number | null;
+  year: IYear | null;
   name: string | null;
   teacher: IUser | null;
 }

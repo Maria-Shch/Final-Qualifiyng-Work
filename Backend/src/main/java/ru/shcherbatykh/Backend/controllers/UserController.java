@@ -70,4 +70,10 @@ public class UserController {
     public User getUserById(@PathVariable long id){
         return userService.findById(id).orElse(null);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/teachers")
+    public List<User> getTeachers() {
+        return userService.getTeachersSorted();
+    }
 }

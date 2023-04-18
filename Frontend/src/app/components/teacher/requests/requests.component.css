@@ -35,13 +35,3 @@
   text-decoration: underline var(--c6);
   cursor: pointer;
 }
-
-.filter{
-  display: flex;
-  flex-direction: column;
-  background: var(--c5);
-  padding: 20px;
-  width: 250px;
-  border-radius: 30px;
-  height: fit-content;
-}

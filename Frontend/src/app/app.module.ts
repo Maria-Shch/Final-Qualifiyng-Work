@@ -39,6 +39,9 @@ import { StudentsGroupsComponent } from './components/teacher/students-groups/st
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { StudentSolutionComponent } from './components/teacher/student-solution/student-solution.component';
 import { StudentAccountComponent } from './components/teacher/student-account/student-account.component';
+import { AllStudentsGroupsComponent } from './components/admin/all-students-groups/all-students-groups.component';
+import { GroupDropDownListComponent } from './components/utils/group-drop-down-list/group-drop-down-list.component';
+import { StudentsWithoutGroupDropDownListComponent } from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,10 @@ import { StudentAccountComponent } from './components/teacher/student-account/st
     RequestComponent,
     StudentsGroupsComponent,
     StudentSolutionComponent,
-    StudentAccountComponent
+    StudentAccountComponent,
+    AllStudentsGroupsComponent,
+    GroupDropDownListComponent,
+    StudentsWithoutGroupDropDownListComponent
   ],
   imports: [
     BrowserModule,

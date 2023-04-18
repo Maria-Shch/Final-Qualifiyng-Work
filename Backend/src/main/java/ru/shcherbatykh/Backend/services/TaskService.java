@@ -272,21 +272,4 @@ public class TaskService {
         requestService.cancelRequest(stTask);
         return true;
     }
-
-//    public int getTasksByChapter(Chapter chapter){
-//        return taskRepo.count(getSpecification(chapter));
-//    }
-//
-//    private Specification<Task> getSpecification(Chapter chapter){
-//        return (root, query, criteriaBuilder) -> {
-//            Join<Chapter, Block> block = root.join("chapter");
-//            Join<Task, Join<Chapter, Block>> task = block.join("task");
-//            Predicate chapterPredicate = criteriaBuilder.equal(root.get("chapter"), chapter.getId());
-//            query.orderBy(criteriaBuilder.desc(chapter.get("serialNumber")),
-//                    criteriaBuilder.desc(block.get("serialNumber")),
-//                    criteriaBuilder.desc(task.get("serialNumber")));
-//            return predicate;
-//        };
-//    }
-
 }

@@ -18,6 +18,7 @@ import {RequestComponent} from "./components/teacher/request/request.component";
 import {StudentsGroupsComponent} from "./components/teacher/students-groups/students-groups.component";
 import {StudentSolutionComponent} from "./components/teacher/student-solution/student-solution.component";
 import {StudentAccountComponent} from "./components/teacher/student-account/student-account.component";
+import {AllStudentsGroupsComponent} from "./components/admin/all-students-groups/all-students-groups.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,7 +35,8 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate:[AuthGuard], data:{roles:['USER', 'TEACHER', 'ADMIN']}},
   { path: 'requests', component: RequestsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'request/:id', component: RequestComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
-  { path: 'studentsGroups', component: StudentsGroupsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
+  { path: 'studentsGroups', component: StudentsGroupsComponent, canActivate:[AuthGuard], data:{roles:['TEACHER']}},
+  { path: 'allStudentsGroups', component: AllStudentsGroupsComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask/student/:id',
     component: StudentSolutionComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'user/:id', component: StudentAccountComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},

@@ -16,4 +16,6 @@ public interface UserRepo extends CrudRepository<User, Long> {
     List<User> findAll();
     Optional<User> getUserByRole(Role role);
     List<User> findAllByGroup(Group group, Sort sort);
+    List<User> findAllByRole(Role role);
+    List<User> findByGroupIsNullAndRole(Role role);
 }

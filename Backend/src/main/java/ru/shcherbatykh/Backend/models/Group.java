@@ -38,7 +38,10 @@ public class Group {
 
     private int courseNumber;
     private int groupNumber;
-    private int year;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "year_id")
+    private Year year;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")

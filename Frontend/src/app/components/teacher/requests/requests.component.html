@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div style="width: var(--width-main-container); display: flex; flex-direction: row; justify-content: space-around; margin: 60px 0 20px 0">
-  <div class="filter">
+  <div class="filter" style="width: 265px">
     <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
     <p class="h5" style="color: var(--c6); margin: 15px 0 0 10px">Группа</p>
     <app-checkbox-group [options]="groupsOptions" (change)="onChangeFilter($event)"></app-checkbox-group>

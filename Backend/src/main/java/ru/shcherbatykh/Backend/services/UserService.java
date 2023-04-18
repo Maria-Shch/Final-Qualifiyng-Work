@@ -6,24 +6,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.Backend.classes.Role;
+import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.Group;
 import ru.shcherbatykh.Backend.models.StudentTask;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.repositories.UserRepo;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final StudentTaskService studentTaskService;
 
-    public UserService(UserRepo userRepo, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepo, @Lazy PasswordEncoder passwordEncoder, StudentTaskService studentTaskService) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.studentTaskService = studentTaskService;
     }
 
     @Transactional
@@ -104,5 +104,24 @@ public class UserService {
         return Sort.by(Sort.Direction.ASC, "lastname")
                 .and(Sort.by(Sort.Direction.ASC, "name"))
                 .and(Sort.by(Sort.Direction.ASC, "patronymic"));
+    }
+
+    public List<User> getTeachersSorted() {
+        List<User> teachers = userRepo.findAllByRole(Role.TEACHER);
+        Optional<User> admin = userRepo.getUserByRole(Role.ADMIN);
+        admin.ifPresent(teachers::add);
+        return teachers.stream()
+                .sorted(Comparator.comparing(User::getLastname))
+                .toList();
+    }
+
+
+    public List<UserStatInfo> getStudentsWithoutGroupWithStatInfo() {
+        List<User> studentsWithoutGroup = userRepo.findByGroupIsNullAndRole(Role.USER);
+        List<UserStatInfo> userStatInfoList = new ArrayList<>();
+        for(User user: studentsWithoutGroup){
+            userStatInfoList.add(studentTaskService.getUserStatInfo(user));
+        }
+        return userStatInfoList;
     }
 }
