@@ -2,7 +2,7 @@ package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.shcherbatykh.Backend.dto.Filter;
+import ru.shcherbatykh.Backend.dto.FilterRequests;
 import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.services.*;
 
@@ -51,21 +51,21 @@ public class RequestController {
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
     @PostMapping("/count/filter")
-    public int getCountRequestsAfterFiltering(@RequestBody Filter filter) {
+    public int getCountRequestsAfterFiltering(@RequestBody FilterRequests filterRequests) {
         User teacher = authService.getUser().orElse(null);
-        return requestService.getCountRequestsAfterFiltering(teacher, filter);
+        return requestService.getCountRequestsAfterFiltering(teacher, filterRequests);
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
     @PostMapping("/get/{pageNumber}")
     public List<Request> getRequestsByPageNumberAndFilter(@PathVariable int pageNumber,
-                                                          @RequestBody(required = false) Filter filter) {
+                                                          @RequestBody(required = false) FilterRequests filterRequests) {
         User teacher = authService.getUser().orElse(null);
         List<Request> requests;
-        if (filter == null){
+        if (filterRequests == null){
             requests = requestService.getRequestsByTeacherAndPageNumber(teacher, pageNumber);
         } else {
-            requests = requestService.getRequestsByPageNumberAndFilter(teacher, pageNumber, filter);
+            requests = requestService.getRequestsByPageNumberAndFilter(teacher, pageNumber, filterRequests);
         }
         return requestService.setToNullSomeFields(requests);
     }

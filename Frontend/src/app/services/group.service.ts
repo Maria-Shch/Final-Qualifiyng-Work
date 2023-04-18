@@ -9,6 +9,7 @@ import {IYear} from "../interfaces/IYear";
 import {IFaculty} from "../interfaces/IFaculty";
 import {IUser} from "../interfaces/IUser";
 import {IUserStatInfo} from "../dto_interfaces/IUserStatInfo";
+import {IFilterGroups} from "../dto_interfaces/IFilterGroups";
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +52,9 @@ export class GroupService {
 
   getFaculties(): Observable<IFaculty[]> {
     return this.httpclient.get<IFaculty[]>(environment.apiUrl + '/group/faculties');
+  }
+
+  getGroupsAfterFiltering(filterGroups: IFilterGroups): Observable<IGroupWithUsersStatInfo[]> {
+    return this.httpclient.post<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forAdmin', filterGroups);
   }
 }

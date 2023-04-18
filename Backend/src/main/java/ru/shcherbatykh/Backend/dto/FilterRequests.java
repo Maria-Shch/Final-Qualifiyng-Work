@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Filter {
+public class FilterRequests {
     private List<Long> groupIds;
     private List<Long> requestTypeIds;
     private List<Long> requestStateIds;

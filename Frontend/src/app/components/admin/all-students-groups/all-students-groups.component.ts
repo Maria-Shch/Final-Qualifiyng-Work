@@ -54,7 +54,17 @@ export class AllStudentsGroupsComponent implements OnInit{
     });
   }
 
-  onChangeFilter(value: any) {};
+  onChangeFilter(value: any) {
+    this.filterGroups = {
+      yearIds: this.yearOptions.filter(x => x.checked).map(x => x.value),
+      facultyIds: this.facultyOptions.filter(x => x.checked).map(x => x.value),
+      teacherIds: this.teacherOptions.filter(x => x.checked).map(x => x.value)
+    }
+
+    this.groupService.getGroupsAfterFiltering(this.filterGroups).subscribe((data: IGroupWithUsersStatInfo[]) => {
+      this.groupsWithUsersStatInfo = data;
+    });
+  }
 
   createNewGroup() {
 

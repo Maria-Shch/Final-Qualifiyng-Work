@@ -1,9 +1,8 @@
 package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.dto.FilterGroups;
 import ru.shcherbatykh.Backend.dto.GroupWithUsersStatInfo;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.Faculty;
@@ -12,7 +11,6 @@ import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.models.Year;
 import ru.shcherbatykh.Backend.services.*;
 
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -35,9 +33,7 @@ public class GroupController {
 
     @GetMapping("/all")
     public List<Group> getAllGroups() {
-        return groupService.getGroups().stream()
-                .sorted(Comparator.comparing(Group::getName))
-                .toList();
+        return groupService.getGroups();
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
@@ -63,6 +59,12 @@ public class GroupController {
     @GetMapping("/all/forAdmin")
     public List<GroupWithUsersStatInfo> getGroupsByAdmin() {
         return groupService.getGroupsWithUsersByAdmin();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/all/forAdmin")
+    public List<GroupWithUsersStatInfo> getGroupsByAdminAfterFiltering(@RequestBody FilterGroups filterGroups) {
+        return groupService.getGroupsWithUsersByAdmin(filterGroups);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")

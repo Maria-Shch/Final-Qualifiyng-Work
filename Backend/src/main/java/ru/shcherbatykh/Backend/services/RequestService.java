@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import ru.shcherbatykh.Backend.dto.Filter;
+import ru.shcherbatykh.Backend.dto.FilterRequests;
 import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.repositories.RequestRepo;
 
@@ -96,36 +96,36 @@ public class RequestService {
     }
 
 
-    public int getCountRequestsAfterFiltering(User teacher, Filter filter) {
-        return requestRepo.count(getSpecification(teacher, filter));
+    public int getCountRequestsAfterFiltering(User teacher, FilterRequests filterRequests) {
+        return requestRepo.count(getSpecification(teacher, filterRequests));
     }
 
-    public List<Request> getRequestsByPageNumberAndFilter(User teacher, int pageNumber, Filter filter) {
+    public List<Request> getRequestsByPageNumberAndFilter(User teacher, int pageNumber, FilterRequests filterRequests) {
         Sort sort;
-        if (filter.isAscending()){
+        if (filterRequests.isAscending()){
            sort = Sort.by("creationTime").ascending();
         } else {
             sort = Sort.by("creationTime").descending();
         }
         Pageable sortedByCreationTimeDesc =
                 PageRequest.of(pageNumber, 10, sort);
-        return requestRepo.findAll(getSpecification(teacher, filter), sortedByCreationTimeDesc);
+        return requestRepo.findAll(getSpecification(teacher, filterRequests), sortedByCreationTimeDesc);
     }
 
-    private Specification<Request> getSpecification(User teacher, Filter filter) {
+    private Specification<Request> getSpecification(User teacher, FilterRequests filterRequests) {
 
         Specification<Request> specification = hasTeacher(teacher.getId());
 
-        if (!CollectionUtils.isEmpty(filter.getRequestStateIds())) {
-            specification = specification.and(hasRequestStates(filter.getRequestStateIds()));
+        if (!CollectionUtils.isEmpty(filterRequests.getRequestStateIds())) {
+            specification = specification.and(hasRequestStates(filterRequests.getRequestStateIds()));
         }
 
-        if (!CollectionUtils.isEmpty(filter.getRequestTypeIds())) {
-            specification = specification.and(hasRequestTypes(filter.getRequestTypeIds()));
+        if (!CollectionUtils.isEmpty(filterRequests.getRequestTypeIds())) {
+            specification = specification.and(hasRequestTypes(filterRequests.getRequestTypeIds()));
         }
 
-        if (!CollectionUtils.isEmpty(filter.getGroupIds())) {
-            specification = specification.and(hasGroupIds(filter.getGroupIds()));
+        if (!CollectionUtils.isEmpty(filterRequests.getGroupIds())) {
+            specification = specification.and(hasGroupIds(filterRequests.getGroupIds()));
         }
 
         return specification;
