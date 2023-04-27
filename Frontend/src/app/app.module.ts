@@ -42,6 +42,7 @@ import { StudentAccountComponent } from './components/teacher/student-account/st
 import { AllStudentsGroupsComponent } from './components/admin/all-students-groups/all-students-groups.component';
 import { GroupDropDownListComponent } from './components/utils/group-drop-down-list/group-drop-down-list.component';
 import { StudentsWithoutGroupDropDownListComponent } from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
+import { NewGroupComponent } from './components/admin/new-group/new-group.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { StudentsWithoutGroupDropDownListComponent } from './components/utils/st
     StudentAccountComponent,
     AllStudentsGroupsComponent,
     GroupDropDownListComponent,
-    StudentsWithoutGroupDropDownListComponent
+    StudentsWithoutGroupDropDownListComponent,
+    NewGroupComponent
   ],
   imports: [
     BrowserModule,

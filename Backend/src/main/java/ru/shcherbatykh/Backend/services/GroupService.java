@@ -1,7 +1,9 @@
 package ru.shcherbatykh.Backend.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import ru.shcherbatykh.Backend.dto.FilterGroups;
 import ru.shcherbatykh.Backend.dto.GroupWithUsersStatInfo;
@@ -12,6 +14,8 @@ import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.models.Year;
 import ru.shcherbatykh.Backend.repositories.GroupRepo;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
@@ -23,6 +27,15 @@ public class GroupService {
     private final GroupRepo groupRepo;
     private final UserService userService;
     private final StudentTaskService studentTaskService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Value("${app.group.quantity.course-number}")
+    private int quantityCourseNumber;
+
+    @Value("${app.group.quantity.group-number}")
+    private int quantityGroupNumber;
 
     public GroupService(GroupRepo groupRepo, UserService userService, StudentTaskService studentTaskService) {
         this.groupRepo = groupRepo;
@@ -147,5 +160,24 @@ public class GroupService {
             groupWithUsersStatInfos.add(groupWithUsersStatInfo);
         }
         return groupWithUsersStatInfos;
+    }
+
+    public int getQuantityCourseNumber(){
+        return quantityCourseNumber;
+    }
+
+    public int getQuantityGroupNumber(){
+        return quantityGroupNumber;
+    }
+
+    @Transactional
+    public Group addNewGroup(Group newGroup) {
+        if (newGroup.getTeacher() == null){
+            newGroup.setTeacher(userService.getAdmin());
+        }
+        Group newGroup1 = groupRepo.save(newGroup);
+        entityManager.flush();
+        entityManager.refresh(newGroup1);
+        return newGroup1;
     }
 }

@@ -22,4 +22,8 @@ public class FacultyService {
     private Sort orderByNameAsc() {
         return Sort.by(Sort.Direction.ASC, "name");
     }
+
+    public Faculty addNewFaculty(Faculty newFaculty) {
+        return facultyRepo.save(newFaculty);
+    }
 }

@@ -67,8 +67,8 @@ public class Request {
 
     @PostLoad @PostUpdate
     public void init() {
-        creationTimeToPrint = CommonUtils.getCreationTimeToPrint(creationTime);
+        creationTimeToPrint = CommonUtils.getTimeToPrint(creationTime);
         if (closingTime != null)
-            closingTimeToPrint = CommonUtils.getCreationTimeToPrint(closingTime);
+            closingTimeToPrint = CommonUtils.getTimeToPrint(closingTime);
     }
 }

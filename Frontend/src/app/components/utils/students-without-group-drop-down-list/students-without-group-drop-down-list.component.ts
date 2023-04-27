@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {IGroupWithUsersStatInfo} from "../../../dto_interfaces/IGroupWithUsersStatInfo";
 import {IUserStatInfo} from "../../../dto_interfaces/IUserStatInfo";
 import {IUser} from "../../../interfaces/IUser";
 

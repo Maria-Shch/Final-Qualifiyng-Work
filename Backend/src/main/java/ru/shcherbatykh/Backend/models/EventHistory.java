@@ -36,8 +36,8 @@ public class EventHistory {
         this.request = request;
     }
 
-    @PostLoad
+    @PostLoad @PostUpdate
     public void init() {
-        timeToPrint = CommonUtils.getCreationTimeToPrint(time);
+        timeToPrint = CommonUtils.getTimeToPrint(time);
     }
 }

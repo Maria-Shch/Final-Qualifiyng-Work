@@ -22,4 +22,8 @@ public class YearService {
     private Sort orderByNameAsc() {
         return Sort.by(Sort.Direction.ASC, "name");
     }
+
+    public Year addNewYear(Year newYear) {
+        return yearRepo.save(newYear);
+    }
 }

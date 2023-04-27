@@ -1,0 +1,157 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/students.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Создание новой группы</h2>
+  </div>
+  <p class="p3" style="margin: 0 0 30px 0;">Заполните информацию о группе. Её название будет сгенерировано автоматически.</p>
+
+  <form [formGroup]="creatingGroupForm" (ngSubmit)="onSubmitCreatingGroupForm()" >
+    <div class="d-row-form">
+      <p class="p4 form-param">Ступень образования</p>
+      <select formControlName="levelOfEdu" id="levelOfEdu" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="levelOfEdu" *ngFor="let levelOfEdu of levelsOfEdu">
+          {{levelOfEdu.name}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Профиль</p>
+      <select formControlName="profile" id="profile" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="profile" *ngFor="let profile of profiles">
+          {{profile.name}}
+        </option>
+      </select>
+      <button type="button" class="d-violet-button b-add-box" (click)="this.showModalAddNewProfile = true"></button>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Направление</p>
+      <select formControlName="faculty" id="faculty" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="faculty" *ngFor="let faculty of faculties">
+          {{faculty.name}}
+        </option>
+      </select>
+      <button type="button" class="d-violet-button b-add-box" (click)="this.showModalAddNewFaculty = true"></button>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Форма обучения</p>
+      <select formControlName="formOfEdu" id="formOfEdu" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="formOfEdu" *ngFor="let formOfEdu of formsOfEdu">
+          {{formOfEdu.name}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Курс</p>
+      <select formControlName="courseNumber" id="courseNumber" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="courseNumber" *ngFor="let courseNumber of courseNumberList">
+          {{courseNumber}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Номер группы</p>
+      <select formControlName="groupNumber" id="groupNumber" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="groupNumber" *ngFor="let groupNumber of groupNumberList">
+          {{groupNumber}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Год</p>
+      <select formControlName="year" id="year" class="input-params p4 select" (ngModelChange)="changeGroupResultNameOnChangeGroupParam()">
+        <option [ngValue]="year" *ngFor="let year of years">
+          {{year.name}}
+        </option>
+      </select>
+      <button type="button" class="d-violet-button b-add-box" (click)="this.showModalAddNewYear = true"></button>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Итоговое название</p>
+      <input type="text" class="input-params p4" [(ngModel)]="resultGroupName" [ngModelOptions]="{standalone: true}" readonly>
+    </div>
+    <p class="h4" style="color: var(--c2); margin: 35px 0 0 0;">Назначьте группе преподавателя</p>
+    <p class="p5" style="color: var(--c12);">Если не назначить группе преподавателя, то преподавателем будет автоматически назначен администратор</p>
+    <div class="d-row-form">
+      <p class="p4 form-param">Преподаватель</p>
+      <select formControlName="teacher" id="teacher" class="input-params p4 select">
+        <option [ngValue]="teacher" *ngFor="let teacher of teachers">
+          {{teacher.lastname + ' ' + teacher.name.charAt(0) + '. ' + teacher.patronymic.charAt(0) + '.'}}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="studentsWithoutGroup.length !=0">
+      <p class="h4" style="color: var(--c2); margin: 35px 0 0 0;">Добавьте в группу студентов</p>
+      <p class="p4">Вы можете добавить в группу следующих студентов, так как они ещё не состоят ни в одной:</p>
+      <app-checkbox-group [options]="studentsWithoutGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group>
+    </div>
+    <input type="submit" value="Создать группу" class="i-submit h5">
+  </form>
+</div>
+
+<div *ngIf="showModalAddNewProfile" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container" style="padding: 20px">
+      <header class="header-modal">
+        <button class="b-close" (click)="this.showModalAddNewProfile=false"></button>
+      </header>
+      <form [formGroup]="newProfileForm" (ngSubmit)="onSubmitNewProfileForm()" >
+        <section style="margin: 15px 0 0 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <p class="p4">Вы хотите добавить новый профиль, для этого выберете его из списка:</p>
+          <select  formControlName="name" id="name" class="input-params p4 select">
+            <option [ngValue]="profile" *ngFor="let profile of newProfiles">
+              {{profile}}
+            </option>
+          </select>
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <input type="submit" value="Добавить" class="i-submit h5">
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalAddNewFaculty" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container" style="padding: 20px">
+      <header class="header-modal">
+        <button class="b-close" (click)="this.showModalAddNewFaculty=false"></button>
+      </header>
+      <form [formGroup]="newFacultyForm" (ngSubmit)="onSubmitNewFacultyForm()" >
+        <section style="margin: 15px 0 0 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <p class="p4">Вы хотите добавить новое направление, введите его название:</p>
+          <h5 *ngIf="(name.errors?.['required'] && newFacultyFormHasBeenSubmitted)" class="error">
+            Вы не заполнили название
+          </h5>
+          <input type="text" formControlName="name" placeholder="Название" required class="input-params p4">
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <input type="submit" value="Добавить" class="i-submit h5">
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalAddNewYear" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container" style="padding: 20px">
+      <header class="header-modal">
+        <button class="b-close" (click)="this.showModalAddNewYear=false"></button>
+      </header>
+      <form [formGroup]="newYearForm" (ngSubmit)="onSubmitNewYearForm()" >
+        <section style="margin: 15px 0 0 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+          <p class="p4">Вы хотите добавить новый год, введите его:</p>
+          <h5 *ngIf="(newYear.errors?.['required'] && newYearFormHasBeenSubmitted)" class="error">
+            Вы не заполнили поле
+          </h5>
+          <input type="text" formControlName="name" id="newYear" placeholder="гггг/гггг" required class="input-params p4" [(ngModel)]="newYearName" (ngModelChange)="checkNewYearName()">
+        </section>
+        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+          <input type="submit" value="Добавить" class="i-submit h5">
+        </footer>
+      </form>
+    </div>
+  </div>
+</div>

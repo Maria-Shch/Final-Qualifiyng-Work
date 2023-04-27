@@ -4,21 +4,6 @@
   flex-direction: column;
 }
 
-.b-close{
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
-  border-radius: 40px;
-  border: none;
-  background: url("../../../../assets/icons/close.png") no-repeat center;
-  background-size: 15px;
-}
-
-.header-modal{
-  display: flex;
-  justify-content: end;
-}
-
 .b-edit{
   width: 22px;
   height: 22px;

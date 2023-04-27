@@ -8,6 +8,7 @@ import {IYear} from "../../../interfaces/IYear";
 import {IFaculty} from "../../../interfaces/IFaculty";
 import {IUser} from "../../../interfaces/IUser";
 import {IUserStatInfo} from "../../../dto_interfaces/IUserStatInfo";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all-students-groups',
@@ -27,7 +28,8 @@ export class AllStudentsGroupsComponent implements OnInit{
 
   constructor(
     private groupService: GroupService,
-    private userService: UserService
+    private userService: UserService,
+    private router:Router
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class AllStudentsGroupsComponent implements OnInit{
       this.groupsWithUsersStatInfo = data;
     });
 
-    this.groupService.getStudentsWithoutGroupWithStatInfo().subscribe((data: IUserStatInfo[]) => {
+    this.userService.getStudentsWithoutGroupWithStatInfo().subscribe((data: IUserStatInfo[]) => {
       this.studentsWithoutGroupWithStatInfo = data;
     });
 
@@ -67,7 +69,7 @@ export class AllStudentsGroupsComponent implements OnInit{
   }
 
   createNewGroup() {
-
+    this.router.navigate(['/newGroup']);
   }
 
   openModalEditGroup(idGroup: number) {

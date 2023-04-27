@@ -124,4 +124,21 @@ public class UserService {
         }
         return userStatInfoList;
     }
+
+    public List<User> getStudentsWithoutGroupSorted() {
+        return userRepo.findByGroupIsNullAndRole(Role.USER);
+    }
+
+
+    public void setGroup(List<Long> studentIds, Group group) {
+        for(Long id: studentIds){
+            Optional<User> student = findById(id);
+            student.ifPresent(user -> setGroupForStudent(user, group));
+        }
+    }
+
+    public void setGroupForStudent(User student, Group group){
+        student.setGroup(group);
+        userRepo.save(student);
+    }
 }

@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IUser} from "../../../interfaces/IUser";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TaskService} from "../../../services/task.service";
 import {UserService} from "../../../services/user.service";
 import {StudentTaskService} from "../../../services/student-task.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IEventHistory} from "../../../interfaces/IEventHistory";
 import {IStudentProgress} from "../../../dto_interfaces/IStudentProgress";
 
 @Component({

@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {IUsernamePassword} from "../dto_interfaces/IUsernamePassword";
 import {Observable} from "rxjs";
 import {IAuthResponse} from "../dto_interfaces/IAuthResponse";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../environments/enviroment";
+
 @Injectable({
   providedIn: 'root'
 })

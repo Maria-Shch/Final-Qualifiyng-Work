@@ -6,6 +6,12 @@ body {
   margin: 0px;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 textarea{
   font-size: 15px;
 }
@@ -75,66 +81,77 @@ h1, .h1 {
   font-weight: 700;
   font-size: 46px;
   line-height: 58px;
+  color: var(--c6);
 }
 
 h2, .h2 {
   font-weight: 700;
   font-size: 34px;
   line-height: 44px;
+  color: var(--c6);
 }
 
 h3, .h3 {
   font-weight: 600;
   font-size: 28px;
   line-height: 36px;
+  color: var(--c6);
 }
 
 h4, .h4 {
   font-weight: 600;
   font-size: 22px;
   line-height: 29px;
+  color: var(--c6);
 }
 
 h5, .h5 {
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
+  color: var(--c6);
 }
 
 .p1 {
   font-weight: 600;
   font-size: 38px;
   line-height: 48px;
+  color: var(--c6);
 }
 
 .p2 {
   font-weight: 400;
   font-size: 30px;
   line-height: 39px;
+  color: var(--c6);
 }
 
 .p3 {
   font-weight: 300;
   font-size: 22px;
   line-height: 29px;
+  color: var(--c6);
 }
 
 .p4 {
   font-weight: 300;
   font-size: 18px;
   line-height: 24px;
+  color: var(--c6);
 }
 
 .p5 {
   font-weight: 300;
   font-size: 16px;
   line-height: 19px;
+  color: var(--c6);
 }
 
 .p6 {
   font-weight: 300;
   font-size: 14px;
   line-height: 19px;
+  color: var(--c6);
 }
 
 .error {
@@ -191,7 +208,6 @@ h5, .h5 {
 .hr{
   width: 1px;
   height: 15px;
-  margin: 0;
   padding: 0;
   background-color: var(--c6);
   border: none;
@@ -377,6 +393,14 @@ textarea::-webkit-scrollbar-thumb {
   margin: 10px 0 0 5px;
 }
 
+.b-add-box{
+  padding: 12px 12px;
+  border-radius: 6px;
+  background: var(--c2) url("/assets/icons/add_box.png") no-repeat center;
+  background-size: 30px;
+  margin-left: 20px;
+}
+
 .d-result{
   margin: 0 0 5px 0;
   display: flex;
@@ -522,4 +546,19 @@ textarea::-webkit-scrollbar-thumb {
 
 .bc-clr-dark{
   background-color: var(--c5);
+}
+
+.b-close{
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  border-radius: 40px;
+  border: none;
+  background: url("/assets/icons/close.png") no-repeat center;
+  background-size: 15px;
+}
+
+.header-modal{
+  display: flex;
+  justify-content: end;
 }

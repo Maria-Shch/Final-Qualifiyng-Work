@@ -1,0 +1,25 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.d-row-form{
+  display:flex;
+  flex-direction: row;
+  align-items: center
+}
+
+.form-param{
+  width: 210px;
+}
+
+.input-params{
+  width: 370px;
+}
+
+.select{
+  width: 400px;
+}
+
+

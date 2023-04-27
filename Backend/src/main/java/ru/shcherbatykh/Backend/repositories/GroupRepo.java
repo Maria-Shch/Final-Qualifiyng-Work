@@ -7,10 +7,12 @@ import ru.shcherbatykh.Backend.models.Group;
 import ru.shcherbatykh.Backend.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GroupRepo extends CrudRepository<Group, Long> {
     List<Group> findAll();
     List<Group> findAll(Specification<Group> specification);
     List<Group> findAllByTeacher(User teacher);
+    Optional<Group> findById(Long id);
 }

@@ -3,6 +3,7 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.UserService;
@@ -75,5 +76,17 @@ public class UserController {
     @GetMapping("/teachers")
     public List<User> getTeachers() {
         return userService.getTeachersSorted();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/studentsWithoutGroupWithStatInfo/forAdmin")
+    public List<UserStatInfo> getStudentsWithoutGroupWithStatInfo() {
+        return userService.getStudentsWithoutGroupWithStatInfo();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/studentsWithoutGroup")
+    public List<User> getStudentsWithoutGroup() {
+        return userService.getStudentsWithoutGroupSorted();
     }
 }

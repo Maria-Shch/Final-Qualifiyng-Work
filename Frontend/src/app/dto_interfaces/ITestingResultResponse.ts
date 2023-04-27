@@ -1,5 +1,5 @@
-
 import {IStatus} from "../interfaces/IStatus";
+
 export interface ITestingResultResponse{
   status: IStatus | null;
   testingSuccessfulCompleted: boolean;

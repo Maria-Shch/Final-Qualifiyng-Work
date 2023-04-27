@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthorizationService} from "./authorization.service";
 import {Observable} from "rxjs";
 import {IUser} from "../interfaces/IUser";
 import {environment} from "../environments/enviroment";
+import {IUserStatInfo} from "../dto_interfaces/IUserStatInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +65,13 @@ export class UserService {
 
   getTeachers(): Observable<IUser[]> {
     return this.httpclient.get<IUser[]>(environment.apiUrl + '/user/teachers');
+  }
+
+  getStudentsWithoutGroupWithStatInfo(): Observable<IUserStatInfo[]>{
+    return this.httpclient.get<IUserStatInfo[]>(environment.apiUrl + '/user/studentsWithoutGroupWithStatInfo/forAdmin');
+  }
+
+  getStudentsWithoutGroup(): Observable<IUser[]>{
+    return this.httpclient.get<IUser[]>(environment.apiUrl + '/user/studentsWithoutGroup');
   }
 }

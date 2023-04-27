@@ -180,16 +180,16 @@
          'bc-clr-passed-tests' : status?.name === 'Прошла тесты',
          'bc-clr-on-testing' : status?.name === 'На тестировании'
          }">
-        <p class="p4" style="margin: 0; text-align: center; color: var(--c6)">{{status?.name}}</p>
+        <p class="p4" style="margin: 0; text-align: center;">{{status?.name}}</p>
       </div>
 
       <div *ngIf="task?.previousTasks?.length === 0" class="d-previous-tasks">
-        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Задача не требует решения других задач</p>
+        <p class="p4" style="margin: 0; text-align: center">Задача не требует решения других задач</p>
       </div>
 
       <div *ngIf="task?.previousTasks?.length != 0"
            class="d-previous-tasks">
-        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">Предыдущие задачи</p>
+        <p class="p4" style="margin: 0; text-align: center">Предыдущие задачи</p>
         <a *ngFor="let prevTask of task?.previousTasks"
            style="text-decoration: revert; color: var(--c2); text-align: center;"
            routerLink="/chapter/{{prevTask.previousTask.block.chapter.serialNumber}}/block/{{prevTask.previousTask.block.serialNumber}}/task/{{prevTask.previousTask.serialNumber}}">
@@ -198,12 +198,12 @@
       </div>
 
       <div class="d-check present-check" *ngIf="task?.manualCheckRequired == true">
-        <p  class="p4" style="margin: 0; color: var(--c6); text-align: center">
+        <p  class="p4" style="margin: 0; text-align: center">
           Задача требует подтверждения решения преподавателем
         </p>
       </div>
       <div class="d-check none-check" *ngIf="task?.manualCheckRequired == false">
-        <p class="p4" style="margin: 0; color: var(--c6); text-align: center">
+        <p class="p4" style="margin: 0; text-align: center">
           Задача не требует подтверждения решения преподавателем
         </p>
       </div>

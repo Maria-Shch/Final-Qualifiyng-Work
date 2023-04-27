@@ -169,9 +169,8 @@ CREATE TABLE years(
      name int NOT NULL
 );
 
-ALTER TABLE groups ADD year_id int;
-ALTER TABLE groups
-    ADD CONSTRAINT fk_groups_years FOREIGN KEY (year_id) REFERENCES years (id);
+ALTER TABLE levels_of_edu ADD letter varchar(5);
+ALTER TABLE forms_of_edu ADD letter varchar(5);
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');
