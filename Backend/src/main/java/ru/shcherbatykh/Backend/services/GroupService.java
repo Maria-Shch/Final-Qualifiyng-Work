@@ -8,10 +8,7 @@ import org.springframework.util.CollectionUtils;
 import ru.shcherbatykh.Backend.dto.FilterGroups;
 import ru.shcherbatykh.Backend.dto.GroupWithUsersStatInfo;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
-import ru.shcherbatykh.Backend.models.Faculty;
-import ru.shcherbatykh.Backend.models.Group;
-import ru.shcherbatykh.Backend.models.User;
-import ru.shcherbatykh.Backend.models.Year;
+import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.repositories.GroupRepo;
 
 import javax.persistence.EntityManager;
@@ -110,6 +107,30 @@ public class GroupService {
             }
         }
 
+        if (!CollectionUtils.isEmpty(filterGroups.getTeacherIds())) {
+            if (specification == null) {
+                specification = hasTeacherIds(filterGroups.getTeacherIds());
+            } else{
+                specification = specification.and(hasTeacherIds(filterGroups.getTeacherIds()));
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(filterGroups.getLevelOfEduIds())) {
+            if (specification == null) {
+                specification = hasLevelOfEduIds(filterGroups.getLevelOfEduIds());
+            } else{
+                specification = specification.and(hasLevelOfEduIds(filterGroups.getLevelOfEduIds()));
+            }
+        }
+
+        if (!CollectionUtils.isEmpty(filterGroups.getProfileIds())) {
+            if (specification == null) {
+                specification = hasProfileIds(filterGroups.getProfileIds());
+            } else{
+                specification = specification.and(hasProfileIds(filterGroups.getProfileIds()));
+            }
+        }
+
         return specification;
     }
 
@@ -143,6 +164,28 @@ public class GroupService {
                 teacherPredicates.add(criteriaBuilder.equal(teacher, teacherId));
             }
             return criteriaBuilder.or(teacherPredicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private Specification<Group> hasLevelOfEduIds(List<Long> levelOfEduIds) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> levelOfEduPredicates = new ArrayList<>();
+            Path<LevelOfEdu> levelOfEdu = root.get("levelOfEdu");
+            for (Long levelOfEduId : levelOfEduIds) {
+                levelOfEduPredicates.add(criteriaBuilder.equal(levelOfEdu, levelOfEduId));
+            }
+            return criteriaBuilder.or(levelOfEduPredicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private Specification<Group> hasProfileIds(List<Long> profileIds) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> profilePredicates = new ArrayList<>();
+            Path<Profile> profile = root.get("profile");
+            for (Long profileId : profileIds) {
+                profilePredicates.add(criteriaBuilder.equal(profile, profileId));
+            }
+            return criteriaBuilder.or(profilePredicates.toArray(new Predicate[0]));
         };
     }
     

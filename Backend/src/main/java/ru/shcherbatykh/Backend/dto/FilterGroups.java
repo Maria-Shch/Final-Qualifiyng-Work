@@ -11,4 +11,6 @@ public class FilterGroups {
     private List<Long> yearIds;
     private List<Long> facultyIds;
     private List<Long> teacherIds;
+    private List<Long> levelOfEduIds;
+    private List<Long> profileIds;
 }

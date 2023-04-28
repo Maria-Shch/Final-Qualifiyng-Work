@@ -8,14 +8,22 @@
     <div style="display: flex; flex-direction: column; width: 265px; align-items: center; margin-left: 20px;">
       <div class="filter">
         <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Фильтр</p>
-        <p class="h5" style="color: var(--c6); margin: 15px 0 0 10px">Год</p>
-        <app-checkbox-group [options]="yearOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+        <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Ступень образования</p>
+        <app-checkbox-group [options]="levelOfEduOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
 
         <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Направление</p>
         <app-checkbox-group [options]="facultyOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
 
+        <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Профиль</p>
+        <app-checkbox-group [options]="profileOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
+        <p class="h5" style="color: var(--c6); margin: 15px 0 0 10px">Год</p>
+        <app-checkbox-group [options]="yearOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
         <p class="h5" style="color: var(--c6);  margin: 15px 0 0 10px">Преподаватель</p>
         <app-checkbox-group [options]="teacherOptions" (change)="onChangeFilter($event)"></app-checkbox-group>
+
       </div>
       <button (click)="createNewGroup()"
               class="h5 d-violet-button" style="width: 100%; margin: 25px 0 25px 0;">

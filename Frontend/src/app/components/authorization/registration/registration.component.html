@@ -22,7 +22,7 @@
   <input type="text" nodel formControlName="username" id="username" placeholder="Электронная почта" required class="input-params p4 required-input">
   <select formControlName="group" id="group" class="input-params p4 select">
     <option [ngValue]="null">Без группы</option>
-    <option [ngValue]="group" *ngFor="let group of groups">{{group.name}}</option>
+    <option [ngValue]="group" *ngFor="let group of groups">{{group.name + ' (' + group.year?.name + ')'}}</option>
   </select>
   <input type="password" formControlName="password" id="password" placeholder="Пароль" required class="input-params p4 required-input">
   <input type="password" formControlName="confirmPassword" id="confirmPassword" placeholder="Подтверждение пароля" required class="input-params p4 required-input">
