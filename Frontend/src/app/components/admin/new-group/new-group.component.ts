@@ -100,24 +100,26 @@ export class NewGroupComponent implements OnInit{
       }
 
       this.fillNewProfiles();
-
-      this.creatingGroupForm = new FormGroup({
-        levelOfEdu: new FormControl<ILevelOfEdu | null>(this.levelsOfEdu.filter(x => x.name=='Бакалавриат')[0]),
-        profile: new FormControl<IProfile | null>(this.profiles[0]),
-        faculty: new FormControl<IFaculty | null>(this.faculties.filter(x => x.name=='ИФСТ')[0]),
-        formOfEdu: new FormControl<IFormOfEdu | null>(this.formsOfEdu.filter(x => x.name=='Очная')[0]),
-        courseNumber: new FormControl<number | null>(this.courseNumberList[0]),
-        groupNumber: new FormControl<number | null>(this.groupNumberList[0]),
-        year: new FormControl<IYear | null>(this.years[this.years.length-1]),
-        teacher: new FormControl<IUser | null>(null)
-      });
-
+      this.initCreatingGroupForm();
       this.changeGroupResultNameOnChangeGroupParam();
     });
 
     this.userService.getStudentsWithoutGroup().subscribe((data: IUser[]) => {
       this.studentsWithoutGroup = data;
       this.studentsWithoutGroupOptions = data.map(x => new CheckboxItem(x.id, x.lastname + ' ' + x.name, false));
+    });
+  }
+
+  initCreatingGroupForm(){
+    this.creatingGroupForm = new FormGroup({
+      levelOfEdu: new FormControl<ILevelOfEdu | null>(this.levelsOfEdu.filter(x => x.name=='Бакалавриат')[0]),
+      profile: new FormControl<IProfile | null>(this.profiles[0]),
+      faculty: new FormControl<IFaculty | null>(this.faculties.filter(x => x.name=='ИФСТ')[0]),
+      formOfEdu: new FormControl<IFormOfEdu | null>(this.formsOfEdu.filter(x => x.name=='Очная')[0]),
+      courseNumber: new FormControl<number | null>(this.courseNumberList[0]),
+      groupNumber: new FormControl<number | null>(this.groupNumberList[0]),
+      year: new FormControl<IYear | null>(this.years[this.years.length-1]),
+      teacher: new FormControl<IUser | null>(null)
     });
   }
 
@@ -171,6 +173,7 @@ export class NewGroupComponent implements OnInit{
     this.groupService.addNewProfile(newProfile).subscribe((data: IProfile[]) =>{
       this.profiles = data;
       this.fillNewProfiles();
+      this.initCreatingGroupForm();
     });
   }
 
@@ -181,6 +184,7 @@ export class NewGroupComponent implements OnInit{
       this.showModalAddNewFaculty = false;
       this.groupService.addNewFaculty(newFaculty).subscribe((data: IFaculty[]) =>{
         this.faculties = data;
+        this.initCreatingGroupForm();
       });
     }
   }
@@ -197,6 +201,7 @@ export class NewGroupComponent implements OnInit{
       this.showModalAddNewYear = false;
       this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
         this.years = data;
+        this.initCreatingGroupForm();
       });
     }
   }
