@@ -20,6 +20,7 @@ import {StudentSolutionComponent} from "./components/teacher/student-solution/st
 import {StudentAccountComponent} from "./components/teacher/student-account/student-account.component";
 import {AllStudentsGroupsComponent} from "./components/admin/all-students-groups/all-students-groups.component";
 import {NewGroupComponent} from "./components/admin/new-group/new-group.component";
+import {EditGroupComponent} from "./components/admin/edit-group/edit-group.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
     component: StudentSolutionComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'user/:id', component: StudentAccountComponent, canActivate:[AuthGuard], data:{roles:['TEACHER', 'ADMIN']}},
   { path: 'newGroup', component: NewGroupComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'group/edit/:id', component: EditGroupComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
 ];
 
 @NgModule({

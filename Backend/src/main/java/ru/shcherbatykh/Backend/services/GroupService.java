@@ -18,6 +18,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GroupService {
@@ -33,6 +34,11 @@ public class GroupService {
 
     @Value("${app.group.quantity.group-number}")
     private int quantityGroupNumber;
+
+    @Transactional
+    public Optional<Group> findById(Long id){
+        return groupRepo.findById(id);
+    }
 
     public GroupService(GroupRepo groupRepo, UserService userService, StudentTaskService studentTaskService) {
         this.groupRepo = groupRepo;
@@ -218,9 +224,17 @@ public class GroupService {
         if (newGroup.getTeacher() == null){
             newGroup.setTeacher(userService.getAdmin());
         }
-        Group newGroup1 = groupRepo.save(newGroup);
+        Group savedGroup = groupRepo.save(newGroup);
         entityManager.flush();
-        entityManager.refresh(newGroup1);
-        return newGroup1;
+        entityManager.refresh(savedGroup);
+        return savedGroup;
+    }
+
+    @Transactional
+    public Group updateGroup(Group updatedGroup) {
+        Group savedGroup = groupRepo.save(updatedGroup);
+        entityManager.flush();
+        entityManager.refresh(savedGroup);
+        return savedGroup;
     }
 }

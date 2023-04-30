@@ -43,6 +43,7 @@ import { AllStudentsGroupsComponent } from './components/admin/all-students-grou
 import { GroupDropDownListComponent } from './components/utils/group-drop-down-list/group-drop-down-list.component';
 import { StudentsWithoutGroupDropDownListComponent } from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
 import { NewGroupComponent } from './components/admin/new-group/new-group.component';
+import { EditGroupComponent } from './components/admin/edit-group/edit-group.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { NewGroupComponent } from './components/admin/new-group/new-group.compon
     AllStudentsGroupsComponent,
     GroupDropDownListComponent,
     StudentsWithoutGroupDropDownListComponent,
-    NewGroupComponent
+    NewGroupComponent,
+    EditGroupComponent
   ],
   imports: [
     BrowserModule,

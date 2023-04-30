@@ -88,4 +88,8 @@ export class AllStudentsGroupsComponent implements OnInit{
     this.showModalEditGroup = true;
     this.idGroupSelectedForEditing = idGroup;
   }
+
+  editGroup() {
+    this.router.navigate(['/group/edit', this.idGroupSelectedForEditing]);
+  }
 }

@@ -129,10 +129,22 @@ public class GroupController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PostMapping("/new")
+    @PostMapping("/create")
     public Group addNewGroup(@RequestBody NewGroupWithIdStudents newGroupWithIdStudents) {
         Group group = groupService.addNewGroup(newGroupWithIdStudents.getGroup());
         userService.setGroup(newGroupWithIdStudents.getStudentIds(), group);
         return group;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/{id}")
+    public Group getGroupById(@PathVariable long id){
+        return groupService.findById(id).orElse(null);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update")
+    public Group addNewGroup(@RequestBody Group updatedGroup) {
+        return groupService.updateGroup(updatedGroup);
     }
 }

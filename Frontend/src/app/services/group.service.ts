@@ -18,6 +18,11 @@ import {INewGroupWithIdStudents} from "../dto_interfaces/INewGroupWithIdStudents
 })
 export class GroupService {
   constructor(private httpclient: HttpClient) { }
+
+  public getGroupById(id: string) : Observable<IGroup> {
+    return this.httpclient.get<IGroup>(environment.apiUrl + `/group/${id}`);
+  }
+
   getAllGroups(): Observable<IGroup[]> {
     return this.httpclient.get<IGroup[]>(environment.apiUrl + '/group/all', {
       headers: new HttpHeaders({ 'No-Auth': 'True' })
@@ -94,21 +99,36 @@ export class GroupService {
   }
 
   createNewGroup(newGroup: IGroup, studentIds: number[]): Observable<IGroup>  {
-    let groupForSend = {} as IGroup;
-    groupForSend.levelOfEdu = {id: newGroup.levelOfEdu?.id} as ILevelOfEdu;
-    groupForSend.profile = {id: newGroup.profile?.id} as IProfile;
-    groupForSend.faculty = {id: newGroup.faculty?.id} as IFaculty;
-    groupForSend.formOfEdu = {id: newGroup.formOfEdu?.id} as IFormOfEdu;
-    groupForSend.courseNumber = newGroup.courseNumber;
-    groupForSend.groupNumber = newGroup.groupNumber;
-    groupForSend.year = {id: newGroup.year?.id} as IYear;
-    if (newGroup.teacher != null){
-      groupForSend.teacher = {id: newGroup.teacher?.id} as IUser;
-    }
-
+    let groupForSend = this.getGroupForSend(newGroup);
     let newGroupWithStudents = {} as INewGroupWithIdStudents;
     newGroupWithStudents.group = groupForSend;
     newGroupWithStudents.studentIds = studentIds;
-    return this.httpclient.post<IGroup>(environment.apiUrl + '/group/new', newGroupWithStudents);
+    return this.httpclient.post<IGroup>(environment.apiUrl + '/group/create', newGroupWithStudents);
+  }
+
+  updateGroup(updatedGroup: IGroup): Observable<IGroup>  {
+    console.log(updatedGroup);
+    let groupForSend = this.getGroupForSend(updatedGroup);
+    return this.httpclient.post<IGroup>(environment.apiUrl + '/group/update', groupForSend);
+  }
+
+  private getGroupForSend(group: IGroup): IGroup{
+    console.log(group);
+    let groupForSend = {} as IGroup;
+    if (group.id != null){
+      groupForSend.id = group.id;
+    }
+    groupForSend.levelOfEdu = {id: group.levelOfEdu?.id} as ILevelOfEdu;
+    groupForSend.profile = {id: group.profile?.id} as IProfile;
+    groupForSend.faculty = {id: group.faculty?.id} as IFaculty;
+    groupForSend.formOfEdu = {id: group.formOfEdu?.id} as IFormOfEdu;
+    groupForSend.courseNumber = group.courseNumber;
+    groupForSend.groupNumber = group.groupNumber;
+    groupForSend.year = {id: group.year?.id} as IYear;
+    if (group.teacher != null){
+      groupForSend.teacher = {id: group.teacher?.id} as IUser;
+    }
+    console.log(groupForSend);
+    return groupForSend;
   }
 }
