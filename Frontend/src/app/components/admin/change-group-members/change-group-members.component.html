@@ -1,0 +1,23 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/students.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Редактирование состава группы {{group?.name}} ({{group?.year?.name}})</h2>
+  </div>
+  <form >
+    <p class="h4" style="color: var(--c2); margin: 0">Текущий состав группы</p>
+    <p *ngIf="studentsOfGroup.length ==0" class="p4" style="margin: 10px 0 30px 0;">
+      В группе ещё нет ни одного студента
+    </p>
+    <div *ngIf="studentsOfGroup.length !=0">
+      <p class="p4" style="margin: 10px 0 30px 0;">Чтобы удалить студента из группы, снимите галочку напротив его фамилии</p>
+      <app-checkbox-group-users [options]="studentsOfGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group-users>
+    </div>
+    <div *ngIf="studentsWithoutGroup.length !=0">
+      <p class="h4" style="color: var(--c2); margin: 40px 0 0 0;">Добавьте в группу студентов</p>
+      <p class="p4">Вы можете добавить в группу следующих студентов, так как они ещё не состоят ни в одной:</p>
+      <app-checkbox-group-users [options]="studentsWithoutGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group-users>
+    </div>
+    <input type="submit" value="Сохранить изменения" class="i-submit h5"  style="margin: 40px 0 0 0;" (click)="saveMembers()">
+  </form>
+</div>

@@ -44,6 +44,8 @@ import { GroupDropDownListComponent } from './components/utils/group-drop-down-l
 import { StudentsWithoutGroupDropDownListComponent } from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
 import { NewGroupComponent } from './components/admin/new-group/new-group.component';
 import { EditGroupComponent } from './components/admin/edit-group/edit-group.component';
+import { ChangeGroupMembersComponent } from './components/admin/change-group-members/change-group-members.component';
+import { CheckboxGroupUsersComponent } from './components/utils/checkbox-group-users/checkbox-group-users.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { EditGroupComponent } from './components/admin/edit-group/edit-group.com
     GroupDropDownListComponent,
     StudentsWithoutGroupDropDownListComponent,
     NewGroupComponent,
-    EditGroupComponent
+    EditGroupComponent,
+    ChangeGroupMembersComponent,
+    CheckboxGroupUsersComponent
   ],
   imports: [
     BrowserModule,

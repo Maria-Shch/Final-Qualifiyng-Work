@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import ru.shcherbatykh.Backend.dto.ChangedGroupMembers;
 import ru.shcherbatykh.Backend.dto.FilterGroups;
 import ru.shcherbatykh.Backend.dto.GroupWithUsersStatInfo;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
@@ -236,5 +237,11 @@ public class GroupService {
         entityManager.flush();
         entityManager.refresh(savedGroup);
         return savedGroup;
+    }
+
+    public boolean updateGroupMembers(Long groupId, ChangedGroupMembers changedGroupMembers) {
+        userService.setGroup(changedGroupMembers.getUnselectedStudentsOfGroupIds(), null);
+        userService.setGroup(changedGroupMembers.getSelectedStudentsWithoutGroupIds(), findById(groupId).get());
+        return true;
     }
 }

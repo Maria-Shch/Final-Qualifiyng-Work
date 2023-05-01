@@ -12,6 +12,7 @@ import {ILevelOfEdu} from "../interfaces/ILevelOfEdu";
 import {IProfile} from "../interfaces/IProfile";
 import {IFormOfEdu} from "../interfaces/IFormOfEdu";
 import {INewGroupWithIdStudents} from "../dto_interfaces/INewGroupWithIdStudents";
+import {IChangedGroupMembers} from "../dto_interfaces/IChangedGroupMembers";
 
 @Injectable({
   providedIn: 'root'
@@ -107,13 +108,11 @@ export class GroupService {
   }
 
   updateGroup(updatedGroup: IGroup): Observable<IGroup>  {
-    console.log(updatedGroup);
     let groupForSend = this.getGroupForSend(updatedGroup);
     return this.httpclient.post<IGroup>(environment.apiUrl + '/group/update', groupForSend);
   }
 
   private getGroupForSend(group: IGroup): IGroup{
-    console.log(group);
     let groupForSend = {} as IGroup;
     if (group.id != null){
       groupForSend.id = group.id;
@@ -128,7 +127,10 @@ export class GroupService {
     if (group.teacher != null){
       groupForSend.teacher = {id: group.teacher?.id} as IUser;
     }
-    console.log(groupForSend);
     return groupForSend;
+  }
+
+  updateGroupMembers(groupId: number, changedGroupMembers: IChangedGroupMembers): Observable<boolean>  {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/group/updateMembers/${groupId}`, changedGroupMembers);
   }
 }

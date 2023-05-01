@@ -92,4 +92,8 @@ export class AllStudentsGroupsComponent implements OnInit{
   editGroup() {
     this.router.navigate(['/group/edit', this.idGroupSelectedForEditing]);
   }
+
+  changeGroupMembers() {
+    this.router.navigate(['/group/changeMembers', this.idGroupSelectedForEditing]);
+  }
 }

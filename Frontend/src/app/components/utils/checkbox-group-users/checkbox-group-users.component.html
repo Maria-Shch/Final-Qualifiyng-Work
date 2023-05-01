@@ -1,0 +1,7 @@
+<div *ngFor="let item of options" style="display: flex; flex-direction: row; margin: 15px 0 15px 0;align-items: center; height: 17px;">
+  <input class="custom-checkbox" style="height: 17px; width: 17px; margin: 0 10px 0 0;" type="checkbox" [(ngModel)]="item.checked">
+  <a routerLink='/user/{{item.value}}'
+     class="p4" style="color: var(--c2); margin: 0">
+    {{item.label}}
+  </a>
+</div>

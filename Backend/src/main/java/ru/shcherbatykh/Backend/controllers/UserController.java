@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.services.AuthService;
+import ru.shcherbatykh.Backend.services.GroupService;
 import ru.shcherbatykh.Backend.services.UserService;
 
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final AuthService authService;
+    private final GroupService groupService;
 
-    public UserController(UserService userService, AuthService authService) {
+    public UserController(UserService userService, AuthService authService, GroupService groupService) {
         this.userService = userService;
         this.authService = authService;
+        this.groupService = groupService;
     }
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
@@ -88,5 +91,11 @@ public class UserController {
     @GetMapping("/studentsWithoutGroup")
     public List<User> getStudentsWithoutGroup() {
         return userService.getStudentsWithoutGroupSorted();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/get/all/byGroupId/{id}")
+    public List<User> getStudentsByGroupId(@PathVariable long id){
+        return userService.getSortedUsersOfGroup(groupService.findById(id).get());
     }
 }

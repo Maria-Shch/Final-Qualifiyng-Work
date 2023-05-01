@@ -117,7 +117,7 @@ public class UserService {
 
 
     public List<UserStatInfo> getStudentsWithoutGroupWithStatInfo() {
-        List<User> studentsWithoutGroup = userRepo.findByGroupIsNullAndRole(Role.USER);
+        List<User> studentsWithoutGroup = userRepo.findByGroupIsNullAndRole(Role.USER, orderByLastnameNamePatronymicAsc());
         List<UserStatInfo> userStatInfoList = new ArrayList<>();
         for(User user: studentsWithoutGroup){
             userStatInfoList.add(studentTaskService.getUserStatInfo(user));
@@ -126,7 +126,7 @@ public class UserService {
     }
 
     public List<User> getStudentsWithoutGroupSorted() {
-        return userRepo.findByGroupIsNullAndRole(Role.USER);
+        return userRepo.findByGroupIsNullAndRole(Role.USER, orderByLastnameNamePatronymicAsc());
     }
 
 

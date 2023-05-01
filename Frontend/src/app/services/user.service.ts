@@ -74,4 +74,8 @@ export class UserService {
   getStudentsWithoutGroup(): Observable<IUser[]>{
     return this.httpclient.get<IUser[]>(environment.apiUrl + '/user/studentsWithoutGroup');
   }
+
+  getStudentsByGroupId(id: number): Observable<IUser[]> {
+    return this.httpclient.get<IUser[]>(environment.apiUrl + `/user/get/all/byGroupId/${id}`);
+  }
 }

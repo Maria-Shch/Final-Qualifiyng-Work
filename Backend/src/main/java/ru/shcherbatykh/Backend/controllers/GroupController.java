@@ -2,6 +2,7 @@ package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.dto.ChangedGroupMembers;
 import ru.shcherbatykh.Backend.dto.FilterGroups;
 import ru.shcherbatykh.Backend.dto.GroupWithUsersStatInfo;
 import ru.shcherbatykh.Backend.dto.NewGroupWithIdStudents;
@@ -146,5 +147,12 @@ public class GroupController {
     @PostMapping("/update")
     public Group addNewGroup(@RequestBody Group updatedGroup) {
         return groupService.updateGroup(updatedGroup);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/updateMembers/{groupId}")
+    public boolean updateGroupMembers(@PathVariable long groupId,
+                                      @RequestBody ChangedGroupMembers changedGroupMembers) {
+        return groupService.updateGroupMembers(groupId, changedGroupMembers);
     }
 }

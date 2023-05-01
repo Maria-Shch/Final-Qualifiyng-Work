@@ -83,9 +83,9 @@
     <div *ngIf="studentsWithoutGroup.length !=0">
       <p class="h4" style="color: var(--c2); margin: 35px 0 0 0;">Добавьте в группу студентов</p>
       <p class="p4">Вы можете добавить в группу следующих студентов, так как они ещё не состоят ни в одной:</p>
-      <app-checkbox-group [options]="studentsWithoutGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group>
+      <app-checkbox-group-users [options]="studentsWithoutGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group-users>
     </div>
-    <input type="submit" value="Создать группу" class="i-submit h5">
+    <input type="submit" value="Создать группу" class="i-submit h5" style="margin: 40px 0 0 0;">
   </form>
 </div>
 
