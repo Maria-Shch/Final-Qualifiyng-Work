@@ -39,7 +39,7 @@
            style="display: flex; flex-direction: row; align-items: center; margin-bottom: 25px;">
         <app-group-drop-down-list [groupWithUsersStatInfo]="groupWithUsersStatInfo" [isAdmin]="true">
         </app-group-drop-down-list>
-        <button class="b-edit" (click)="openModalEditGroup(groupWithUsersStatInfo.group!.id!)"></button>
+        <button class="b-edit" (click)="openModalEditGroup(groupWithUsersStatInfo.group!)"></button>
       </div>
     </div>
   </div>
@@ -52,19 +52,58 @@
         <button class="b-close" (click)="this.showModalEditGroup=false"></button>
       </header>
       <section style="margin: 15px 0 0 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h3 style="margin: 0 0 10px 0;">{{'Группа ' + groupSelectedForEditing?.name + ' (' + groupSelectedForEditing?.year?.name + ')'}}</h3>
         <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0" (click)="editGroup()">
           Изменить название или преподавателя
         </button>
         <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0" (click)="changeGroupMembers()">
           Добавить или удалить студентов
         </button>
-        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+        <button *ngIf="hasGroupSelectedForEditingStudents" class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0" (click)="this.showModalEditGroup= false; this.showModalDisbandGroup = true;">
           Расформировать группу
         </button>
-        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0">
+        <button class="h5 d-white-button" style="width: 400px; margin: 7px 0 7px 0" (click)="this.showModalEditGroup= false; this.showModalDeleteGroup = true;">
           Удалить группу
         </button>
       </section>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalDisbandGroup" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container">
+      <header>
+        <h4 style="margin: 0">Вы хотите расформировать группу {{groupSelectedForEditing?.name}} ({{groupSelectedForEditing?.year?.name}})?</h4>
+      </header>
+      <section  style="margin: 15px 0 15px 0">
+        <p class="p4" style="text-align: justify">
+          Расформировав группу, вы удалите из неё всех студентов. Для этих студентов преподавателем станет администратор.
+        </p>
+      </section>
+      <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+        <button class="p4 d-white-button" (click)="disbandGroup()">Расформировать</button>
+        <button class="p4 d-violet-button" (click)="this.showModalDisbandGroup = false; this.showModalEditGroup= true;">Отменить</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModalDeleteGroup" class="fixed-overlay">
+  <div class="modal" style="width: 50%">
+    <div class="modal_container">
+      <header>
+        <h4 style="margin: 0">Вы хотите удалить группу {{groupSelectedForEditing?.name}} ({{groupSelectedForEditing?.year?.name}})?</h4>
+      </header>
+      <section  style="margin: 15px 0 15px 0">
+        <p class="p4" style="text-align: justify">
+          После удаления группы в качестве преподавателя студентам будет назначен администратор.
+        </p>
+      </section>
+      <footer style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 20px">
+        <button class="p4 d-white-button" (click)="deleteGroup()">Удалить</button>
+        <button class="p4 d-violet-button" (click)="this.showModalDeleteGroup = false; this.showModalEditGroup= true;">Отменить</button>
+      </footer>
     </div>
   </div>
 </div>

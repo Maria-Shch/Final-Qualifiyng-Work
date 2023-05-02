@@ -202,7 +202,7 @@ public class GroupService {
             GroupWithUsersStatInfo groupWithUsersStatInfo = new GroupWithUsersStatInfo();
             groupWithUsersStatInfo.setGroup(group);
             List<UserStatInfo> userStatInfos = new ArrayList<>();
-            List<User> users = userService.getSortedUsersOfGroup(group);
+            List<User> users = userService.getSortedUsersOfGroupWithNullPassword(group);
             for(User user: users){
                 userStatInfos.add(studentTaskService.getUserStatInfo(user));
             }
@@ -242,6 +242,20 @@ public class GroupService {
     public boolean updateGroupMembers(Long groupId, ChangedGroupMembers changedGroupMembers) {
         userService.setGroup(changedGroupMembers.getUnselectedStudentsOfGroupIds(), null);
         userService.setGroup(changedGroupMembers.getSelectedStudentsWithoutGroupIds(), findById(groupId).get());
+        return true;
+    }
+
+    public boolean disbandGroup(long groupId) {
+        List<Long> studentIds = userService.getSortedUsersOfGroup(findById(groupId).get()).stream()
+                .map(User::getId)
+                .toList();
+        userService.setGroup(studentIds, null);
+        return true;
+    }
+
+    public boolean deleteGroup(long groupId) {
+        disbandGroup(groupId);
+        groupRepo.delete(findById(groupId).get());
         return true;
     }
 }

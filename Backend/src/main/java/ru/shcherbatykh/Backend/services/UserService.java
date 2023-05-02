@@ -92,12 +92,17 @@ public class UserService {
 
     public List<User> getSortedUsersOfGroup(Group group){
         List<User> users = userRepo.findAllByGroup(group, orderByLastnameNamePatronymicAsc());
-        for(User user: users){
-            user.setPassword(null);
-        }
         return users.stream()
                 .sorted(Comparator.comparing(User::getLastname))
                 .toList();
+    }
+
+    public List<User> getSortedUsersOfGroupWithNullPassword(Group group){
+        List<User> users = getSortedUsersOfGroup(group);
+        for(User user: users){
+            user.setPassword(null);
+        }
+        return users;
     }
 
     private Sort orderByLastnameNamePatronymicAsc() {

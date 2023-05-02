@@ -563,7 +563,6 @@ textarea::-webkit-scrollbar-thumb {
   justify-content: end;
 }
 
-
 .d-row-form{
   display:flex;
   flex-direction: row;

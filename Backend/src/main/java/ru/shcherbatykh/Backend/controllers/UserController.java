@@ -96,6 +96,6 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/get/all/byGroupId/{id}")
     public List<User> getStudentsByGroupId(@PathVariable long id){
-        return userService.getSortedUsersOfGroup(groupService.findById(id).get());
+        return userService.getSortedUsersOfGroupWithNullPassword(groupService.findById(id).get());
     }
 }

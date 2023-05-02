@@ -155,4 +155,16 @@ public class GroupController {
                                       @RequestBody ChangedGroupMembers changedGroupMembers) {
         return groupService.updateGroupMembers(groupId, changedGroupMembers);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/disband/{groupId}")
+    public boolean disbandGroup(@PathVariable long groupId) {
+        return groupService.disbandGroup(groupId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/delete/{groupId}")
+    public boolean deleteGroup(@PathVariable long groupId) {
+        return groupService.deleteGroup(groupId);
+    }
 }

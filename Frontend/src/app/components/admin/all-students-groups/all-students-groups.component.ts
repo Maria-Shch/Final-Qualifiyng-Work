@@ -11,6 +11,7 @@ import {IUserStatInfo} from "../../../dto_interfaces/IUserStatInfo";
 import {Router} from "@angular/router";
 import {ILevelOfEdu} from "../../../interfaces/ILevelOfEdu";
 import {IProfile} from "../../../interfaces/IProfile";
+import {IGroup} from "../../../interfaces/IGroup";
 
 @Component({
   selector: 'app-all-students-groups',
@@ -27,8 +28,11 @@ export class AllStudentsGroupsComponent implements OnInit{
   levelOfEduOptions = new Array<CheckboxItem>();
   profileOptions = new Array<CheckboxItem>();
   showModalEditGroup: boolean = false;
-  idGroupSelectedForEditing: number | null = null;
+  groupSelectedForEditing: IGroup | null = null;
+  hasGroupSelectedForEditingStudents: boolean = false;
   admin: IUser | null = null;
+  showModalDisbandGroup: boolean = false;
+  showModalDeleteGroup: boolean = false;
 
   constructor(
     private groupService: GroupService,
@@ -37,13 +41,7 @@ export class AllStudentsGroupsComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.groupService.getGroupsWithUsersStatInfoForAdmin().subscribe((data: IGroupWithUsersStatInfo[]) => {
-      this.groupsWithUsersStatInfo = data;
-    });
-
-    this.userService.getStudentsWithoutGroupWithStatInfo().subscribe((data: IUserStatInfo[]) => {
-      this.studentsWithoutGroupWithStatInfo = data;
-    });
+    this.initGroupsInfo();
 
     this.userService.getAdmin().subscribe((data: IUser) => {
       this.admin = data;
@@ -66,6 +64,16 @@ export class AllStudentsGroupsComponent implements OnInit{
     });
   }
 
+  initGroupsInfo(){
+    this.groupService.getGroupsWithUsersStatInfoForAdmin().subscribe((data: IGroupWithUsersStatInfo[]) => {
+      this.groupsWithUsersStatInfo = data;
+    });
+
+    this.userService.getStudentsWithoutGroupWithStatInfo().subscribe((data: IUserStatInfo[]) => {
+      this.studentsWithoutGroupWithStatInfo = data;
+    });
+  }
+
   onChangeFilter(value: any) {
     this.filterGroups = {
       yearIds: this.yearOptions.filter(x => x.checked).map(x => x.value),
@@ -84,16 +92,35 @@ export class AllStudentsGroupsComponent implements OnInit{
     this.router.navigate(['/newGroup']);
   }
 
-  openModalEditGroup(idGroup: number) {
+  openModalEditGroup(group: IGroup) {
     this.showModalEditGroup = true;
-    this.idGroupSelectedForEditing = idGroup;
+    this.groupSelectedForEditing = group;
+    this.hasGroupSelectedForEditingStudents = this.groupsWithUsersStatInfo.filter(x => x.group.id == this.groupSelectedForEditing?.id)[0].userStatInfos.length >0;
   }
 
   editGroup() {
-    this.router.navigate(['/group/edit', this.idGroupSelectedForEditing]);
+    this.router.navigate(['/group/edit', this.groupSelectedForEditing?.id]);
   }
 
   changeGroupMembers() {
-    this.router.navigate(['/group/changeMembers', this.idGroupSelectedForEditing]);
+    this.router.navigate(['/group/changeMembers', this.groupSelectedForEditing?.id]);
+  }
+
+  disbandGroup() {
+    this.groupService.disbandGroup(this.groupSelectedForEditing?.id!).subscribe((data: boolean) =>{
+      this.router.navigate(['/allStudentsGroups']);
+      alert("Вы расформировали группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ')');
+      this.showModalDisbandGroup = false;
+      this.initGroupsInfo();
+    });
+  }
+
+  deleteGroup() {
+    this.groupService.deleteGroup(this.groupSelectedForEditing?.id!).subscribe((data: boolean) =>{
+      this.router.navigate(['/allStudentsGroups']);
+      alert("Вы удалили группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ')');
+      this.showModalDeleteGroup = false;
+      this.initGroupsInfo();
+    });
   }
 }

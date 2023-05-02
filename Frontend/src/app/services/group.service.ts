@@ -133,4 +133,12 @@ export class GroupService {
   updateGroupMembers(groupId: number, changedGroupMembers: IChangedGroupMembers): Observable<boolean>  {
     return this.httpclient.post<boolean>(environment.apiUrl + `/group/updateMembers/${groupId}`, changedGroupMembers);
   }
+
+  disbandGroup(groupId: number): Observable<boolean> {
+    return this.httpclient.get<boolean>(environment.apiUrl + `/group/disband/${groupId}`);
+  }
+
+  deleteGroup(groupId: number): Observable<boolean> {
+    return this.httpclient.get<boolean>(environment.apiUrl + `/group/delete/${groupId}`);
+  }
 }
