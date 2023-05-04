@@ -258,4 +258,13 @@ public class GroupService {
         groupRepo.delete(findById(groupId).get());
         return true;
     }
+
+    public void revokeGroupsFromTeacher(long teacherId) {
+        List<Group> teacherGroups = getGroupsByTeacher(userService.findById(teacherId).get());
+        User admin = userService.getAdmin();
+        for(Group group: teacherGroups){
+            group.setTeacher(admin);
+            groupRepo.save(group);
+        }
+    }
 }

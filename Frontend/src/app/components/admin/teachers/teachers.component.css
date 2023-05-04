@@ -1,0 +1,21 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.td-full-name{
+  width: 40%;
+}
+
+.td-email{
+  width: 25%;
+}
+
+.td-role{
+  width: 15%;
+}
+
+.td-button{
+  width: 20%;
+}

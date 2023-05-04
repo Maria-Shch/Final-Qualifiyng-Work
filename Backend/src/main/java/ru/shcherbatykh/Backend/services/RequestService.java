@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RequestService {
@@ -209,5 +210,18 @@ public class RequestService {
             history.setRequest(newRequest);
         }
         return histories;
+    }
+
+    public void revokeRequestsFromTeacher(long teacherId) {
+        User teacher = userService.findById(teacherId).get();
+        List<RequestState> incompleteRequestStates = List.of(requestStateService.getRSNotSeen(), requestStateService.getRSSeen());
+        List<Request> incompleteRequests = requestRepo.findAllByTeacherAndAndRequestStateIn(teacher, incompleteRequestStates);
+        for(Request request: incompleteRequests){
+            request.setTeacher(userService.getAdmin());
+            if (Objects.equals(request.getRequestState().getId(), requestStateService.getRSSeen().getId())){
+                request.setRequestState(requestStateService.getRSNotSeen());
+            }
+            requestRepo.save(request);
+        }
     }
 }

@@ -53,7 +53,7 @@ export class AllStudentsGroupsComponent implements OnInit{
     this.groupService.getFaculties().subscribe((data: IFaculty[]) => {
       this.facultyOptions = data.map(x => new CheckboxItem(x.id, x.name, false));
     });
-    this.userService.getTeachers().subscribe((data: IUser[]) => {
+    this.userService.getTeachersWithAdmin().subscribe((data: IUser[]) => {
       this.teacherOptions = data.map(x => new CheckboxItem(x.id, x.lastname + ' ' + x.name.charAt(0) + '. ' + x.patronymic.charAt(0) + '.', false));
     });
     this.groupService.getLevelsOfEdu().subscribe((data: ILevelOfEdu[]) => {

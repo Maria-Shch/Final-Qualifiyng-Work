@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.shcherbatykh.Backend.models.Request;
+import ru.shcherbatykh.Backend.models.RequestState;
 import ru.shcherbatykh.Backend.models.StudentTask;
 import ru.shcherbatykh.Backend.models.User;
 
@@ -22,4 +23,6 @@ public interface RequestRepo extends PagingAndSortingRepository<Request, Long> {
     int count(Specification<Request> specification);
 
     List<Request> findAll(Specification<Request> specification, Pageable pageable);
+
+    List<Request> findAllByTeacherAndAndRequestStateIn(User teacher, List<RequestState> requestStates);
 }

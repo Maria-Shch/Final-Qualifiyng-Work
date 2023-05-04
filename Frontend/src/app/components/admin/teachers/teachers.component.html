@@ -1,0 +1,41 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/teacher.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Преподаватели</h2>
+  </div>
+  <div>
+      <table class="table-header">
+        <tr class="tr-table-row" style="    padding: 0 15px;">
+          <td class="td-full-name"><h5 style="margin: 0">ФИО</h5></td>
+          <td class="td-email"><h5 style="margin: 0">Почта</h5></td>
+          <td class="td-role"><h5 style="margin:  0">Роль</h5></td>
+          <td class="td-button">
+          </td>
+        </tr>
+      </table>
+      <table class="table-header">
+        <tr *ngFor="let employee of employees; let i = index"
+            class="tr-table-row" style="align-items: center;"
+            [ngClass]="{'bc-clr-light' : i%2 === 0,'bc-clr-dark' : i%2 != 0}">
+          <td class="td-full-name">
+            <a routerLink='/user/{{employee.id}}'
+               class="p4" style="color: var(--c2); margin: 0">
+              {{employee.lastname + ' ' + employee.name + ' ' + employee.patronymic}}
+            </a>
+          </td>
+          <td class="td-email">
+            <p class="p4" style="margin: 0">{{employee.username}}</p>
+          </td>
+          <td class="td-role">
+            <p class="p4" style="margin: 0">
+              {{employee.role == 'ADMIN'? 'Администратор' : 'Преподаватель'}}
+            </p>
+          </td>
+          <td class="td-button">
+            <input *ngIf="employee.role != 'ADMIN'" type="submit" value="Отозвать права преподавателя" class="i-submit h5"  style="margin: 0; font-size: 15px;" (click)="revokeTeacherAuthority(employee)">
+          </td>
+        </tr>
+      </table>
+    </div>
+</div>

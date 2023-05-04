@@ -23,6 +23,10 @@ export class UserService {
     return this.httpclient.get<IUser>(environment.apiUrl + '/user/teacher');
   }
 
+  public getTeacherByStudentId(studentId: number) : Observable<IUser> {
+    return this.httpclient.get<IUser>(environment.apiUrl + `/user/${studentId}/teacher`);
+  }
+
   public getAdmin() : Observable<IUser> {
     return this.httpclient.get<IUser>(environment.apiUrl + '/user/admin');
   }
@@ -67,6 +71,10 @@ export class UserService {
     return this.httpclient.get<IUser[]>(environment.apiUrl + '/user/teachers');
   }
 
+  getTeachersWithAdmin(): Observable<IUser[]> {
+    return this.httpclient.get<IUser[]>(environment.apiUrl + '/user/teachersWithAdmin');
+  }
+
   getStudentsWithoutGroupWithStatInfo(): Observable<IUserStatInfo[]>{
     return this.httpclient.get<IUserStatInfo[]>(environment.apiUrl + '/user/studentsWithoutGroupWithStatInfo/forAdmin');
   }
@@ -77,5 +85,9 @@ export class UserService {
 
   getStudentsByGroupId(id: number): Observable<IUser[]> {
     return this.httpclient.get<IUser[]>(environment.apiUrl + `/user/get/all/byGroupId/${id}`);
+  }
+
+  revokeTeacherAuthority(teacherId: number) {
+    return this.httpclient.get<boolean>(environment.apiUrl + `/user/revokeTeacherAuthority/${teacherId}`);
   }
 }

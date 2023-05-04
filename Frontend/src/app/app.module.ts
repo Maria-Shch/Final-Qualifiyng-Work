@@ -46,6 +46,7 @@ import { NewGroupComponent } from './components/admin/new-group/new-group.compon
 import { EditGroupComponent } from './components/admin/edit-group/edit-group.component';
 import { ChangeGroupMembersComponent } from './components/admin/change-group-members/change-group-members.component';
 import { CheckboxGroupUsersComponent } from './components/utils/checkbox-group-users/checkbox-group-users.component';
+import { TeachersComponent } from './components/admin/teachers/teachers.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { CheckboxGroupUsersComponent } from './components/utils/checkbox-group-u
     NewGroupComponent,
     EditGroupComponent,
     ChangeGroupMembersComponent,
-    CheckboxGroupUsersComponent
+    CheckboxGroupUsersComponent,
+    TeachersComponent
   ],
   imports: [
     BrowserModule,

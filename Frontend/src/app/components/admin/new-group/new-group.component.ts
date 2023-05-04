@@ -76,7 +76,7 @@ export class NewGroupComponent implements OnInit{
       this.groupService.getFaculties(),
       this.groupService.getFormsOfEdu(),
       this.groupService.getYears(),
-      this.userService.getTeachers(),
+      this.userService.getTeachersWithAdmin(),
       this.groupService.getQuantityCourseNumber(),
       this.groupService.getQuantityGroupNumber(),
       this.groupService.getMaxQuantityOfProfiles()

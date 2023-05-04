@@ -112,6 +112,12 @@ public class UserService {
     }
 
     public List<User> getTeachersSorted() {
+        return userRepo.findAllByRole(Role.TEACHER).stream()
+                .sorted(Comparator.comparing(User::getLastname))
+                .toList();
+    }
+
+    public List<User> getTeachersWithAdminSorted() {
         List<User> teachers = userRepo.findAllByRole(Role.TEACHER);
         Optional<User> admin = userRepo.getUserByRole(Role.ADMIN);
         admin.ifPresent(teachers::add);
@@ -145,5 +151,13 @@ public class UserService {
     public void setGroupForStudent(User student, Group group){
         student.setGroup(group);
         userRepo.save(student);
+    }
+
+    @Transactional
+    public boolean revokeTeacherAuthority(long teacherId) {
+        User teacher = findById(teacherId).get();
+        teacher.setRole(Role.USER);
+        userRepo.save(teacher);
+        return true;
     }
 }

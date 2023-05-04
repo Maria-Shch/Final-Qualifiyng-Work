@@ -45,16 +45,11 @@ export class StudentAccountComponent implements OnInit{
 
         this.studentTaskService.getStudentProgress(this.user?.id).subscribe((data: IStudentProgress) =>{
           this.studentProgress = data;
-          console.log(this.studentProgress);
-        })
+        });
+        this.userService.getTeacherByStudentId(this.user?.id!).subscribe((data: IUser) => {
+          this.teacher = data.lastname + ' ' + data.name.charAt(0) + '. ' + data.patronymic.charAt(0) + '.';
+        });
       });
-
-      this.userService.getTeacher().subscribe((data: IUser) => {
-        this.teacher = data.lastname + ' ' + data.name.charAt(0) + '. ' + data.patronymic.charAt(0) + '.';
-      });
-
-
-
     });
   }
 }

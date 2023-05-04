@@ -2,14 +2,17 @@ package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.UserStatInfo;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.GroupService;
+import ru.shcherbatykh.Backend.services.RequestService;
 import ru.shcherbatykh.Backend.services.UserService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -18,11 +21,14 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
     private final GroupService groupService;
+    private final RequestService requestService;
 
-    public UserController(UserService userService, AuthService authService, GroupService groupService) {
+    public UserController(UserService userService, AuthService authService, GroupService groupService,
+                          RequestService requestService) {
         this.userService = userService;
         this.authService = authService;
         this.groupService = groupService;
+        this.requestService = requestService;
     }
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
@@ -41,11 +47,16 @@ public class UserController {
         return userService.updateEditableParams(user);
     }
 
-    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/teacher")
     public User getTeacher(){
-        User user = authService.getUser().orElse(null);
-        return userService.getTeacher(user);
+        return userService.getTeacher(Objects.requireNonNull(authService.getUser().orElse(null)));
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/{studentId}/teacher")
+    public User getTeacherByStudentId(@PathVariable long studentId){
+        return userService.getTeacher(userService.findById(studentId).get());
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
@@ -82,6 +93,12 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/teachersWithAdmin")
+    public List<User> getTeachersWithAdmin() {
+        return userService.getTeachersWithAdminSorted();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/studentsWithoutGroupWithStatInfo/forAdmin")
     public List<UserStatInfo> getStudentsWithoutGroupWithStatInfo() {
         return userService.getStudentsWithoutGroupWithStatInfo();
@@ -97,5 +114,14 @@ public class UserController {
     @GetMapping("/get/all/byGroupId/{id}")
     public List<User> getStudentsByGroupId(@PathVariable long id){
         return userService.getSortedUsersOfGroupWithNullPassword(groupService.findById(id).get());
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/revokeTeacherAuthority/{teacherId}")
+    @Transactional
+    public boolean revokeTeacherAuthority(@PathVariable long teacherId){
+        groupService.revokeGroupsFromTeacher(teacherId);
+        requestService.revokeRequestsFromTeacher(teacherId);
+        return userService.revokeTeacherAuthority(teacherId);
     }
 }
