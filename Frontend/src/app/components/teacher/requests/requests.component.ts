@@ -42,8 +42,13 @@ export class RequestsComponent implements OnInit{
         });
       }
     });
-    this.groupService.getAllGroups().subscribe((data: IGroup[]) => {
-      this.groupsOptions = data.map(x => new CheckboxItem(x.id, x.name, false));
+    this.groupService.getGroupsByTeacher().subscribe((data: IGroup[]) => {
+      if(data?.length != 0){
+        if (data.at(0)?.teacher?.role == 'ADMIN'){
+          this.groupsOptions.push(new CheckboxItem(null, 'Без группы', false));
+        }
+        this.groupsOptions = this.groupsOptions.concat(data.map(x => new CheckboxItem(x.id, x.name, false)));
+      }
     });
     this.requestService.getRequestTypes().subscribe((data: IRequestType[]) => {
       this.requestTypesOptions = data.map(x => new CheckboxItem(x.id, x.name, false));

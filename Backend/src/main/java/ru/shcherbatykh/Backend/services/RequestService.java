@@ -138,7 +138,11 @@ public class RequestService {
             Join<User, Join<StudentTask, Request>> user = studentTask.join("user");
             List<Predicate> groupIdPredicate = new ArrayList<>();
             for (Long groupId : groupIds) {
-                groupIdPredicate.add(criteriaBuilder.equal(user.get("group"), groupId));
+               if (groupId != null){
+                   groupIdPredicate.add(criteriaBuilder.equal(user.get("group"), groupId));
+               } else {
+                   groupIdPredicate.add(criteriaBuilder.isNull(user.get("group")));
+               }
             }
             return criteriaBuilder.or(groupIdPredicate.toArray(new Predicate[0]));
         };

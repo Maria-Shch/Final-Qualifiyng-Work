@@ -43,7 +43,14 @@ public class GroupController {
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
     @GetMapping("/all/forTeacher")
-    public List<GroupWithUsersStatInfo> getGroupsByTeacher() {
+    public List<Group> getGroupsByTeacher() {
+        User teacher = authService.getUser().orElse(null);
+        return groupService.getGroupsByTeacher(teacher);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/withUserStatInfo/all/forTeacher")
+    public List<GroupWithUsersStatInfo> getGroupsWithUserStatInfoByTeacher() {
         User teacher = authService.getUser().orElse(null);
         return groupService.getGroupsWithUsersByTeacher(teacher);
     }
@@ -61,13 +68,13 @@ public class GroupController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/all/forAdmin")
+    @GetMapping("/withUserStatInfo/all/forAdmin")
     public List<GroupWithUsersStatInfo> getGroupsByAdmin() {
         return groupService.getGroupsWithUsersByAdmin();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PostMapping("/all/forAdmin")
+    @PostMapping("/withUserStatInfo/all/forAdmin")
     public List<GroupWithUsersStatInfo> getGroupsByAdminAfterFiltering(@RequestBody FilterGroups filterGroups) {
         return groupService.getGroupsWithUsersByAdmin(filterGroups);
     }

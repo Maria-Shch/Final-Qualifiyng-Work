@@ -30,12 +30,16 @@ export class GroupService {
     });
   }
 
+  getGroupsByTeacher(): Observable<IGroup[]> {
+    return this.httpclient.get<IGroup[]>(environment.apiUrl + '/group/all/forTeacher');
+  }
+
   getGroupsWithUsersStatInfoForTeacher(): Observable<IGroupWithUsersStatInfo[]> {
-    return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forTeacher');
+    return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/withUserStatInfo/all/forTeacher');
   }
 
   getGroupsWithUsersStatInfoForAdmin(): Observable<IGroupWithUsersStatInfo[]> {
-    return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forAdmin');
+    return this.httpclient.get<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/withUserStatInfo/all/forAdmin');
   }
 
   setParamsToNullExcludeId(group: IGroup): IGroup{
@@ -60,7 +64,7 @@ export class GroupService {
   }
 
   getGroupsAfterFiltering(filterGroups: IFilterGroups): Observable<IGroupWithUsersStatInfo[]> {
-    return this.httpclient.post<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/all/forAdmin', filterGroups);
+    return this.httpclient.post<IGroupWithUsersStatInfo[]>(environment.apiUrl + '/group/withUserStatInfo/all/forAdmin', filterGroups);
   }
 
   getLevelsOfEdu(): Observable<ILevelOfEdu[]> {
