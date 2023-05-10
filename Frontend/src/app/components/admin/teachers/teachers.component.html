@@ -19,7 +19,11 @@
             class="tr-table-row" style="align-items: center;"
             [ngClass]="{'bc-clr-light' : i%2 === 0,'bc-clr-dark' : i%2 != 0}">
           <td class="td-full-name">
-            <a routerLink='/user/{{employee.id}}'
+            <a *ngIf="employee.role == 'ADMIN'" routerLink='/account'
+               class="p4" style="color: var(--c2); margin: 0">
+              {{employee.lastname + ' ' + employee.name + ' ' + employee.patronymic}}
+            </a>
+            <a *ngIf="employee.role == 'TEACHER'" routerLink='/teacher/{{employee.id}}'
                class="p4" style="color: var(--c2); margin: 0">
               {{employee.lastname + ' ' + employee.name + ' ' + employee.patronymic}}
             </a>

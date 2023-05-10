@@ -114,16 +114,16 @@
       </div>
       <div>
         <p *ngIf="history.eventType.id == 1" class="p4" style="margin: 0">
-          Вы отправили решение на рассмотрение преподавателю.
+          Вы отправили решение на рассмотрение преподавателю ({{history.request.teacher.lastname}} {{history.request.teacher.name.charAt(0)}}. {{history.request.teacher.patronymic.charAt(0)}}.).
         </p>
         <p *ngIf="history.eventType.id == 2" class="p4" style="margin: 0">
-          Вы отправили решение на проверку преподавателю.
+          Вы отправили решение на проверку преподавателю  ({{history.request.teacher.lastname}} {{history.request.teacher.name.charAt(0)}}. {{history.request.teacher.patronymic.charAt(0)}}.).
         </p>
         <p *ngIf="history.eventType.id == 3" class="p4" style="margin: 0">
-          Преподаватель принял ваше решение.
+          Преподаватель ({{history.request.teacher.lastname}} {{history.request.teacher.name.charAt(0)}}. {{history.request.teacher.patronymic.charAt(0)}}.) принял ваше решение.
         </p>
         <p *ngIf="history.eventType.id == 4" class="p4" style="margin: 0">
-          Преподаватель отклонил ваше решение.
+          Преподаватель ({{history.request.teacher.lastname}} {{history.request.teacher.name.charAt(0)}}. {{history.request.teacher.patronymic.charAt(0)}}.) отклонил ваше решение.
         </p>
         <p *ngIf="history.eventType.id == 5 && history.request.requestType.name == 'На рассмотрение'" class="p4" style="margin: 0">
           Вы отменили свой запрос на рассмотрение решения.
@@ -157,55 +157,55 @@
           </div>
           <div  *ngIf="historyInModal!.eventType.id == 1">
             <div *ngIf="historyInModal!.request.studentMsg != null">
-              <p class="p4" style="margin: 0">
-                Вы отправили решение на рассмотрение преподавателю со следующим комментарием:
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Вы отправили решение на рассмотрение преподавателю ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.) со следующим комментарием:
               </p>
               <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.studentMsg + '"'}}</p>
             </div>
             <div  *ngIf="historyInModal!.request.studentMsg == null">
-              <p class="p4" style="margin: 0">
-                Вы отправили решение на рассмотрение преподавателю.
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Вы отправили решение на рассмотрение преподавателю ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.).
               </p>
             </div>
           </div>
           <div *ngIf="historyInModal!.eventType.id == 2">
-            <p class="p4" style="margin: 0">
-              Вы отправили решение на проверку преподавателю.
+            <p class="p4" style="margin: 0 0 10px 0;">
+              Вы отправили решение на проверку преподавателю ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.).
             </p>
           </div>
           <div *ngIf="historyInModal!.eventType.id == 3">
             <div *ngIf="historyInModal!.request.teacherMsg != null">
-              <p class="p4" style="margin: 0">
-                Преподаватель принял ваше решение со следующим комментарием:
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Преподаватель ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.) принял ваше решение со следующим комментарием:
               </p>
               <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.teacherMsg + '"'}}</p>
             </div>
             <div  *ngIf="historyInModal!.request.teacherMsg == null">
-              <p class="p4" style="margin: 0">
-                Преподаватель принял ваше решение.
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Преподаватель ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.) принял ваше решение.
               </p>
             </div>
           </div>
           <div  *ngIf="historyInModal!.eventType.id == 4">
             <div *ngIf="historyInModal!.request.teacherMsg != null">
-              <p class="p4" style="margin: 0">
-                Преподаватель отклонил ваше решение со следующим комментарием:
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Преподаватель ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.) отклонил ваше решение со следующим комментарием:
               </p>
               <p class="p4" style="font-style: italic;">{{'"' + historyInModal!.request.teacherMsg + '"'}}</p>
             </div>
             <div *ngIf="historyInModal!.request.teacherMsg == null">
-              <p class="p4" style="margin: 0">
-                Преподаватель отклонил ваше решение.
+              <p class="p4" style="margin: 0 0 10px 0;">
+                Преподаватель ({{historyInModal!.request.teacher.lastname}} {{historyInModal!.request.teacher.name.charAt(0)}}. {{historyInModal!.request.teacher.patronymic.charAt(0)}}.) отклонил ваше решение.
               </p>
             </div>
           </div>
           <div *ngIf="historyInModal!.eventType.id == 5 && historyInModal!.request.requestType.name == 'На рассмотрение'" >
-            <p class="p4" style="margin: 0">
+            <p class="p4" style="margin: 0 0 10px 0;">
               Вы отменили свой запрос на рассмотрение решения.
             </p>
           </div>
           <div  *ngIf="historyInModal!.eventType.id == 5 && historyInModal!.request.requestType.name == 'На проверку'" >
-            <p class="p4" style="margin: 0">
+            <p class="p4" style="margin: 0 0 10px 0;">
               Вы отменили свой запрос на проверку решения.
             </p>
           </div>

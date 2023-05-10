@@ -1,0 +1,74 @@
+<app-header></app-header>
+<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/info.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="color: var(--c6);">Информация о преподавателе</h2>
+  </div>
+
+  <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 35px">
+    <form [formGroup]="personalDataForm" class="form-registration" style="display: flex; flex-direction: column">
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Фамилия</p>
+        <input type="text"
+               formControlName="lastname"
+               id="lastname"
+               placeholder="Фамилия"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Имя</p>
+        <input type="text"
+               formControlName="name"
+               id="name"
+               placeholder="Имя"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Отчество</p>
+        <input type="text"
+               formControlName="patronymic"
+               id="patronymic"
+               placeholder="Отчество"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Почта</p>
+        <input type="text"
+               formControlName="username"
+               id="username"
+               placeholder="Электронная почта"
+               required
+               readonly
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </form>
+    <div *ngIf="user?.role === 'USER'" style="display: flex; flex-direction: column">
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Группа</p>
+        <input type="text"
+               readonly
+               value="{{user?.group === null ? 'Без группы' : user?.group?.name}}"
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+      <div style="display:flex; flex-direction: column">
+        <p class="p6" style="margin: 0 0 0 10px;">Преподаватель</p>
+        <input type="text"
+               readonly
+               value="{{teacher}}"
+               class="input-params p4"
+               style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
+      </div>
+    </div>
+  </div>
+</div>
