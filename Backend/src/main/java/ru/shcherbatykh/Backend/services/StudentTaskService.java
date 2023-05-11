@@ -164,7 +164,20 @@ public class StudentTaskService {
     }
 
     public List<StudentTask> getStudentTasksByUserAndBlock(User user, Block block){
-        return studentTaskRepo.findAll(getSpecificationByUserAndBlock(user.getId(), block.getId()));
+        List<StudentTask> presentStudentTasks = studentTaskRepo.findAll(getSpecificationByUserAndBlock(user.getId(), block.getId()));
+        List<Long> taskIdsOfPresentStudentTasks = presentStudentTasks.stream()
+                .map(studentTask -> studentTask.getTask().getId())
+                .toList();
+        if (presentStudentTasks.size() != blockService.getCountOfBlocks(block.getChapter().getSerialNumber())){
+            List<Task> tasksOfBlock = taskRepo.getTaskByBlock(block);
+            for (Task task: tasksOfBlock){
+                if (!taskIdsOfPresentStudentTasks.contains(task.getId())){
+                    StudentTask nonexistentStudentTask = new StudentTask(user, task, statusService.getStatusByName("Не решена"));
+                    presentStudentTasks.add(nonexistentStudentTask);
+                }
+            }
+        }
+        return presentStudentTasks;
     }
 
     private Specification<StudentTask> getSpecificationByUserAndBlock(Long userId, Long blockId){

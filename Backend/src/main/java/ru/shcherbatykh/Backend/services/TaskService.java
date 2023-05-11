@@ -84,6 +84,10 @@ public class TaskService {
         return taskRepo.getTasksByBlockAndSerialNumber(block, serialNumberOfTask);
     }
 
+    public Task findById(Long taskId) {
+        return taskRepo.findById(taskId).get();
+    }
+
     public Task saveDescriptionOfTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, String description) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         task.setDescription(description);
@@ -270,6 +274,13 @@ public class TaskService {
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
         studentTasksService.setStatusNotPassedTests(stTask);
         requestService.cancelRequest(stTask);
+        return true;
+    }
+
+    public boolean setManualCheckValue(Long taskId, boolean manualCheckValue) {
+        Task task = findById(taskId);
+        task.setManualCheckRequired(manualCheckValue);
+        taskRepo.save(task);
         return true;
     }
 }

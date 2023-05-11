@@ -121,4 +121,10 @@ public class TaskController {
         return taskService.cancelConsideration(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
                 authService.getUser().orElse(null));
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/task/{taskId}/manualCheck/{manualCheckValue}")
+    public boolean setManualCheckValue(@PathVariable Long taskId, @PathVariable boolean manualCheckValue) {
+        return taskService.setManualCheckValue(taskId, manualCheckValue);
+    }
 }

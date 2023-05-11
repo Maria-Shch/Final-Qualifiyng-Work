@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping("/get")
     public User getUser(){
         Optional<User> user = authService.getUser();
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             user.get().setPassword(null);
             return user.get();
         } return null;

@@ -94,4 +94,9 @@ export class TaskService {
     return this.httpclient.get<any>(environment.apiUrl +
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/cancelConsideration`);
   }
+
+  setManualCheckValue(taskId: number, manualCheckValue: boolean): Observable<any>{
+    return this.httpclient.put<any>(environment.apiUrl +
+      `/task/${taskId}/manualCheck/${manualCheckValue}`, null);
+  }
 }

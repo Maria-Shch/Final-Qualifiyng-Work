@@ -77,7 +77,7 @@ export class RequestsComponent implements OnInit{
   }
 
   onChangeFilter(value: any) {
-    let ascending: boolean = this.order === 'Сначала новые' ? false : true;
+    let ascending: boolean = this.order !== 'Сначала новые';
     this.filterRequests = {
       groupIds: this.groupsOptions.filter(x => x.checked).map(x => x.value),
       requestTypeIds: this.requestTypesOptions.filter(x => x.checked).map(x => x.value),

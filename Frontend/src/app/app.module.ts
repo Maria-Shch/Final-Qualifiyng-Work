@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { LoginComponent } from './components/authorization/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -98,7 +99,8 @@ import { TeacherComponent } from './components/admin/teacher/teacher.component';
     EditorModule,
     MatRadioModule,
     MatExpansionModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSlideToggleModule
   ],
   providers: [
     AuthGuard,

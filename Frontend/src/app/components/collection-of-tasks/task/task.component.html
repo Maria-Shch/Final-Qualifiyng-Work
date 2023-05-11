@@ -207,6 +207,15 @@
           Задача не требует подтверждения решения преподавателем
         </p>
       </div>
+
+      <div *ngIf="currUser?.role == 'ADMIN'" class="d-check">
+        <mat-slide-toggle [(ngModel)]="task!.manualCheckRequired"
+                          (change)="changeManualCheck()"
+                          class="p4"
+                          style="text-align: center">
+          Проверка кода преподавателем
+        </mat-slide-toggle>
+      </div>
     </div>
   </div>
 

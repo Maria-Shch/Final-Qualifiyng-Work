@@ -13,6 +13,7 @@ import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResp
 import {ISendingOnReviewOrConsiderationResponse} from "../../../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {TestingService} from "../../../services/testing.service";
+import {IUser} from "../../../interfaces/IUser";
 
 @Component({
   selector: 'app-task',
@@ -36,6 +37,7 @@ export class TaskComponent implements OnInit{
   showModalOnCancelConsideration: boolean = false;
   showModalTestsPassedSuccessfully: boolean = false;
   showModalTestsPassedUnsuccessfully: boolean = false;
+  currUser: IUser | null = null;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -77,6 +79,10 @@ export class TaskComponent implements OnInit{
       (error)=>{ toErrorPage(error, this.router);});
 
       if (this.authService.isLoggedIn()) {
+        this.userService.getUser().subscribe((data: IUser) => {
+          this.currUser = data;
+        });
+
         this.taskService.getStatusOfTask(this.serialNumberOfChapter,this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IStatus) => {
           this.status = data;
@@ -276,6 +282,18 @@ export class TaskComponent implements OnInit{
     },
     (error)=>{ toErrorPage(error, this.router);});
     this.closeModalOnCancelConsideration();
+  }
+
+  changeManualCheck() {
+    this.taskService.setManualCheckValue(this.task!.id, this.task!.manualCheckRequired).subscribe(
+      (data: any) => {
+       if (this.task!.manualCheckRequired){
+         alert("Теперь код решения данной задачи должен проверяться преподавателем.");
+       } else {
+         alert("Вы сняли требование проверки кода решения преподавателем для данной задачи.");
+       }
+      },
+      (error)=>{ toErrorPage(error, this.router);});
   }
 
   closeModalOnCancelConsideration() {
