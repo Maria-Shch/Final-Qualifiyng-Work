@@ -52,14 +52,14 @@
         request.studentTask.task.serialNumber + '. ' +
          request.studentTask.task.name}}
       </a>
-      <div style="display: flex; flex-direction: row; margin-top: 10px">
+      <div style="display: flex; flex-direction: row; margin-top: 10px; align-items: end;">
         <p class="p4" style="color: var(--c6); margin: 0">от&nbsp;</p>
         <a routerLink='/user/{{request.studentTask.user.id}}'
           class="p4" style="color: var(--c2); margin: 0">
           {{request.studentTask.user.lastname + ' ' + request.studentTask.user.name}}&nbsp;
         </a>
-        <p class="p4" style="color: var(--c6); margin: 0">
-          {{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ')'}}
+        <p class="p5" style="color: var(--c6); margin: 0">
+          {{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ' (' + request.studentTask.user?.group?.year?.name +  '))'}}
         </p>
       </div>
     </div>

@@ -47,7 +47,7 @@ export class RequestsComponent implements OnInit{
         if (data.at(0)?.teacher?.role == 'ADMIN'){
           this.groupsOptions.push(new CheckboxItem(null, 'Без группы', false));
         }
-        this.groupsOptions = this.groupsOptions.concat(data.map(x => new CheckboxItem(x.id, x.name, false)));
+        this.groupsOptions = this.groupsOptions.concat(data.map(x => new CheckboxItem(x.id, x.name + ' (' + x.year?.name + ')', false)));
       }
     });
     this.requestService.getRequestTypes().subscribe((data: IRequestType[]) => {
