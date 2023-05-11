@@ -47,7 +47,7 @@ public class UserController {
         return userService.updateEditableParams(user);
     }
 
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
     @GetMapping("/teacher")
     public User getTeacher(){
         return userService.getTeacher(Objects.requireNonNull(authService.getUser().orElse(null)));
