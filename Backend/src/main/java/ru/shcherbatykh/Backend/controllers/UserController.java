@@ -124,4 +124,11 @@ public class UserController {
         requestService.revokeRequestsFromTeacher(teacherId);
         return userService.revokeTeacherAuthority(teacherId);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/grantTeacherAuthority/{userId}")
+    @Transactional
+    public boolean grantTeacherAuthority(@PathVariable long userId){
+        return userService.grantTeacherAuthority(userId);
+    }
 }

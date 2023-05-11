@@ -160,4 +160,12 @@ public class UserService {
         userRepo.save(teacher);
         return true;
     }
+
+    public boolean grantTeacherAuthority(long userId) {
+        User user = findById(userId).get();
+        user.setRole(Role.TEACHER);
+        user.setGroup(null);
+        userRepo.save(user);
+        return true;
+    }
 }

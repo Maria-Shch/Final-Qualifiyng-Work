@@ -90,4 +90,8 @@ export class UserService {
   revokeTeacherAuthority(teacherId: number) {
     return this.httpclient.get<boolean>(environment.apiUrl + `/user/revokeTeacherAuthority/${teacherId}`);
   }
+
+  grantTeacherAuthority(userId: number) {
+    return this.httpclient.get<boolean>(environment.apiUrl + `/user/grantTeacherAuthority/${userId}`);
+  }
 }

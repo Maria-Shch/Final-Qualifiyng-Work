@@ -69,6 +69,7 @@
                class="input-params p4"
                style="padding: 10px; margin: 2px 0 15px 0; border: 2px solid #e5e5f3; background: var(--c1); cursor: auto;">
       </div>
+      <input *ngIf="currUser?.role == 'ADMIN'" type="submit" value="Назначить преподавателем" class="i-submit h5"  style="margin: 23px 0 0 0; font-size: 15px;" (click)="grantTeacherAuthority(user!)">
     </div>
   </div>
 
