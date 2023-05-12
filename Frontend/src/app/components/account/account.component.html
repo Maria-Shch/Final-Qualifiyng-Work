@@ -21,8 +21,6 @@
     <h5 *ngIf="isRepeatedUsername" class="error">
       Пользователь с такой электронной почтой уже существует</h5>
   </div>
-
-
   <div style="display: flex; flex-direction: row; justify-content: space-between; width: 70%; margin-left: 35px">
     <form [formGroup]="personalDataForm" (ngSubmit)="onSubmit()" class="form-registration" style="display: flex; flex-direction: column">
       <div style="display:flex; flex-direction: column">
@@ -100,6 +98,11 @@
 
   <div *ngIf="requestHistories != null" style="margin: 10px 0 0 30px;">
     <h2 style="var(--c6);">История</h2>
+    <div>
+      <p *ngIf="requestHistories.length === 0" class="h3" style="color: var(--c2); margin: 10px 0 0 0;" >
+        История запросов пуста
+      </p>
+    </div>
     <div *ngFor="let history of requestHistories"  class="d-history" (click)="openModalWithInfo(history.id)">
       <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 10px">
         <a routerLink='/chapter/{{history.request.studentTask.task.block.chapter.serialNumber}}/block/{{history.request.studentTask.task.block.serialNumber}}/task/{{history.request.studentTask.task.serialNumber}}'

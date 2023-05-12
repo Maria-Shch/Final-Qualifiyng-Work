@@ -5,6 +5,11 @@
     <h2 style="var(--c6);">Ваши группы</h2>
   </div>
   <div style="display: flex; width: 100%; flex-direction: column; justify-content: space-between;">
+    <div>
+      <p *ngIf="groupsWithUsersStatInfo.length === 0" class="h3" style="color: var(--c2); margin: 10px 0 0 0;" >
+        Вам пока не назначили группы
+      </p>
+    </div>
     <div *ngFor=" let groupWithUsersStatInfo of groupsWithUsersStatInfo" style="margin-bottom: 25px">
       <app-group-drop-down-list [groupWithUsersStatInfo]="groupWithUsersStatInfo"></app-group-drop-down-list>
     </div>

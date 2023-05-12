@@ -24,5 +24,7 @@ public interface RequestRepo extends PagingAndSortingRepository<Request, Long> {
 
     List<Request> findAll(Specification<Request> specification, Pageable pageable);
 
-    List<Request> findAllByTeacherAndAndRequestStateIn(User teacher, List<RequestState> requestStates);
+    List<Request> findAll(Specification<Request> specification);
+
+    List<Request> findAllByTeacherAndRequestStateIn(User teacher, List<RequestState> requestStates);
 }

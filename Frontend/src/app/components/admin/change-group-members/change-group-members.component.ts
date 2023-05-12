@@ -58,7 +58,7 @@ export class ChangeGroupMembersComponent {
       selectedStudentsWithoutGroupIds: this.selectedStudentsWithoutGroupIds
     } as IChangedGroupMembers;
     this.groupService.updateGroupMembers(this.group?.id!, changedGroupMembers).subscribe((data: boolean) => {
-      alert("Состав группы был успешно изменён");
+      alert("Состав группы был успешно изменён.");
       this.ngOnInit();
     });
   }

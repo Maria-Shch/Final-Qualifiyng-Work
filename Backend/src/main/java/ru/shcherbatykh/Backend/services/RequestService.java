@@ -98,7 +98,7 @@ public class RequestService {
 
 
     public int getCountRequestsAfterFiltering(User teacher, FilterRequests filterRequests) {
-        return requestRepo.count(getSpecification(teacher, filterRequests));
+        return requestRepo.count(getSpecificationForFiltration(teacher, filterRequests));
     }
 
     public List<Request> getRequestsByPageNumberAndFilter(User teacher, int pageNumber, FilterRequests filterRequests) {
@@ -110,10 +110,10 @@ public class RequestService {
         }
         Pageable sortedByCreationTimeDesc =
                 PageRequest.of(pageNumber, 10, sort);
-        return requestRepo.findAll(getSpecification(teacher, filterRequests), sortedByCreationTimeDesc);
+        return requestRepo.findAll(getSpecificationForFiltration(teacher, filterRequests), sortedByCreationTimeDesc);
     }
 
-    private Specification<Request> getSpecification(User teacher, FilterRequests filterRequests) {
+    private Specification<Request> getSpecificationForFiltration(User teacher, FilterRequests filterRequests) {
 
         Specification<Request> specification = hasTeacher(teacher.getId());
 
@@ -219,7 +219,7 @@ public class RequestService {
     public void revokeRequestsFromTeacher(long teacherId) {
         User teacher = userService.findById(teacherId).get();
         List<RequestState> incompleteRequestStates = List.of(requestStateService.getRSNotSeen(), requestStateService.getRSSeen());
-        List<Request> incompleteRequests = requestRepo.findAllByTeacherAndAndRequestStateIn(teacher, incompleteRequestStates);
+        List<Request> incompleteRequests = requestRepo.findAllByTeacherAndRequestStateIn(teacher, incompleteRequestStates);
         for(Request request: incompleteRequests){
             request.setTeacher(userService.getAdmin());
             if (Objects.equals(request.getRequestState().getId(), requestStateService.getRSSeen().getId())){
@@ -227,5 +227,41 @@ public class RequestService {
             }
             requestRepo.save(request);
         }
+    }
+
+    public void reassignRequests(Long oldTeacherId, Long newTeacherId, List<Long> studentIdsOfUpdatedGroup) {
+        List<Request> requestsForReassignment = requestRepo.findAll(getSpecificationForReassignRequests(oldTeacherId, studentIdsOfUpdatedGroup));
+        for(Request request: requestsForReassignment){
+            request.setTeacher(userService.findById(newTeacherId).get());
+            request.setRequestState(requestStateService.getRSNotSeen());
+            requestRepo.save(request);
+        }
+    }
+
+    private Specification<Request> getSpecificationForReassignRequests(Long oldTeacherId, List<Long> studentIdsOfUpdatedGroup) {
+
+        Specification<Request> specification = hasTeacher(oldTeacherId);
+
+        List<Long> uncompletedRequestStateIds = List.of(
+                requestStateService.getRSNotSeen().getId(),
+                requestStateService.getRSSeen().getId());
+
+        specification = specification.and(hasRequestStates(uncompletedRequestStateIds));
+
+        specification = specification.and(hasUserIds(studentIdsOfUpdatedGroup));
+
+        return specification;
+    }
+
+    private Specification<Request> hasUserIds(List<Long> studentIds) {
+        return (root, query, criteriaBuilder) -> {
+            Join<StudentTask, Request> studentTask = root.join("studentTask");
+            Join<User, Join<StudentTask, Request>> user = studentTask.join("user");
+            List<Predicate> studentIdPredicate = new ArrayList<>();
+            for (Long studentId : studentIds) {
+                studentIdPredicate.add(criteriaBuilder.equal(user.get("id"), studentId));
+            }
+            return criteriaBuilder.or(studentIdPredicate.toArray(new Predicate[0]));
+        };
     }
 }

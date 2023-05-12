@@ -16,16 +16,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class GroupService {
     private final GroupRepo groupRepo;
     private final UserService userService;
     private final StudentTaskService studentTaskService;
+    private final RequestService requestService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -41,15 +39,16 @@ public class GroupService {
         return groupRepo.findById(id);
     }
 
-    public GroupService(GroupRepo groupRepo, UserService userService, StudentTaskService studentTaskService) {
+    public GroupService(GroupRepo groupRepo, UserService userService, StudentTaskService studentTaskService,
+                        RequestService requestService) {
         this.groupRepo = groupRepo;
         this.userService = userService;
         this.studentTaskService = studentTaskService;
+        this.requestService = requestService;
     }
 
     public List<Group> getGroups(){
         List<Group> groups = groupRepo.findAll();
-        for (Group g: groups) g.getTeacher().setPassword("");
         return groups.stream()
                 .sorted(Comparator.comparing(Group::getName))
                 .toList();
@@ -57,7 +56,6 @@ public class GroupService {
 
     public List<Group> getGroups(Specification<Group> specification){
         List<Group> groups = groupRepo.findAll(specification);
-        for (Group g: groups) g.getTeacher().setPassword("");
         return groups.stream()
                 .sorted(Comparator.comparing(Group::getName))
                 .toList();
@@ -65,7 +63,6 @@ public class GroupService {
 
     public List<Group> getGroupsByTeacher(User teacher) {
         List<Group> groups = groupRepo.findAllByTeacher(teacher);
-        for (Group g: groups) g.getTeacher().setPassword("");
         return groups.stream()
                 .sorted(Comparator.comparing(Group::getName))
                 .toList();
@@ -233,6 +230,16 @@ public class GroupService {
 
     @Transactional
     public Group updateGroup(Group updatedGroup) {
+        Group oldGroup = findById(updatedGroup.getId()).get();
+        Long oldTeacherId = oldGroup.getTeacher().getId();
+        if (!Objects.equals(oldTeacherId, updatedGroup.getTeacher().getId())){
+            List<Long> studentIdsOfUpdatedGroup = userService.getSortedUsersOfGroup(oldGroup).stream()
+                    .map(User::getId)
+                    .toList();
+            if (!CollectionUtils.isEmpty(studentIdsOfUpdatedGroup)){
+                requestService.reassignRequests(oldTeacherId, updatedGroup.getTeacher().getId(), studentIdsOfUpdatedGroup);
+            }
+        }
         Group savedGroup = groupRepo.save(updatedGroup);
         entityManager.flush();
         entityManager.refresh(savedGroup);
@@ -241,7 +248,13 @@ public class GroupService {
 
     public boolean updateGroupMembers(Long groupId, ChangedGroupMembers changedGroupMembers) {
         userService.setGroup(changedGroupMembers.getUnselectedStudentsOfGroupIds(), null);
+        requestService.reassignRequests(findById(groupId).get().getTeacher().getId(),
+                userService.getAdmin().getId(),
+                changedGroupMembers.getUnselectedStudentsOfGroupIds());
         userService.setGroup(changedGroupMembers.getSelectedStudentsWithoutGroupIds(), findById(groupId).get());
+        requestService.reassignRequests(userService.getAdmin().getId(),
+                findById(groupId).get().getTeacher().getId(),
+                changedGroupMembers.getSelectedStudentsWithoutGroupIds());
         return true;
     }
 
