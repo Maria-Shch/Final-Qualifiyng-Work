@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {GroupService} from "../../../services/group.service";
 import {UserService} from "../../../services/user.service";
 import {IGroup} from "../../../interfaces/IGroup";
-import {forkJoin} from "rxjs";
 import {IUser} from "../../../interfaces/IUser";
 import {CheckboxItem} from "../../../classes/CheckboxItem";
 import {IChangedGroupMembers} from "../../../dto_interfaces/IChangedGroupMembers";

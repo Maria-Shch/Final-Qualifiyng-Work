@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {IUser} from "../../../interfaces/IUser";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {IStudentProgress} from "../../../dto_interfaces/IStudentProgress";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
-import {StudentTaskService} from "../../../services/student-task.service";
 import {GroupService} from "../../../services/group.service";
 import {IGroup} from "../../../interfaces/IGroup";
 import {ILevelOfEdu} from "../../../interfaces/ILevelOfEdu";
@@ -12,7 +10,6 @@ import {IProfile} from "../../../interfaces/IProfile";
 import {IFaculty} from "../../../interfaces/IFaculty";
 import {IFormOfEdu} from "../../../interfaces/IFormOfEdu";
 import {IYear} from "../../../interfaces/IYear";
-import {CheckboxItem} from "../../../classes/CheckboxItem";
 import {forkJoin} from "rxjs";
 import {FormUtils} from "../../../utils/FormUtils";
 

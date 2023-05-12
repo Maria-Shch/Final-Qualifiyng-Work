@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div style="width: var(--width-main-container); display: flex; flex-direction: column; margin-top: 20px;">
+<div class="div-main-body">
   <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
     <img src="../../../../assets/icons/students.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
     <h2 style="var(--c6);">Создание новой группы</h2>
@@ -85,7 +85,7 @@
       <p class="p4">Вы можете добавить в группу следующих студентов, так как они ещё не состоят ни в одной:</p>
       <app-checkbox-group-users [options]="studentsWithoutGroupOptions" (change)="onChangeSelectedStudents()"></app-checkbox-group-users>
     </div>
-    <input type="submit" value="Создать группу" class="i-submit h5" style="margin: 40px 0 0 0;">
+    <input type="submit" value="Создать группу" class="i-submit h5" style="margin: 40px 0 40px 0;">
   </form>
 </div>
 
@@ -155,3 +155,4 @@
     </div>
   </div>
 </div>
+<app-footer></app-footer>

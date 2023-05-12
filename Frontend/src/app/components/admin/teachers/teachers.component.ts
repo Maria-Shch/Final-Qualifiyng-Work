@@ -1,14 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {GroupService} from "../../../services/group.service";
 import {UserService} from "../../../services/user.service";
-import {IGroup} from "../../../interfaces/IGroup";
 import {forkJoin} from "rxjs";
-import {ILevelOfEdu} from "../../../interfaces/ILevelOfEdu";
-import {IProfile} from "../../../interfaces/IProfile";
-import {IFaculty} from "../../../interfaces/IFaculty";
-import {IFormOfEdu} from "../../../interfaces/IFormOfEdu";
-import {IYear} from "../../../interfaces/IYear";
 import {IUser} from "../../../interfaces/IUser";
 
 @Component({

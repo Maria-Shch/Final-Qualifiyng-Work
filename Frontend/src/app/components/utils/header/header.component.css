@@ -8,14 +8,14 @@
   justify-content: center;
 }
 .icon-login {
-  background: url("../../../assets/icons/login.png") no-repeat;
+  background: url("../../../../assets/icons/login.png") no-repeat;
   background-size: var(--imgXY-login-logout);
   width: var(--imgXY-login-logout);
   height: var(--imgXY-login-logout);
 }
 
 .icon-logout {
-  background: url("../../../assets/icons/logout.png") no-repeat;
+  background: url("../../../../assets/icons/logout.png") no-repeat;
   background-size: var(--imgXY-login-logout);
   width: var(--imgXY-login-logout);
   height: var(--imgXY-login-logout);

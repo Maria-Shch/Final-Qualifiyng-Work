@@ -1,0 +1,10 @@
+:host{
+  width: 100%;
+  height: 50px;
+  background: var(--c16);
+  box-shadow: var(--box-shadow-header);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}

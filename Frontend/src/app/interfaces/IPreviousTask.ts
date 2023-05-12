@@ -1,4 +1,3 @@
-import {IBlock} from "./IBlock";
 import {ITask} from "./ITask";
 
 export interface IPreviousTask {

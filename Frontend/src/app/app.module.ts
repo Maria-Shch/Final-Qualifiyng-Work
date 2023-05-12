@@ -1,54 +1,57 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {RouterModule, RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
+import {EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-import { LoginComponent } from './components/authorization/login/login.component';
-import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
+import {LoginComponent} from './components/authorization/login/login.component';
+import {HeaderComponent} from './components/utils/header/header.component';
+import {HomeComponent} from './components/home/home.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {UserService} from "./services/user.service";
-import { ForbiddenComponent } from './components/utils/forbidden/forbidden.component';
-import { UpdateTokensComponent } from './components/authorization/update-tokens/update-tokens.component';
-import { RegistrationComponent } from './components/authorization/registration/registration.component';
-import { ErrorComponent } from './components/utils/error/error.component';
-import { ToHomeComponent } from './components/utils/to-home/to-home.component';
-import { ChaptersComponent } from './components/collection-of-tasks/chapters/chapters.component';
-import { ChapterComponent } from './components/collection-of-tasks/chapter/chapter.component';
-import { NextComponent } from './components/utils/next/next.component';
-import { PreviousComponent } from './components/utils/previous/previous.component';
-import { ToChaptersComponent } from './components/utils/to-chapters/to-chapters.component';
-import { PracticeComponent } from './components/collection-of-tasks/practice/practice.component';
-import { TheoryComponent } from './components/collection-of-tasks/theory/theory.component';
-import { TaskComponent } from './components/collection-of-tasks/task/task.component';
-import { TaskSwitcherComponent } from './components/utils/task-switcher/task-switcher.component';
-import { BlockSwitcherComponent } from './components/utils/block-switcher/block-switcher.component';
-import { AccountComponent } from './components/account/account.component';
-import { RequestsComponent } from './components/teacher/requests/requests.component';
-import { CheckboxGroupComponent } from './components/utils/checkbox-group/checkbox-group.component';
+import {ForbiddenComponent} from './components/utils/forbidden/forbidden.component';
+import {UpdateTokensComponent} from './components/authorization/update-tokens/update-tokens.component';
+import {RegistrationComponent} from './components/authorization/registration/registration.component';
+import {ErrorComponent} from './components/utils/error/error.component';
+import {ToHomeComponent} from './components/utils/to-home/to-home.component';
+import {ChaptersComponent} from './components/collection-of-tasks/chapters/chapters.component';
+import {ChapterComponent} from './components/collection-of-tasks/chapter/chapter.component';
+import {NextComponent} from './components/utils/next/next.component';
+import {PreviousComponent} from './components/utils/previous/previous.component';
+import {ToChaptersComponent} from './components/utils/to-chapters/to-chapters.component';
+import {PracticeComponent} from './components/collection-of-tasks/practice/practice.component';
+import {TheoryComponent} from './components/collection-of-tasks/theory/theory.component';
+import {TaskComponent} from './components/collection-of-tasks/task/task.component';
+import {TaskSwitcherComponent} from './components/utils/task-switcher/task-switcher.component';
+import {BlockSwitcherComponent} from './components/utils/block-switcher/block-switcher.component';
+import {AccountComponent} from './components/account/account.component';
+import {RequestsComponent} from './components/teacher/requests/requests.component';
+import {CheckboxGroupComponent} from './components/utils/checkbox-group/checkbox-group.component';
 import {MatRadioModule} from '@angular/material/radio';
-import { RequestComponent } from './components/teacher/request/request.component';
-import { StudentsGroupsComponent } from './components/teacher/students-groups/students-groups.component';
+import {RequestComponent} from './components/teacher/request/request.component';
+import {StudentsGroupsComponent} from './components/teacher/students-groups/students-groups.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { StudentSolutionComponent } from './components/teacher/student-solution/student-solution.component';
-import { StudentAccountComponent } from './components/teacher/student-account/student-account.component';
-import { AllStudentsGroupsComponent } from './components/admin/all-students-groups/all-students-groups.component';
-import { GroupDropDownListComponent } from './components/utils/group-drop-down-list/group-drop-down-list.component';
-import { StudentsWithoutGroupDropDownListComponent } from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
-import { NewGroupComponent } from './components/admin/new-group/new-group.component';
-import { EditGroupComponent } from './components/admin/edit-group/edit-group.component';
-import { ChangeGroupMembersComponent } from './components/admin/change-group-members/change-group-members.component';
-import { CheckboxGroupUsersComponent } from './components/utils/checkbox-group-users/checkbox-group-users.component';
-import { TeachersComponent } from './components/admin/teachers/teachers.component';
-import { TeacherComponent } from './components/admin/teacher/teacher.component';
+import {StudentSolutionComponent} from './components/teacher/student-solution/student-solution.component';
+import {StudentAccountComponent} from './components/teacher/student-account/student-account.component';
+import {AllStudentsGroupsComponent} from './components/admin/all-students-groups/all-students-groups.component';
+import {GroupDropDownListComponent} from './components/utils/group-drop-down-list/group-drop-down-list.component';
+import {
+  StudentsWithoutGroupDropDownListComponent
+} from './components/utils/students-without-group-drop-down-list/students-without-group-drop-down-list.component';
+import {NewGroupComponent} from './components/admin/new-group/new-group.component';
+import {EditGroupComponent} from './components/admin/edit-group/edit-group.component';
+import {ChangeGroupMembersComponent} from './components/admin/change-group-members/change-group-members.component';
+import {CheckboxGroupUsersComponent} from './components/utils/checkbox-group-users/checkbox-group-users.component';
+import {TeachersComponent} from './components/admin/teachers/teachers.component';
+import {TeacherComponent} from './components/admin/teacher/teacher.component';
+import {FooterComponent} from './components/utils/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +89,8 @@ import { TeacherComponent } from './components/admin/teacher/teacher.component';
     ChangeGroupMembersComponent,
     CheckboxGroupUsersComponent,
     TeachersComponent,
-    TeacherComponent
+    TeacherComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

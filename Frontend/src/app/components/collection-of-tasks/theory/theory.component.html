@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div style="width: var(--width-main-container); display: flex; flex-direction: column; justify-content: start; margin-top: 20px;">
+<div class="div-main-body">
   <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 10px 20px 0">
     <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
       <img src="../../../../assets/icons/open_book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
@@ -33,6 +33,7 @@
       <button class="p4 d-violet-button" (click)="saveAndTurnOffEditing()">Сохранить изменения и выйти из режима редактирования</button>
       <button class="p4 d-violet-button" (click)="turnOffEditing()">Выйти</button>
     </div>
-    <editor [init]="editorConfig" id="editor"></editor>
+    <editor style="margin-bottom: 30px" [init]="editorConfig" id="editor"></editor>
   </div>
 </div>
+<app-footer></app-footer>
