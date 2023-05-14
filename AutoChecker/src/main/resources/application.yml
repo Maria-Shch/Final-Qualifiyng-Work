@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+  jackson:
+      default-property-inclusion: non_null
+autochecker:
+  source_files_folder: C:\Users\maria\Documents\FQW\CodeStorage
+  process_timeout: 3
+logging:
+  level:
+    org.apache.kafka.clients.NetworkClient: OFF
