@@ -174,4 +174,16 @@ public class GroupController {
     public boolean deleteGroup(@PathVariable long groupId) {
         return groupService.deleteGroup(groupId);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/isPresent/year")
+    public boolean checkPresentYearByName(@RequestBody String name) {
+        return yearService.findByName(name).isPresent();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/isPresent/faculty")
+    public boolean checkPresentFacultyByName(@RequestBody String name) {
+        return facultyService.findByName(name).isPresent();
+    }
 }

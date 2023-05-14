@@ -6,6 +6,7 @@ import ru.shcherbatykh.Backend.models.Year;
 import ru.shcherbatykh.Backend.repositories.YearRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class YearService {
@@ -25,5 +26,9 @@ public class YearService {
 
     public Year addNewYear(Year newYear) {
         return yearRepo.save(newYear);
+    }
+
+    public Optional<Year> findByName(String name) {
+        return yearRepo.findByName(name);
     }
 }

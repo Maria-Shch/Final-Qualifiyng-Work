@@ -41,6 +41,7 @@ export class UserService {
       {headers: new HttpHeaders({ 'No-Auth': 'True' })}
     );
   }
+
   public registerNewUser(newUser: IUser) : Observable<IUser> {
     return this.httpclient.post<IUser>(environment.apiUrl + '/user/registerNewUser',
       newUser,

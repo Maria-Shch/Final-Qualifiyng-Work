@@ -3,9 +3,11 @@ package ru.shcherbatykh.Backend.services;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.Backend.models.Faculty;
+import ru.shcherbatykh.Backend.models.Year;
 import ru.shcherbatykh.Backend.repositories.FacultyRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -25,5 +27,9 @@ public class FacultyService {
 
     public Faculty addNewFaculty(Faculty newFaculty) {
         return facultyRepo.save(newFaculty);
+    }
+
+    public Optional<Faculty> findByName(String name) {
+        return facultyRepo.findByName(name);
     }
 }

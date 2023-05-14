@@ -124,6 +124,9 @@
           <h5 *ngIf="(name.errors?.['required'] && newFacultyFormHasBeenSubmitted)" class="error">
             Вы не заполнили название
           </h5>
+          <h5 *ngIf="isRepeatedFaculty" class="error">
+            Такое направление уже существует, выберите его из списка
+          </h5>
           <input type="text" formControlName="name" placeholder="Название" required class="input-params p4">
         </section>
         <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
@@ -145,6 +148,9 @@
           <p class="p4">Вы хотите добавить новый год, введите его:</p>
           <h5 *ngIf="(newYear.errors?.['required'] && newYearFormHasBeenSubmitted)" class="error">
             Вы не заполнили поле
+          </h5>
+          <h5 *ngIf="isRepeatedYear" class="error">
+            Такой год уже существует, выберите его из списка
           </h5>
           <input type="text" formControlName="name" id="newYear" placeholder="гггг/гггг" required class="input-params p4" [(ngModel)]="newYearName" (ngModelChange)="checkNewYearName()">
         </section>

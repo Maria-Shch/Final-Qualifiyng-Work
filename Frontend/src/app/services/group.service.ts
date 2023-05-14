@@ -145,4 +145,16 @@ export class GroupService {
   deleteGroup(groupId: number): Observable<boolean> {
     return this.httpclient.get<boolean>(environment.apiUrl + `/group/delete/${groupId}`);
   }
+
+  isPresentYear(name: string) : Observable<boolean>{
+    return this.httpclient.post<boolean>(environment.apiUrl + '/group/isPresent/year',
+      name
+    );
+  }
+
+  isPresentFaculty(name: string) : Observable<boolean>{
+    return this.httpclient.post<boolean>(environment.apiUrl + '/group/isPresent/faculty',
+      name
+    );
+  }
 }

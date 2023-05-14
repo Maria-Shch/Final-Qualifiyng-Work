@@ -13,6 +13,7 @@ import {CheckboxItem} from "../../../classes/CheckboxItem";
 import {forkJoin} from "rxjs";
 import {FormUtils} from "../../../utils/FormUtils";
 import {Router} from "@angular/router";
+import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-new-group',
@@ -42,6 +43,8 @@ export class NewGroupComponent implements OnInit{
   showModalAddNewYear: boolean = false;
   newYearFormHasBeenSubmitted: boolean = false;
   newYearName: string = '';
+  isRepeatedYear: boolean = false;
+  isRepeatedFaculty: boolean = false;
   creatingGroupForm: FormGroup = new FormGroup({
     levelOfEdu: new FormControl<ILevelOfEdu | null>(null),
     profile: new FormControl<IProfile | null>(null),
@@ -180,12 +183,19 @@ export class NewGroupComponent implements OnInit{
   onSubmitNewFacultyForm() {
     this.newFacultyFormHasBeenSubmitted = true;
     if(FormUtils.getControlErrors(this.newFacultyForm) == null) {
-      let newFaculty = this.newFacultyForm.value as IFaculty;
-      this.showModalAddNewFaculty = false;
-      this.groupService.addNewFaculty(newFaculty).subscribe((data: IFaculty[]) =>{
-        this.faculties = data;
-        this.initCreatingGroupForm();
+      this.groupService.isPresentFaculty(this.newFacultyForm.value.name).subscribe((isRepeatedFaculty: boolean) => {
+        this.isRepeatedFaculty = isRepeatedFaculty;
+        if(!isRepeatedFaculty){
+          let newYear = this.newYearForm.value as IYear;
+          console.log(newYear);
+          this.showModalAddNewYear = false;
+          this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
+            this.years = data;
+            this.initCreatingGroupForm();
+          });
+        }
       });
+
     }
   }
 
@@ -196,12 +206,17 @@ export class NewGroupComponent implements OnInit{
   onSubmitNewYearForm() {
     this.newYearFormHasBeenSubmitted = true;
     if(FormUtils.getControlErrors(this.newYearForm) == null) {
-      let newYear = this.newYearForm.value as IYear;
-      console.log(newYear);
-      this.showModalAddNewYear = false;
-      this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
-        this.years = data;
-        this.initCreatingGroupForm();
+      this.groupService.isPresentYear(this.newYearForm.value.name).subscribe((isRepeatedYear: boolean) => {
+        this.isRepeatedYear = isRepeatedYear;
+        if(!isRepeatedYear){
+          let newYear = this.newYearForm.value as IYear;
+          console.log(newYear);
+          this.showModalAddNewYear = false;
+          this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
+            this.years = data;
+            this.initCreatingGroupForm();
+          });
+        }
       });
     }
   }
