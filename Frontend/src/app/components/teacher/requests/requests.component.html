@@ -59,7 +59,7 @@
           {{request.studentTask.user.lastname + ' ' + request.studentTask.user.name}}
         </a>
         <p class="p5" style="color: var(--c6); margin: 0">
-          &nbsp;{{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ' (' + request.studentTask.user?.group?.year?.name +  '))'}}
+          &nbsp;{{request.studentTask.user?.group == null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ' (' + request.studentTask.user?.group?.year?.name +  '))'}}
         </p>
       </div>
     </div>

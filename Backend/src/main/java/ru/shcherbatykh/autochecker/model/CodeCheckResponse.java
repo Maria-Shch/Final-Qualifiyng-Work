@@ -1,6 +1,7 @@
 package ru.shcherbatykh.autochecker.model;
 
 import lombok.*;
+import ru.shcherbatykh.Backend.classes.CodeTestResult;
 
 import java.util.List;
 

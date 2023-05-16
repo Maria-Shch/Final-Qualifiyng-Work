@@ -1,4 +1,4 @@
-package ru.shcherbatykh.autochecker.model;
+package ru.shcherbatykh.Backend.classes;
 
 import lombok.*;
 
@@ -9,10 +9,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeCheckResponse {
-    private String studentId;
-    private String taskId;
-    private String requestUuid;
+public class CodeCheckResponseResult {
     private String code;
     private String message;
     private List<CodeTestResult> results;

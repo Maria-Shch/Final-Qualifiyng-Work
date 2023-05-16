@@ -14,7 +14,7 @@
               {{request.studentTask.user.lastname + ' ' + request.studentTask.user.name}}&nbsp;
             </a>
             <p class="p4" style="color: var(--c6); margin: 0">
-              {{request.studentTask.user?.group === null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ')'}}
+              {{request.studentTask.user?.group == null ? '(Без группы)' : '(' + request.studentTask.user?.group?.name + ')'}}
             </p>
           </div>
         </div>
@@ -112,29 +112,29 @@
           <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 150px" (click)="testing()">Проверить</button>
         </div>
 
-        <div *ngIf="testingResultResponse!= null && !testingResultResponse?.testingSuccessfulCompleted"
-             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
-          <div class="bc-clr-returned-not-passed-tests d-result">
-            <p class="p4" style="color: var(--c6); margin: 0">
-              Тестирование завершилось неудачей
-            </p>
-          </div>
-        </div>
+<!--        <div *ngIf="testingResultResponse!= null && !testingResultResponse?.testingSuccessfulCompleted"-->
+<!--             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">-->
+<!--          <div class="bc-clr-returned-not-passed-tests d-result">-->
+<!--            <p class="p4" style="color: var(&#45;&#45;c6); margin: 0">-->
+<!--              Тестирование завершилось неудачей-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <div *ngIf="testingResultResponse!= null && testingResultResponse?.testingSuccessfulCompleted"
-             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
-          <div class="bc-clr-passed-tests d-result">
-            <p class="p4" style="color: var(--c6); margin: 0">
-              Тестирование завершилось успешно
-            </p>
-          </div>
-        </div>
+<!--        <div *ngIf="testingResultResponse!= null && testingResultResponse?.testingSuccessfulCompleted"-->
+<!--             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">-->
+<!--          <div class="bc-clr-passed-tests d-result">-->
+<!--            <p class="p4" style="color: var(&#45;&#45;c6); margin: 0">-->
+<!--              Тестирование завершилось успешно-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
         <div style="display: flex; flex-direction: column; margin: 30px 0 0 0">
           <h4 style="color: var(--c2); margin: 15px 0 10px 0">Ваш комментарий</h4>
           <textarea class="textarea-msg"
                     id="teacherMsg"
                     oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
-          <div style="display: flex; flex-direction: row; justify-content: space-around">
+          <div style="display: flex; flex-direction: row; justify-content: space-around; margin-bottom: 30px">
             <button class="h5 but red" (click)="returnSolution()">Вернуть решение</button>
             <button class="h5 but green" (click)="confirmSolution()">Принять решение</button>
           </div>
@@ -154,33 +154,33 @@
     </div>
   </div>
 
-  <div *ngIf="showModalTestsPassedSuccessfully" class="fixed-overlay">
+  <div *ngIf="showModalCodeSentSuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
         <div class="bc-clr-passed-tests d-result" style="align-items: center">
           <p class="p4" style="color: var(--c6); margin: 0">
-            Тестирование завершилось успешно
+            Код решения успешно отправлен на проверку. Когда сервер обработает его, то после обновления данной страницы вы сможете увидеть результат.
           </p>
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
-          <button class="p4 d-violet-button" (click)="closeModalTestsPassedSuccessfully()">ОК</button>
+          <button class="p4 d-violet-button" (click)="closeModalCodeSentSuccessfully()">ОК</button>
         </footer>
       </div>
     </div>
   </div>
 
-  <div *ngIf="showModalTestsPassedUnsuccessfully" class="fixed-overlay">
+  <div *ngIf="showModalCodeSentUnsuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
         <div class="bc-clr-returned-not-passed-tests d-result" style="align-items: center">
           <p class="p4" style="color: var(--c6); margin: 0">
-            Тестирование завершилось неудачей
+            Не удалось отправить код вашего решения на проверку, повторите попытку или свяжитесь с администратором.
           </p>
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
-          <button class="p5 d-violet-button" (click)="closeModalTestsPassedUnsuccessfully()">ОК</button>
+          <button class="p5 d-violet-button" (click)="closeModalCodeSentUnsuccessfully()">ОК</button>
         </footer>
       </div>
     </div>

@@ -305,13 +305,13 @@
     </div>
   </div>
 
-  <div *ngIf="showModalTestsPassedSuccessfully" class="fixed-overlay">
+  <div *ngIf="showModalCodeSentSuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column; ">
         <div class="bc-clr-passed-tests d-result" style="align-items: center">
           <p class="p4" style="color: var(--c6); margin: 0">
-            Тестирование завершилось успешно
+            Код вашего решения успешно отправлен на проверку. Когда сервер обработает его, то после обновления данной страницы вы сможете увидеть результат.
           </p>
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
@@ -321,13 +321,13 @@
     </div>
   </div>
 
-  <div *ngIf="showModalTestsPassedUnsuccessfully" class="fixed-overlay">
+  <div *ngIf="showModalCodeSentUnsuccessfully" class="fixed-overlay">
     <div class="modal" style="width: 40%">
       <div class="modal_container"
            style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
         <div class="bc-clr-returned-not-passed-tests d-result" style="align-items: center">
           <p class="p4" style="color: var(--c6); margin: 0">
-            Тестирование завершилось неудачей
+            Не удалось отправить код вашего решения на проверку, повторите попытку или свяжитесь с администратором.
           </p>
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">

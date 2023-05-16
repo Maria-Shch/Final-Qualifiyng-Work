@@ -5,8 +5,8 @@ import {IRequest} from "../../../interfaces/IRequest";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
 import {TaskService} from "../../../services/task.service";
-import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
 import {TestingService} from "../../../services/testing.service";
+import {ISendingOnTestingResponse} from "../../../dto_interfaces/ISendingOnTestingResponse";
 
 @Component({
   selector: 'app-request',
@@ -14,14 +14,16 @@ import {TestingService} from "../../../services/testing.service";
   styleUrls: ['./request.component.css']
 })
 export class RequestComponent implements OnInit{
+
   request: IRequest | null = null;
   requestId: number= 0;
   codeTextAreas: ICodeTextArea[] = [];
   counterCodeTextArea: number = 0;
   codes: string[] = [];
-  testingResultResponse: ITestingResultResponse | null = null;
-  showModalTestsPassedSuccessfully: boolean = false;
-  showModalTestsPassedUnsuccessfully: boolean = false;
+  sendingOnTestingResponse: ISendingOnTestingResponse | null = null;
+  showModalCodeSentSuccessfully: boolean = false;
+  showModalCodeSentUnsuccessfully: boolean = false;
+
   constructor(
     private requestService: RequestService,
     private router:Router,
@@ -111,16 +113,16 @@ export class RequestComponent implements OnInit{
     let codes: string[] = this.saveCodeToArray();
     // @ts-ignore
     this.testingService.sendOnTestingForTeacher(this.request?.studentTask.id, codes).subscribe(
-      (data: ITestingResultResponse) => {
-        this.testingResultResponse = data;
+      (data: ISendingOnTestingResponse) => {
+        this.sendingOnTestingResponse = data;
 
-        if (this.testingResultResponse.testingSuccessfulCompleted){
-          this.openModalTestsPassedSuccessfully();
-        } else {
-          this.openModalTestsPassedUnsuccessfully();
+        if (this.sendingOnTestingResponse.codeSuccessfulSent){
+          this.openModalCodeSentSuccessfully();
+        } else if(!this.sendingOnTestingResponse.codeSuccessfulSent){
+          this.openModalCodeSentUnsuccessfully();
         }
       },
-      (error: any)=>{ toErrorPage(error, this.router);});
+      (error)=>{ toErrorPage(error, this.router);});
   }
 
   saveCodeToArray(): string[]{
@@ -143,19 +145,19 @@ export class RequestComponent implements OnInit{
     this.counterCodeTextArea = this.counterCodeTextArea + 1;
   }
 
-  openModalTestsPassedSuccessfully() {
-    this.showModalTestsPassedSuccessfully = true;
+  openModalCodeSentSuccessfully() {
+    this.showModalCodeSentSuccessfully = true;
   }
 
-  openModalTestsPassedUnsuccessfully() {
-    this.showModalTestsPassedUnsuccessfully = true;
+  openModalCodeSentUnsuccessfully() {
+    this.showModalCodeSentUnsuccessfully = true;
   }
 
-  closeModalTestsPassedSuccessfully() {
-    this.showModalTestsPassedSuccessfully = false;
+  closeModalCodeSentSuccessfully() {
+    this.showModalCodeSentSuccessfully = false;
   }
 
-  closeModalTestsPassedUnsuccessfully() {
-    this.showModalTestsPassedUnsuccessfully = false;
+  closeModalCodeSentUnsuccessfully() {
+    this.showModalCodeSentUnsuccessfully = false;
   }
 }

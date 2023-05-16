@@ -171,6 +171,19 @@ CREATE TABLE years(
 
 ALTER TABLE levels_of_edu ADD letter varchar(5);
 ALTER TABLE forms_of_edu ADD letter varchar(5);
+
+CREATE TABLE check_tests(
+     id serial PRIMARY KEY,
+     student_task_id int NOT NULL,
+
+     FOREIGN KEY (student_task_id) REFERENCES student_tasks (id)
+);
+ALTER TABLE check_tests ADD user_id int;
+ALTER TABLE check_tests
+    ADD CONSTRAINT fk_check_tests_users FOREIGN KEY (user_id) REFERENCES users (id);
+
+
+ALTER TABLE check_tests ADD getting_result_time timestamp;
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');

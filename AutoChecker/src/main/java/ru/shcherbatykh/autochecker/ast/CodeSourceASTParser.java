@@ -8,7 +8,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.stereotype.Service;
-import ru.shcherbatykh.autochecker.model.CodeCheckRequest;
+import ru.shcherbatykh.Backend.classes.CodeCheckRequest;
 import ru.shcherbatykh.autochecker.model.CodeCheckContext;
 import ru.shcherbatykh.autochecker.model.CodeSource;
 

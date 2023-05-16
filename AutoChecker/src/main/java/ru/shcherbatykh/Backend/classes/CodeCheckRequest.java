@@ -1,6 +1,7 @@
-package ru.shcherbatykh.autochecker.model;
+package ru.shcherbatykh.Backend.classes;
 
 import lombok.*;
+import ru.shcherbatykh.autochecker.model.CodeSource;
 
 import java.util.List;
 

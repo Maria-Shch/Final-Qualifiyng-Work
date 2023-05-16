@@ -9,11 +9,13 @@ import {AuthorizationService} from "../../../services/authorization.service";
 import {IStatus} from "../../../interfaces/IStatus";
 import {IResponseAboutTestingAllowed} from "../../../dto_interfaces/IResponseAboutTestingAllowed";
 import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
-import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
 import {ISendingOnReviewOrConsiderationResponse} from "../../../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {TestingService} from "../../../services/testing.service";
 import {IUser} from "../../../interfaces/IUser";
+import {ISendingOnTestingResponse} from "../../../dto_interfaces/ISendingOnTestingResponse";
+import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
+import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 
 @Component({
   selector: 'app-task',
@@ -30,14 +32,15 @@ export class TaskComponent implements OnInit{
   responseAboutTestingAllowed: IResponseAboutTestingAllowed | null  = null;
   codeTextAreas: ICodeTextArea[] = [];
   counterCodeTextArea: number = 0;
-  testingResultResponse: ITestingResultResponse | null = null;
+  sendingOnTestingResponse: ISendingOnTestingResponse | null = null;
   showModalOnReview: boolean = false;
   showModalOnConsideration: boolean = false;
   showModalOnCancelReview: boolean = false;
   showModalOnCancelConsideration: boolean = false;
-  showModalTestsPassedSuccessfully: boolean = false;
-  showModalTestsPassedUnsuccessfully: boolean = false;
+  showModalCodeSentSuccessfully: boolean = false;
+  showModalCodeSentUnsuccessfully: boolean = false;
   currUser: IUser | null = null;
+  lastTestingResultForStudent: ICodeCheckResponseResult | null = null;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -105,6 +108,12 @@ export class TaskComponent implements OnInit{
           }
         },
         (error)=>{ toErrorPage(error, this.router);});
+
+        this.testingService.getTestingResultForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe((data: ICodeCheckResponseResult) => {
+          this.lastTestingResultForStudent = data;
+          console.log(this.lastTestingResultForStudent);
+        },
+          (error)=>{ toErrorPage(error, this.router);})
       }
     });
   }
@@ -153,15 +162,16 @@ export class TaskComponent implements OnInit{
   saveCodeAndTesting() {
     let codes: string[] = this.saveCodeToArray();
     this.testingService.sendOnTestingForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
-    (data: ITestingResultResponse) => {
+    (data: ISendingOnTestingResponse) => {
       this.status = data.status;
-      this.testingResultResponse = data;
+      this.sendingOnTestingResponse = data;
 
-      if (this.testingResultResponse.testingSuccessfulCompleted){
-        this.openModalTestsPassedSuccessfully();
-      } else if(!this.testingResultResponse.testingSuccessfulCompleted){
-        this.openModalTestsPassedUnsuccessfully();
+      if (this.sendingOnTestingResponse.codeSuccessfulSent){
+        this.openModalCodeSentSuccessfully();
+      } else if(!this.sendingOnTestingResponse.codeSuccessfulSent){
+        this.openModalCodeSentUnsuccessfully();
       }
+      this.ngOnInit();
     },
     (error)=>{ toErrorPage(error, this.router);});
   }
@@ -300,20 +310,20 @@ export class TaskComponent implements OnInit{
     this.showModalOnCancelConsideration = false;
   }
 
-  openModalTestsPassedSuccessfully() {
-    this.showModalTestsPassedSuccessfully = true;
+  openModalCodeSentSuccessfully() {
+    this.showModalCodeSentSuccessfully = true;
   }
 
-  openModalTestsPassedUnsuccessfully() {
-    this.showModalTestsPassedUnsuccessfully = true;
+  openModalCodeSentUnsuccessfully() {
+    this.showModalCodeSentUnsuccessfully = true;
   }
 
   closeModalTestsPassedSuccessfully() {
-    this.showModalTestsPassedSuccessfully = false;
+    this.showModalCodeSentSuccessfully = false;
   }
 
   closeModalTestsPassedUnsuccessfully() {
-    this.showModalTestsPassedUnsuccessfully = false;
+    this.showModalCodeSentUnsuccessfully = false;
   }
 }
 

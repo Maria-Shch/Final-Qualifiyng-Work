@@ -9,12 +9,12 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.Backend.classes.CodeCheckRequest;
 import ru.shcherbatykh.autochecker.ast.CodeSourceASTParser;
 import ru.shcherbatykh.autochecker.broker.KafkaMessageProducer;
 import ru.shcherbatykh.autochecker.model.*;
 import ru.shcherbatykh.autochecker.tests.CodeTest;
 import ru.shcherbatykh.autochecker.tests.CompilationTest;
-import ru.ssu.csit.cs.autochecker.model.*;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -50,6 +50,9 @@ public class CodeCheckService {
         } catch (Throwable t) {
             log.error("Error during checking code sources", t);
             result = CodeCheckResponse.builder()
+                    .studentId(codeCheckRequest.getStudentId())
+                    .taskId(codeCheckRequest.getTaskId())
+                    .requestUuid(codeCheckRequest.getRequestUuid())
                     .code(ResponseCode.CH_002.getCode())
                     .message(ResponseCode.CH_002.getMessage())
                     .build();
@@ -64,6 +67,9 @@ public class CodeCheckService {
         } catch (Throwable t) {
             log.error("Error during checking code sources", t);
             result = CodeCheckResponse.builder()
+                    .studentId(codeCheckRequest.getStudentId())
+                    .taskId(codeCheckRequest.getTaskId())
+                    .requestUuid(codeCheckRequest.getRequestUuid())
                     .code(ResponseCode.CH_002.getCode())
                     .message(ResponseCode.CH_002.getMessage())
                     .build();
@@ -78,6 +84,9 @@ public class CodeCheckService {
             fileWriterService.saveCompilationSources(codeCheckContext);
         } catch (ParseException | ParseProblemException e) {
             return CodeCheckResponse.builder()
+                    .studentId(codeCheckRequest.getStudentId())
+                    .taskId(codeCheckRequest.getTaskId())
+                    .requestUuid(codeCheckRequest.getRequestUuid())
                     .code(ResponseCode.CH_003.getCode())
                     .message(ResponseCode.CH_003.getMessage() + ": " + e.getMessage())
                     .build();
@@ -89,6 +98,9 @@ public class CodeCheckService {
         CodeTestResult compilationResult = compilationTest.launchTest(codeCheckContext);
         if (compilationResult.getStatus() == Status.NOK) {
             return CodeCheckResponse.builder()
+                    .studentId(codeCheckRequest.getStudentId())
+                    .taskId(codeCheckRequest.getTaskId())
+                    .requestUuid(codeCheckRequest.getRequestUuid())
                     .code(ResponseCode.CH_004.getCode())
                     .message(ResponseCode.CH_004.getMessage())
                     .results(Collections.singletonList(compilationResult))
@@ -112,6 +124,9 @@ public class CodeCheckService {
 
         ResponseCode responseCode = allTestPassed ? ResponseCode.CH_000 : ResponseCode.CH_001;
         return CodeCheckResponse.builder()
+                .studentId(codeCheckRequest.getStudentId())
+                .taskId(codeCheckRequest.getTaskId())
+                .requestUuid(codeCheckRequest.getRequestUuid())
                 .code(responseCode.getCode())
                 .message(responseCode.getMessage())
                 .results(results)

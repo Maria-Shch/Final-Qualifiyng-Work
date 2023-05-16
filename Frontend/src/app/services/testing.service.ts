@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
 import {environment} from "../environments/enviroment";
 import {ITestingResultResponse} from "../dto_interfaces/ITestingResultResponse";
+import {ISendingOnTestingResponse} from "../dto_interfaces/ISendingOnTestingResponse";
+import {ICodeCheckResponseResult} from "../dto_interfaces/ICodeCheckResponseResult";
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +23,19 @@ export class TestingService {
   }
 
   sendOnTestingForStudent(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string,
-                          codes: string[]): Observable<ITestingResultResponse> {
-    return this.httpclient.post<ITestingResultResponse>(environment.apiUrl +
+                          codes: string[]): Observable<ISendingOnTestingResponse> {
+    return this.httpclient.post<ISendingOnTestingResponse>(environment.apiUrl +
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/onTestingS`,
       codes);
   }
 
-  sendOnTestingForTeacher(studentTaskId: number, codes: string[]): Observable<ITestingResultResponse>  {
-    return this.httpclient.post<ITestingResultResponse>(environment.apiUrl +
+  getTestingResultForStudent(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string): Observable<ICodeCheckResponseResult> {
+    return this.httpclient.get<ICodeCheckResponseResult>(environment.apiUrl +
+      `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getTestingResultS`);
+  }
+
+  sendOnTestingForTeacher(studentTaskId: number, codes: string[]): Observable<ISendingOnTestingResponse>  {
+    return this.httpclient.post<ISendingOnTestingResponse>(environment.apiUrl +
       `/${studentTaskId}/onTestingT`, codes);
   }
 }

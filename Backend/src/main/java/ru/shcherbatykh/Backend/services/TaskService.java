@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -138,7 +139,7 @@ public class TaskService {
                                                                    int serialNumberOfTask, User user, List<String> codes){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (saveCodeToFiles(stTask, codes, true) == false){
+        if (!saveCodeToFiles(stTask, codes, true)){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnReview(stTask);
@@ -152,7 +153,7 @@ public class TaskService {
                                                                           RBOnConsideration rbOnConsideration) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (saveCodeToFiles(stTask, rbOnConsideration.getCodes(), true) == false){
+        if (!saveCodeToFiles(stTask, rbOnConsideration.getCodes(), true)){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnConsideration(stTask);
@@ -184,12 +185,7 @@ public class TaskService {
             if(className == null) return false;
             String fullPath = path + "//" + className + ".txt";
             try {
-                File file = new File(fullPath);
-                file.createNewFile();
-                FileWriter fw = new FileWriter(file.getAbsoluteFile());
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(code);
-                bw.close();
+                Files.writeString(Path.of(fullPath), code);
             } catch (IOException e) {
                 log.error("Error during saving code", e);
                 return false;
