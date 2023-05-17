@@ -37,7 +37,7 @@ public class CodeSourceASTParser {
 
         return CodeCheckContext.builder()
                 .studentId(codeCheckRequest.getStudentId())
-                .taskId(codeCheckRequest.getTaskId())
+                .taskPath(codeCheckRequest.getTaskPath())
                 .requestUuid(codeCheckRequest.getRequestUuid())
                 .plainCodeSources(plainCodeList)
                 .compilationUnits(compilationUnits)

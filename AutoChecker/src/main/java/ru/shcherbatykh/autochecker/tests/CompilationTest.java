@@ -10,6 +10,12 @@ import ru.shcherbatykh.autochecker.model.Status;
 import ru.shcherbatykh.autochecker.model.results.CompileCodeResult;
 import ru.shcherbatykh.autochecker.services.CompilationService;
 
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Slf4j
 @Component("compileCode")
 public class CompilationTest implements CodeTest {
@@ -21,18 +27,19 @@ public class CompilationTest implements CodeTest {
     }
 
     @Override
-    public CodeTestResult launchTest(CodeCheckContext codeCheckContext) {
-        CompileCodeResult compileCodeResult = compilationService.compileJavaClasses(codeCheckContext.getJavaFilePaths());
+    public List<CodeTestResult> launchTest(CodeCheckContext codeCheckContext) {
+        Set<Path> compilationUnits = new HashSet<>(codeCheckContext.getJavaFilePaths().values());
+        CompileCodeResult compileCodeResult = compilationService.compileJavaClasses(compilationUnits);
         if (compileCodeResult.getStatus() == Status.NOK) {
             codeCheckContext.setCompilationPassed(false);
-            return CodeTestResult.builder()
+            return Collections.singletonList(CodeTestResult.builder()
                     .status(Status.NOK)
                     .type(CodeTestType.COMPILE)
                     .result(createCompilationErrorsNode(compileCodeResult.getErrors()))
-                    .build();
+                    .build());
         }
 
         codeCheckContext.setCompilationPassed(true);
-        return CodeTestResult.OK_COMPILATION_RESULT;
+        return Collections.singletonList(CodeTestResult.OK_COMPILATION_RESULT);
     }
 }

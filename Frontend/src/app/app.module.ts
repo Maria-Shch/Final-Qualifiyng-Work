@@ -52,6 +52,7 @@ import {CheckboxGroupUsersComponent} from './components/utils/checkbox-group-use
 import {TeachersComponent} from './components/admin/teachers/teachers.component';
 import {TeacherComponent} from './components/admin/teacher/teacher.component';
 import {FooterComponent} from './components/utils/footer/footer.component';
+import { CodeCheckResponseResultDropDownListComponent } from './components/utils/code-check-response-result-drop-down-list/code-check-response-result-drop-down-list.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {FooterComponent} from './components/utils/footer/footer.component';
     CheckboxGroupUsersComponent,
     TeachersComponent,
     TeacherComponent,
-    FooterComponent
+    FooterComponent,
+    CodeCheckResponseResultDropDownListComponent
   ],
   imports: [
     BrowserModule,

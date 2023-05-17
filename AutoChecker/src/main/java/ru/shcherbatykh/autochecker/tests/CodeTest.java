@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public interface CodeTest {
-    CodeTestResult launchTest(CodeCheckContext codeCheckContext);
+    List<CodeTestResult> launchTest(CodeCheckContext codeCheckContext);
 
     default ObjectNode createDescriptionNode(String description) {
         if (StringUtils.isEmpty(description)) {
@@ -54,7 +54,7 @@ public interface CodeTest {
         return node;
     }
 
-    default ArrayNode createRunViolationsNode(List<RuleViolation> violations) {
+    default ArrayNode createRuleViolationsNode(List<RuleViolation> violations) {
         ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
         Map<String, List<RuleViolation>> details = violations.stream()
                 .collect(Collectors.groupingBy(RuleViolation::node));

@@ -1,5 +1,6 @@
 package ru.shcherbatykh.autochecker.tests.task;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import org.apache.commons.lang3.tuple.Pair;
@@ -10,9 +11,7 @@ import ru.shcherbatykh.autochecker.model.Status;
 import ru.shcherbatykh.autochecker.tests.CodeTest;
 
 import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractTaskTest implements CodeTest {
     protected Pair<Boolean, CodeTestResult> validateTotalCountOfTypes(CodeCheckContext codeCheckContext,
@@ -30,8 +29,8 @@ public abstract class AbstractTaskTest implements CodeTest {
         return Pair.of(false, null);
     }
 
-    protected Pair<Boolean, CodeTestResult> validateAmountOfNonMainClasses(int expectedAmountOfNonMainClasses,
-                                                                           int actualAmountOfNonMainClasses) {
+    protected Pair<Boolean, CodeTestResult> validateAmountOfNonMainClasses(long expectedAmountOfNonMainClasses,
+                                                                           long actualAmountOfNonMainClasses) {
         if (expectedAmountOfNonMainClasses != actualAmountOfNonMainClasses) {
             return Pair.of(true, buildFailedResult(
                     MessageFormat.format("Неверное число неосновных классов. Ожидалось: {0}. Найдено: {1}.",
@@ -40,13 +39,16 @@ public abstract class AbstractTaskTest implements CodeTest {
         return Pair.of(false, null);
     }
 
-    protected List<ClassOrInterfaceDeclaration> findNonMainClasses(CodeCheckContext codeCheckContext) {
-        return codeCheckContext.getCompilationUnits().stream()
+    protected Map<ClassOrInterfaceDeclaration, CompilationUnit> findNonMainClasses(CodeCheckContext codeCheckContext) {
+        Map<ClassOrInterfaceDeclaration, CompilationUnit> nonMainClasses = new HashMap<>();
+        codeCheckContext.getCompilationUnits().stream()
                 .filter(compilationUnit -> !Objects.equals(compilationUnit, codeCheckContext.getMainUnit()))
-                .map(compilationUnit -> compilationUnit.findAll(ClassOrInterfaceDeclaration.class,
-                        ClassOrInterfaceDeclaration::isClassOrInterfaceDeclaration))
-                .flatMap(Collection::stream)
-                .toList();
+                .forEach(compilationUnit -> {
+                    List<ClassOrInterfaceDeclaration> classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class,
+                            ClassOrInterfaceDeclaration::isClassOrInterfaceDeclaration);
+                    classes.forEach(clazz -> nonMainClasses.put(clazz, compilationUnit));
+                });
+        return nonMainClasses;
     }
 
     private CodeTestResult buildFailedResult(String details) {

@@ -1,0 +1,16 @@
+:host{
+  margin-bottom: 25px;
+}
+
+.div-test-result{
+  background-color: var(--c5);
+  border-radius: 10px;
+  width: 100%;
+  padding: 15px 5px;
+  margin-bottom: 5px;
+}
+
+.div-test-result:hover{
+  box-shadow: var(--box-shadow-panel-tests);
+}
+

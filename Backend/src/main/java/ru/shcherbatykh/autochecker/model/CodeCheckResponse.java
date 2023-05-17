@@ -13,6 +13,7 @@ import java.util.List;
 public class CodeCheckResponse {
     private String studentId;
     private String taskId;
+    private String taskPath;
     private String requestUuid;
     private String code;
     private String message;

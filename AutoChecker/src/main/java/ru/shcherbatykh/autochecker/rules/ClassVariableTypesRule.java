@@ -27,6 +27,7 @@ public class ClassVariableTypesRule extends AbstractRule<ClassOrInterfaceDeclara
     public static final String VARIABLE_2_TYPE_MAP = "VARIABLE_TO_TYPE_MAP";
 
     @Override
+    @SuppressWarnings("unchecked")
     public void applyRule(ClassOrInterfaceDeclaration node, CodeCheckContext codeCheckContext) {
         Map<String, Object> inputContext = getInputContext();
         List<VariableDeclarator> variables = node.findAll(FieldDeclaration.class).stream()
@@ -100,6 +101,7 @@ public class ClassVariableTypesRule extends AbstractRule<ClassOrInterfaceDeclara
             case "t_integer" -> Predicates.INT_NUMBER_TYPE_PREDICATE;
             case "t_real" -> Predicates.REAL_NUMBER_TYPE_PREDICATE;
             case "t_any" -> Predicates.TYPE_ANY_PREDICATE;
+            case "t_int_or_long" -> Predicates.INT_OR_LONG_TYPE_PREDICATE;
             case "java.lang.String" -> Predicates.STRING_TYPE_PREDICATE;
             default -> throw new IllegalArgumentException("Unknown type " + type);
         };

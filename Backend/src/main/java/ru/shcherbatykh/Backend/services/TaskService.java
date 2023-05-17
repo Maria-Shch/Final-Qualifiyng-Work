@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -181,7 +182,7 @@ public class TaskService {
             }
         }
         for(String code: codes){
-            String className = getClassName(code);
+            String className = getClassName();
             if(className == null) return false;
             String fullPath = path + "//" + className + ".txt";
             try {
@@ -194,22 +195,8 @@ public class TaskService {
         return true;
     }
 
-    //todo if class is enum, interface..
-    private String getClassName(String code){
-        int index = code.indexOf(" class ") ;
-        if (index == -1) return null;
-        int startClassNameIndex = index + 7;
-        while(code.charAt(startClassNameIndex) == ' '){
-            startClassNameIndex++;
-        }
-        StringBuilder className = new StringBuilder();
-        while (startClassNameIndex < code.length() &&
-                code.charAt(startClassNameIndex) != ' ' &&
-                code.charAt(startClassNameIndex) != '{') {
-            className.append(code.charAt(startClassNameIndex));
-            startClassNameIndex++;
-        }
-        return className.toString();
+    private String getClassName(){
+        return UUID.randomUUID().toString();
     }
 
     private String getPathToSave(StudentTask stTask, boolean isStrategyOfSavingForStudent){

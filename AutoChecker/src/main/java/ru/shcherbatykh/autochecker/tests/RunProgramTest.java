@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -43,20 +45,20 @@ public class RunProgramTest implements CodeTest {
     }
 
     @Override
-    public CodeTestResult launchTest(CodeCheckContext codeCheckContext) {
+    public List<CodeTestResult> launchTest(CodeCheckContext codeCheckContext) {
         if (codeCheckContext.getMainUnit() == null) {
             RunCodeResult result = RunCodeResult.builder()
                     .error(NO_MAIN_CLASS_ERROR)
                     .build();
-            return CodeTestResult.builder()
+            return Collections.singletonList(CodeTestResult.builder()
                     .status(Status.NOK)
                     .type(CodeTestType.RUN)
                     .result(createRunCodeResultNode(result))
-                    .build();
+                    .build());
         }
 
         String mainClassPath = AstUtils.getFullyQualifiedName(codeCheckContext.getMainClass());
-        return runJavaProcess(codeCheckContext, mainClassPath);
+        return Collections.singletonList(runJavaProcess(codeCheckContext, mainClassPath));
     }
 
     @SneakyThrows
@@ -90,7 +92,7 @@ public class RunProgramTest implements CodeTest {
                     .build();
         }
 
-        String expectedValue = expectedResultProvider.getExpectedResultForTaskLaunch(codeCheckContext.getTaskId());
+        String expectedValue = expectedResultProvider.getExpectedResultForTaskLaunch(codeCheckContext.getTaskPath());
         String actualValue = collectResponseFromStream(process.getInputStream());
         RunCodeResult result = RunCodeResult.builder()
                 .expectedValue(expectedValue)

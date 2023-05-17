@@ -14,7 +14,6 @@ import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {TestingService} from "../../../services/testing.service";
 import {IUser} from "../../../interfaces/IUser";
 import {ISendingOnTestingResponse} from "../../../dto_interfaces/ISendingOnTestingResponse";
-import {ITestingResultResponse} from "../../../dto_interfaces/ITestingResultResponse";
 import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 
 @Component({

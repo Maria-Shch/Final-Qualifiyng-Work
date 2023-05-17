@@ -22,4 +22,9 @@ public class CodeTestResult {
             .status(Status.OK)
             .type(CodeTestType.COMPILE)
             .build();
+
+    public static final CodeTestResult OK_REFLEXIVITY_RESULT = CodeTestResult.builder()
+            .status(Status.OK)
+            .type(CodeTestType.REFLEXIVITY)
+            .build();
 }

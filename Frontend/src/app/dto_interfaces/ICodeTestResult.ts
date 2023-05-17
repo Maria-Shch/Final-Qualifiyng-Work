@@ -1,5 +1,5 @@
 export interface ICodeTestResult{
   status: string;
-  codeTestType: string;
+  type: string;
   result: JSON;
 }

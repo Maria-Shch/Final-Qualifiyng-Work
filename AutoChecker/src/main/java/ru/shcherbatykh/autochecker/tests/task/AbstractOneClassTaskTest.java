@@ -1,5 +1,6 @@
 package ru.shcherbatykh.autochecker.tests.task;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
@@ -15,37 +16,54 @@ import ru.shcherbatykh.autochecker.rules.model.RuleContext;
 import ru.shcherbatykh.autochecker.rules.model.RuleViolation;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public abstract class AbstractOneClassTaskTest extends AbstractTaskTest {
     @Override
-    public CodeTestResult launchTest(CodeCheckContext codeCheckContext) {
+    public List<CodeTestResult> launchTest(CodeCheckContext codeCheckContext) {
         Pair<Boolean, CodeTestResult> precheck = validateTotalCountOfTypes(codeCheckContext, getExpectedAmountOfTypes());
         if (precheck.getLeft()) {
-            return precheck.getRight();
+            return Collections.singletonList(precheck.getRight());
         }
 
-        List<ClassOrInterfaceDeclaration> nonMainClasses = findNonMainClasses(codeCheckContext);
+        Map<ClassOrInterfaceDeclaration, CompilationUnit> nonMainClasses = findNonMainClasses(codeCheckContext);
         log.debug("nonMainClasses: {}", nonMainClasses);
         precheck = validateAmountOfNonMainClasses(getExpectedAmountOfNonMainClasses(), nonMainClasses.size());
         if (precheck.getLeft()) {
-            return precheck.getRight();
+            return Collections.singletonList(precheck.getRight());
         }
+        codeCheckContext.setNonMainClasses(nonMainClasses);
 
-        ClassOrInterfaceDeclaration targetClass = nonMainClasses.iterator().next();
+        ClassOrInterfaceDeclaration targetClass = nonMainClasses.keySet().iterator().next();
         log.debug("targetClass: {}", targetClass);
 
         List<RuleViolation> violations = checkRules(codeCheckContext, targetClass);
         if (violations.isEmpty()) {
-            return CodeTestResult.OK_AST_RESULT;
+            return List.of(CodeTestResult.OK_AST_RESULT, CodeTestResult.OK_REFLEXIVITY_RESULT);
         } else {
-            return CodeTestResult.builder()
-                    .status(Status.NOK)
-                    .type(CodeTestType.AST)
-                    .result(createRunViolationsNode(violations))
-                    .build();
+            List<CodeTestResult> results = new ArrayList<>(2);
+            List<RuleViolation> astViolations = violations.stream()
+                    .filter(ruleViolation -> !ruleViolation.reflexivity())
+                    .toList();
+            if (!astViolations.isEmpty()) {
+                results.add(CodeTestResult.builder()
+                        .status(Status.NOK)
+                        .type(CodeTestType.AST)
+                        .result(createRuleViolationsNode(astViolations))
+                        .build());
+            }
+            List<RuleViolation> reflexivityViolations = violations.stream()
+                    .filter(RuleViolation::reflexivity)
+                    .toList();
+            if (!reflexivityViolations.isEmpty()) {
+                results.add(CodeTestResult.builder()
+                        .status(Status.NOK)
+                        .type(CodeTestType.AST)
+                        .result(createRuleViolationsNode(violations))
+                        .build());
+            }
+            return results;
         }
     }
 

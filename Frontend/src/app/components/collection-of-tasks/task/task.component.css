@@ -39,3 +39,8 @@
   max-width: 95%;
   padding: 10px 15px;
 }
+
+.div-group{
+  min-height: fit-content;
+}
+

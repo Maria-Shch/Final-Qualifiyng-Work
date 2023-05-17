@@ -59,6 +59,7 @@ body {
   --box-shadow-header: 0px 6px 20px 7px #D6CEE6;
   --box-shadow-div: 0px 10px 15px 0px #D6CEE6;
   --box-shadow-panel: 0px 8px 8px 0px #e8e2f3;
+  --box-shadow-panel-tests: 8px 8px 8px 8px #e8e2f3;
 }
 
 *:focus {

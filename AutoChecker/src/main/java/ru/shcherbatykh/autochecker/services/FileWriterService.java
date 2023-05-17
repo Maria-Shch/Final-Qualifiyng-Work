@@ -4,18 +4,16 @@ import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.autochecker.model.CodeCheckContext;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FileWriterService {
@@ -23,14 +21,15 @@ public class FileWriterService {
     private String sourceFilesFolder;
 
     public void saveCompilationSources(CodeCheckContext codeCheckContext) throws ParseException {
-        Path requestPath = Paths.get(sourceFilesFolder, codeCheckContext.getStudentId(), codeCheckContext.getTaskId(),
+        Path requestPath = Paths.get(sourceFilesFolder, codeCheckContext.getStudentId(), codeCheckContext.getTaskPath(),
                 codeCheckContext.getRequestUuid());
         if (Files.exists(requestPath)) {
             throw new RuntimeException("Duplicate event for request UUID " + codeCheckContext.getRequestUuid());
         }
         codeCheckContext.setRequestPath(requestPath);
 
-        List<Path> javaFilePaths = new ArrayList<>();
+        Set<Path> createdJavaFiles = new HashSet<>();
+        Map<CompilationUnit, Path> javaFilePaths = new HashMap<>();
         for (int i = 0; i < codeCheckContext.getCompilationUnits().size(); i++) {
             CompilationUnit compilationUnit = codeCheckContext.getCompilationUnits().get(i);
             String javaPackage = StringUtils.EMPTY;
@@ -41,9 +40,14 @@ public class FileWriterService {
             javaPackage = javaPackage.replaceAll("\\.", "/");
 
             TypeDeclaration<?> clazz = getHeadTypeInCompilationUnit(compilationUnit);
-            Path javaFile = createJavaFile(requestPath, javaPackage, clazz.getNameAsString(),
-                    codeCheckContext.getPlainCodeSources().get(i));
-            javaFilePaths.add(javaFile);
+            Path javaFile;
+            try {
+                javaFile = createJavaFile(requestPath, javaPackage, clazz.getNameAsString(),
+                        codeCheckContext.getPlainCodeSources().get(i), createdJavaFiles);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            javaFilePaths.put(compilationUnit, javaFile);
         }
 
         codeCheckContext.setJavaFilePaths(javaFilePaths);
@@ -61,26 +65,38 @@ public class FileWriterService {
                     .map(TypeDeclaration.class::cast)
                     .findAny();
             if (type.isEmpty()) {
-                throw new ParseException("At least one type (annotation, interface, class or record) must be placed in compilation unit");
+                throw new ParseException("По крайней мере один тип (class/interface/enum/record/annotation) " +
+                        "должен существовать в одной единице компиляции");
             }
             return type.get();
         }
 
         if (publicTypes.size() > 1) {
-            throw new ParseException("Only one public type (annotation, interface, class or record) may be placed within one compilation unit");
+            throw new ParseException("Только один публичный тип (class/interface/enum/record/annotation) может " +
+                    "находиться в одной единице компиляции");
         }
         return publicTypes.iterator().next();
     }
 
-    @SneakyThrows
-    private Path createJavaFile(Path requestPath, String javaPackage, String className, String classBody) {
+    private Path createJavaFile(Path requestPath, String javaPackage, String className, String classBody,
+                                Set<Path> createdJavaFiles) throws ParseException, IOException {
         Path packagePath = Paths.get(requestPath.toString(), javaPackage);
         if (!Files.exists(packagePath)) {
             Files.createDirectories(packagePath);
         }
 
         Path filePath = Paths.get(packagePath.toString(), className + ".java");
+        if (createdJavaFiles.contains(filePath)) {
+            String fullClassName = javaPackage.replaceAll("/", ".");
+            if (!fullClassName.isEmpty()) {
+                fullClassName += ".";
+            }
+            fullClassName += className;
+            throw new ParseException("Найдена повторяющаяся единица компиляции: " + fullClassName);
+        }
+
         Files.createFile(filePath);
+        createdJavaFiles.add(filePath);
         return Files.writeString(filePath, classBody);
     }
 }

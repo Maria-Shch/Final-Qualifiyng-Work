@@ -13,7 +13,11 @@ public class TaskCodeTestsProvider implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     public List<CodeTest> getTestChain(String taskId) {
-        return List.of(applicationContext.getBean("task_" + taskId, CodeTest.class), applicationContext.getBean("runCode", CodeTest.class));
+        if (taskId.equals("1.1.1")) {
+            return List.of(applicationContext.getBean("task_" + taskId, CodeTest.class));
+        }
+        return List.of(applicationContext.getBean("task_" + taskId, CodeTest.class),
+                applicationContext.getBean("runCode", CodeTest.class));
     }
 
     @Override

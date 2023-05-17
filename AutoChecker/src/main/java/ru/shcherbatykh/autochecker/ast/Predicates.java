@@ -53,6 +53,19 @@ public final class Predicates {
                 ResolvedPrimitiveType.DOUBLE);
     };
 
+    public static final Predicate<ResolvedType> INT_OR_LONG_TYPE_PREDICATE = type -> {
+        ResolvedPrimitiveType resolvedPrimitiveType = null;
+        if (type.isReferenceType() && type.asReferenceType().isUnboxable()) {
+            ResolvedReferenceType resolvedReferenceType = type.asReferenceType();
+            resolvedPrimitiveType = resolvedReferenceType.toUnboxedType().get();
+        } else if (type.isPrimitive()) {
+            resolvedPrimitiveType = type.asPrimitive();
+        }
+
+        return resolvedPrimitiveType != null
+                && resolvedPrimitiveType.in(ResolvedPrimitiveType.INT, ResolvedPrimitiveType.LONG);
+    };
+
     public static final Predicate<ResolvedType> STRING_TYPE_PREDICATE = type -> {
         if (type.isReferenceType()) {
             ResolvedReferenceType resolvedReferenceType = type.asReferenceType();

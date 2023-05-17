@@ -10,10 +10,7 @@ import ru.shcherbatykh.Backend.broker.KafkaMessageProducer;
 import ru.shcherbatykh.Backend.classes.*;
 import ru.shcherbatykh.Backend.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.Backend.dto.SendingOnTestingResponse;
-import ru.shcherbatykh.Backend.models.CheckTest;
-import ru.shcherbatykh.Backend.models.StudentTask;
-import ru.shcherbatykh.Backend.models.Task;
-import ru.shcherbatykh.Backend.models.User;
+import ru.shcherbatykh.Backend.models.*;
 import ru.shcherbatykh.Backend.repositories.CheckTestRepo;
 import ru.shcherbatykh.autochecker.model.CodeCheckResponse;
 
@@ -73,9 +70,14 @@ public class TestingService {
                 .toList();
         CheckTest newCheckTest = new CheckTest(null, stTask, teacher);
         CheckTest savedCheckTest = checkTestRepo.save(newCheckTest);
+        String chapterSN = String.valueOf(stTask.getTask().getBlock().getChapter().getSerialNumber());
+        String blockSN = String.valueOf(stTask.getTask().getBlock().getSerialNumber());
+        String taskSN = String.valueOf(stTask.getTask().getBlock().getSerialNumber());
+        String taskPath = chapterSN + '.' + blockSN + '.' + taskSN;
         CodeCheckRequest codeCheckRequest = new CodeCheckRequest(
                 stTask.getUser().getId().toString(),
                 stTask.getTask().getId().toString(),
+                taskPath,
                 savedCheckTest.getId().toString(),
                 codeSources
         );

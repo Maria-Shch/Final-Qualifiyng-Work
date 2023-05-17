@@ -10,12 +10,13 @@ import lombok.Setter;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
 public class CodeCheckContext {
     private final String studentId;
-    private final String taskId;
+    private final String taskPath;
     private final String requestUuid;
     private final List<String> plainCodeSources;
     private final List<CompilationUnit> compilationUnits;
@@ -27,11 +28,30 @@ public class CodeCheckContext {
     private Path requestPath;
 
     @Setter
-    private List<Path> javaFilePaths;
+    private Map<CompilationUnit, Path> javaFilePaths;
 
     @Setter
     private JavaParserFacade javaParserFacade;
 
     @Setter
     private boolean compilationPassed;
+
+    @Setter
+    private Map<ClassOrInterfaceDeclaration, CompilationUnit> nonMainClasses;
+
+    @Setter
+    private Map<Path, Class<?>> loadedClasses;
+
+    public Class<?> findNonMainClassByDeclaration(ClassOrInterfaceDeclaration classOrInterfaceDeclaration) {
+        if (nonMainClasses != null && nonMainClasses.containsKey(classOrInterfaceDeclaration)) {
+            CompilationUnit compilationUnit = nonMainClasses.get(classOrInterfaceDeclaration);
+            if (javaFilePaths != null && javaFilePaths.containsKey(compilationUnit)) {
+                Path path = javaFilePaths.get(compilationUnit);
+                if (loadedClasses != null && loadedClasses.containsKey(path)) {
+                    return loadedClasses.get(path);
+                }
+            }
+        }
+        return null;
+    }
 }
