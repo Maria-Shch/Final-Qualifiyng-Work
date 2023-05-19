@@ -68,7 +68,7 @@ public class TestingService {
                 .map(String::new)
                 .map(CodeSource::new)
                 .toList();
-        CheckTest newCheckTest = new CheckTest(null, stTask, teacher);
+        CheckTest newCheckTest = new CheckTest(stTask, teacher);
         CheckTest savedCheckTest = checkTestRepo.save(newCheckTest);
         String chapterSN = String.valueOf(stTask.getTask().getBlock().getChapter().getSerialNumber());
         String blockSN = String.valueOf(stTask.getTask().getBlock().getSerialNumber());
@@ -123,14 +123,18 @@ public class TestingService {
         try {
             CodeCheckResponseResult codeCheckResponseResult =
                     objectMapper.readValue(checkTest.getCodeCheckResponseResultJson(), CodeCheckResponseResult.class);
-            if (Objects.equals(codeCheckResponseResult.getCode(), "CH-000")){
-                if (task.isManualCheckRequired()){
-                    studentTasksService.setStatusPassedTests(stTask);
+            if (!checkTest.isHasBeenAnalyzed()){
+                if (Objects.equals(codeCheckResponseResult.getCode(), "CH-000")){
+                    if (task.isManualCheckRequired()){
+                        studentTasksService.setStatusPassedTests(stTask);
+                    } else {
+                        studentTasksService.setStatusSolved(stTask);
+                    }
                 } else {
-                    studentTasksService.setStatusSolved(stTask);
+                    studentTasksService.setStatusNotPassedTests(stTask);
                 }
-            } else {
-                studentTasksService.setStatusNotPassedTests(stTask);
+                checkTest.setHasBeenAnalyzed(true);
+                checkTestRepo.save(checkTest);
             }
             return codeCheckResponseResult;
         } catch (JsonProcessingException e) {

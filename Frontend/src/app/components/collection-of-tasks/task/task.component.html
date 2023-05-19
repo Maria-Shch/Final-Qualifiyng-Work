@@ -71,18 +71,6 @@
           </p>
         </div>
 
-        <div *ngIf="lastTestingResultForStudent?.code != 'CH-000'"
-             style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
-          <div *ngIf="lastTestingResultForStudent?.code == 'CH-001' || lastTestingResultForStudent?.code == 'CH-004'">
-            <app-code-check-response-result-drop-down-list
-              [lastTestingResultForStudent]="lastTestingResultForStudent">
-            </app-code-check-response-result-drop-down-list>
-          </div>
-          <div *ngIf="lastTestingResultForStudent?.code == 'CH-002' || lastTestingResultForStudent?.code == 'CH-003'" class="div-group">
-            <p class="p5" style="padding: 0px 15px;">{{lastTestingResultForStudent?.message}}</p>
-          </div>
-        </div>
-
         <div *ngIf="status?.name === 'Прошла тесты'"
              style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin: 30px 0 0 0; width: 995px">
           <div>
@@ -136,7 +124,6 @@
                   responseAboutTestingAllowed?.reasonOfProhibition?.toString() != 'PREVIOUS_TASK_NOT_SOLVED'"
            style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
 
-
         <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TEACHER_REVIEW'">
           <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
             Вы отправили решение задачи на проверку. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
@@ -177,6 +164,23 @@
             <button id="more{{codeTA.id}}" class="b-violet-cycle b-more" (click)="more(codeTA.id)"></button>
             <button id="less{{codeTA.id}}" style="display: none" class="b-violet-cycle b-less" (click)="less(codeTA.id)"></button>
           </div>
+        </div>
+      </div>
+
+      <div *ngIf="status?.name != 'На тестировании' && lastTestingResultForStudent != null && lastTestingResultForStudent?.code != 'CH-000'"
+           style="display: flex; flex-direction: column; justify-content: space-between; align-items: start; margin: 0; width: 995px">
+        <p class="h4" style="color: var(--c2)">Результаты последнего запуска тестирования</p>
+        <div *ngIf="lastTestingResultForStudent?.code == 'CH-001' || lastTestingResultForStudent?.code == 'CH-004'">
+          <app-code-check-response-result-drop-down-list
+            [lastTestingResultForStudent]="lastTestingResultForStudent">
+          </app-code-check-response-result-drop-down-list>
+        </div>
+        <div *ngIf="lastTestingResultForStudent?.code == 'CH-002'" class="div-group">
+          <p class="p5" style="padding: 0px 15px;">{{lastTestingResultForStudent?.message}}</p>
+        </div>
+        <div *ngIf="lastTestingResultForStudent?.code == 'CH-003'" class="div-group"  style="padding: 0px 15px;">
+          <p class="h5">Ошибка при разборе кода</p>
+          <p class="p5">{{lastTestingResultForStudent?.message}}</p>
         </div>
       </div>
     </div>

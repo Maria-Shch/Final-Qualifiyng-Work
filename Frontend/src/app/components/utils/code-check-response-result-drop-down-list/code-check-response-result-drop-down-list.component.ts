@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 import {INokRunTestResult} from "../../../dto_interfaces/INokRunTestResult";
-import {toArray} from "rxjs";
 import {INokAstTestResult} from "../../../dto_interfaces/INokAstTestResult";
 import {ISimpleNokAstTestResult} from "../../../dto_interfaces/ISimpleNokAstTestResult";
 

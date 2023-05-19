@@ -63,7 +63,7 @@ CREATE TABLE tasks(
     serial_number int NOT NULL,
     name varchar(255) NOT NULL,
     description text  NOT NULL,
-    manual_check_required boolean  NOT NULL,
+    manual_check_required boolean NOT NULL,
     block_id int NOT NULL,
 
     FOREIGN KEY (block_id) REFERENCES blocks (id)
@@ -184,6 +184,7 @@ ALTER TABLE check_tests
 
 
 ALTER TABLE check_tests ADD getting_result_time timestamp;
+ALTER TABLE check_tests ADD has_been_analyzed boolean;
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');

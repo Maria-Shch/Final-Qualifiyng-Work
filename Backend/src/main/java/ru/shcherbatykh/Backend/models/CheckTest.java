@@ -30,9 +30,13 @@ public class CheckTest {
     @Column(name = "getting_result_time")
     private LocalDateTime gettingResultTime;
 
-    public CheckTest(Long id, StudentTask studentTask, User teacher) {
-        this.id = id;
+    @Column(name = "has_been_analyzed")
+    private boolean hasBeenAnalyzed;
+
+    public CheckTest(StudentTask studentTask, User teacher) {
+        this.id = null;
         this.studentTask = studentTask;
         this.teacher = teacher;
+        this.hasBeenAnalyzed = false;
     }
 }
