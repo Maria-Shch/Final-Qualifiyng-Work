@@ -125,7 +125,7 @@
            style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
 
         <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TEACHER_REVIEW'">
-          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+          <p class="p4" style="color: var(--c6); margin: 15px 0 5px 0">
             Вы отправили решение задачи на проверку. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
           </p>
           <div  style="display:flex; flex-direction: row; margin: 0">
@@ -137,7 +137,7 @@
         </div>
 
         <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TEACHER_CONSIDERATION'">
-          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+          <p class="p4" style="color: var(--c6); margin: 15px 0 5px 0">
             Вы отправили решение задачи на рассмотрение. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
           </p>
           <div  style="display:flex; flex-direction: row; margin: 0">
@@ -149,7 +149,7 @@
         </div>
 
         <div *ngIf="responseAboutTestingAllowed?.reasonOfProhibition?.toString() === 'TASK_ON_TESTING'">
-          <p class="p4" style="color: var(--c6); margin: 20px 0 5px 0">
+          <p class="p4" style="color: var(--c6); margin: 15px 0 10px 0">
             Вы отправили решение задачи на тестирование. Редактирование решения и функция тестирования станут вновь доступны после его завершения.
           </p>
         </div>
@@ -333,7 +333,7 @@
         <p class="p4" style="text-align: center">
           Когда сервер обработает его, то после обновления данной страницы вы сможете увидеть результат.
         </p>
-        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+        <footer style="display: flex; flex-direction: row; justify-content: center; ">
           <button class="p4 d-violet-button" (click)="closeModalTestsPassedSuccessfully()">ОК</button>
         </footer>
       </div>
@@ -349,7 +349,7 @@
             Не удалось отправить код вашего решения на проверку, повторите попытку или свяжитесь с администратором.
           </p>
         </div>
-        <footer style="display: flex; flex-direction: row; justify-content: center; margin-top: 20px">
+        <footer style="display: flex; flex-direction: row; justify-content: center; ">
           <button class="p5 d-violet-button" (click)="closeModalTestsPassedUnsuccessfully()">ОК</button>
         </footer>
       </div>
