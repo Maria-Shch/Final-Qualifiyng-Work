@@ -44,8 +44,8 @@
                       </div>
                     </div>
                     <div *ngIf="codeTestResult.type == 'AST'">
-                      <div *ngIf="nokAstTestResults.length != 0">
-                        <div *ngFor="let nokAstTestResult of nokAstTestResults">
+                      <div *ngIf="nokAstOrReflexivityTestResults.length != 0">
+                        <div *ngFor="let nokAstTestResult of nokAstOrReflexivityTestResults">
                           <p class="p5">В классе <b>{{nokAstTestResult?.node}}</b> найдены следующие нарушения:</p>
                           <div *ngFor="let violation of nokAstTestResult?.violations">
                             <p class="p5" *ngIf="violation.rule != null"><b>Нарушено правило: </b>{{violation.rule}}</p>
@@ -53,9 +53,9 @@
                           </div>
                         </div>
                       </div>
-                      <div *ngIf="nokAstTestResults.length == 0">
-                        <p class="p5" *ngIf="simpleNokAstTestResult?.description != null">
-                          <b>Нарушено правило: </b>{{simpleNokAstTestResult?.description}}
+                      <div *ngIf="nokAstOrReflexivityTestResults.length == 0">
+                        <p class="p5" *ngIf="simpleNokAstOrReflexivityTestResult?.description != null">
+                          <b>Нарушено правило: </b>{{simpleNokAstOrReflexivityTestResult?.description}}
                         </p>
                       </div>
                     </div>
@@ -97,9 +97,9 @@
                     <p class="h5">{{decodedNokRunTestResult?.error}}</p>
                   </div>
                 </div>
-                <div *ngIf="codeTestResult.type == 'AST'">
-                  <div *ngIf="nokAstTestResults.length != 0">
-                    <div *ngFor="let nokAstTestResult of nokAstTestResults">
+                <div *ngIf="codeTestResult.type == 'AST' || codeTestResult.type == 'REFLEXIVITY'">
+                  <div *ngIf="nokAstOrReflexivityTestResults.length != 0">
+                    <div *ngFor="let nokAstTestResult of nokAstOrReflexivityTestResults">
                       <p class="p5">В классе <b>{{nokAstTestResult?.node}}</b> найдены следующие нарушения:</p>
                       <div *ngFor="let violation of nokAstTestResult?.violations">
                         <p class="p5" *ngIf="violation.rule != null"><b>Нарушено правило: </b>{{violation.rule}}</p>
@@ -107,9 +107,9 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="nokAstTestResults.length == 0">
-                      <p class="p5" *ngIf="simpleNokAstTestResult?.description != null">
-                        <b>Нарушено правило: </b>{{simpleNokAstTestResult?.description}}
+                  <div *ngIf="nokAstOrReflexivityTestResults.length == 0">
+                      <p class="p5" *ngIf="simpleNokAstOrReflexivityTestResult?.description != null">
+                        <b>Нарушено правило: </b>{{simpleNokAstOrReflexivityTestResult?.description}}
                       </p>
                   </div>
                 </div>

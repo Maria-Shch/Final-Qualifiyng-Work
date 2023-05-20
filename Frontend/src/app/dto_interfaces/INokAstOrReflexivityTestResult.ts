@@ -1,6 +1,6 @@
 import {IViolation} from "./IViolation";
 
-export interface INokAstTestResult {
+export interface INokAstOrReflexivityTestResult {
   node: string;
   violations: IViolation[];
 }
