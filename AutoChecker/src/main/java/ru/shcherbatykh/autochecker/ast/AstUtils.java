@@ -38,4 +38,9 @@ public final class AstUtils {
         ResolvedType resolvedType = javaParserFacade.convertToUsage(type);
         return Predicates.STRING_TYPE_PREDICATE.test(resolvedType);
     }
+
+    public static boolean isIntOrLongType(Type type, JavaParserFacade javaParserFacade) {
+        ResolvedType resolvedType = javaParserFacade.convertToUsage(type);
+        return Predicates.INT_OR_LONG_TYPE_PREDICATE.test(resolvedType);
+    }
 }
