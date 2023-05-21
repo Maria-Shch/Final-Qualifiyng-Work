@@ -113,6 +113,13 @@ h5, .h5 {
   color: var(--c6);
 }
 
+h6, .h6 {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 10px;
+  color: var(--c6);
+}
+
 .p1 {
   font-weight: 600;
   font-size: 38px;

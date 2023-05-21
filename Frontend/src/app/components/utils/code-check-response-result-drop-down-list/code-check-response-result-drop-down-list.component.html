@@ -13,58 +13,58 @@
       <div *ngFor="let codeTestResult of lastTestingResultForStudent?.results">
         <div *ngIf="codeTestResult.status == 'NOK'">
           <div *ngIf="isArray(codeTestResult.result)">
-            <div *ngFor="let item of toArray(codeTestResult.result)">
-              <div class="div-test-result">
-                <mat-accordion>
-                  <mat-expansion-panel (opened)="panelOpenState = true"
-                                       (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                      <mat-panel-title style="display: flex; flex-direction: column; align-items: start">
-                        <div style="display: flex; flex-direction: row; align-items: end; margin: 0">
-                          <h5 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибка компиляции</h5>
-                          <h5 *ngIf="codeTestResult.type == 'RUN'" style="margin: 10px 0 10px 0; color: var(--c2)">Некорректные результаты при запуске программы</h5>
-                          <h5 *ngIf="codeTestResult.type == 'AST'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при проверке синтаксической структуры кода</h5>
-                          <h5 *ngIf="codeTestResult.type == 'REFLEXIVITY'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при рефлексивном анализе кода</h5>
-                        </div>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <div *ngIf="codeTestResult.type == 'RUN'">
-                      <div *ngIf="decodedNokRunTestResult?.error == null">
-                        <p class="h5">Ожидаемые результаты:</p>
-                        <div *ngFor="let expectedValue of decodedNokRunTestResult?.expectedValueArray">
-                          <p class="p5">{{expectedValue}}</p>
-                        </div>
-                        <p class="h5">Результаты работы программы:</p>
-                        <div *ngFor="let actualValue of decodedNokRunTestResult?.actualValueArray">
-                          <p class="p5">{{actualValue}}</p>
-                        </div>
+            <div class="div-test-result">
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                     (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title style="display: flex; flex-direction: column; align-items: start">
+                      <div style="display: flex; flex-direction: row; align-items: end; margin: 0">
+                        <h5 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибка компиляции</h5>
+                        <h5 *ngIf="codeTestResult.type == 'RUN'" style="margin: 10px 0 10px 0; color: var(--c2)">Некорректные результаты при запуске программы</h5>
+                        <h5 *ngIf="codeTestResult.type == 'AST'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при проверке синтаксической структуры кода</h5>
+                        <h5 *ngIf="codeTestResult.type == 'REFLEXIVITY'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при рефлексивном анализе кода</h5>
                       </div>
-                      <div *ngIf="decodedNokRunTestResult?.error != null">
-                        <p class="h5">{{decodedNokRunTestResult?.error}}</p>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngIf="codeTestResult.type == 'RUN'">
+                    <div *ngIf="decodedNokRunTestResult?.error == null">
+                      <p class="h5">Ожидаемые результаты:</p>
+                      <div *ngFor="let expectedValue of decodedNokRunTestResult?.expectedValueArray">
+                        <p class="p5">{{expectedValue}}</p>
+                      </div>
+                      <p class="h5">Результаты работы программы:</p>
+                      <div *ngFor="let actualValue of decodedNokRunTestResult?.actualValueArray">
+                        <p class="p5">{{actualValue}}</p>
                       </div>
                     </div>
-                    <div *ngIf="codeTestResult.type == 'AST'">
-                      <div *ngIf="nokAstOrReflexivityTestResults.length != 0">
-                        <div *ngFor="let nokAstTestResult of nokAstOrReflexivityTestResults">
-                          <p class="p5">В классе <b>{{nokAstTestResult?.node}}</b> найдены следующие нарушения:</p>
-                          <div *ngFor="let violation of nokAstTestResult?.violations">
-                            <p class="p5" *ngIf="violation.rule != null"><b>Нарушено правило: </b>{{violation.rule}}</p>
-                            <p class="p5"><b>Результат проверки: </b>{{violation.description}}</p>
-                          </div>
+                    <div *ngIf="decodedNokRunTestResult?.error != null">
+                      <p class="h5">{{decodedNokRunTestResult?.error}}</p>
+                    </div>
+                  </div>
+                  <div *ngIf="codeTestResult.type == 'AST'">
+                    <div *ngIf="nokAstOrReflexivityTestResults.length != 0">
+                      <div *ngFor="let nokAstTestResult of nokAstOrReflexivityTestResults">
+                        <p class="p5">В классе <b>{{nokAstTestResult?.node}}</b> найдены следующие нарушения:</p>
+                        <div *ngFor="let violation of nokAstTestResult?.violations">
+                          <p class="p5" *ngIf="violation.rule != null"><b>Нарушено правило: </b>{{violation.rule}}</p>
+                          <p class="p5"><b>Результат проверки: </b>{{violation.description}}</p>
                         </div>
                       </div>
-                      <div *ngIf="nokAstOrReflexivityTestResults.length == 0">
-                        <p class="p5" *ngIf="simpleNokAstOrReflexivityTestResult?.description != null">
-                          <b>Нарушено правило: </b>{{simpleNokAstOrReflexivityTestResult?.description}}
-                        </p>
-                      </div>
                     </div>
+                    <div *ngIf="nokAstOrReflexivityTestResults.length == 0">
+                      <p class="p5" *ngIf="simpleNokAstOrReflexivityTestResult?.description != null">
+                        <b>Нарушено правило: </b>{{simpleNokAstOrReflexivityTestResult?.description}}
+                      </p>
+                    </div>
+                  </div>
+                  <div *ngFor="let item of toArray(codeTestResult.result)">
                     <div *ngIf="codeTestResult.type != 'RUN' && codeTestResult.type != 'AST'">
                       <pre><code><p class="p5">{{jsonToDisplay(item)}}</p></code></pre>
                     </div>
-                  </mat-expansion-panel>
-                </mat-accordion>
-              </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
             </div>
           </div>
 

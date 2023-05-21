@@ -41,7 +41,8 @@ public class TestingController {
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
     @GetMapping("/auth/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}/getTestingResultS")
-    public CodeCheckResponseResult getTestingResultForStudent(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
+    public CodeCheckResponseResult getTestingResultForStudent(@PathVariable int serialNumberOfChapter,
+                                                              @PathVariable int serialNumberOfBlock,
                                                               @PathVariable int serialNumberOfTask){
         return testingService.getTestingResultForStudent(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask,
                 authService.getUser().orElse(null));
@@ -52,5 +53,12 @@ public class TestingController {
     public SendingOnTestingResponse onTestingForTeacher(@PathVariable long studentTaskId, @RequestBody List<String> codes) {
         User teacher = authService.getUser().orElse(null);
         return testingService.testingForTeacher(studentTaskId, teacher, codes);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
+    @GetMapping("/auth/{studentTaskId}/getTestingResultT")
+    public CodeCheckResponseResult getTestingResultForTeacher(@PathVariable long studentTaskId){
+        CodeCheckResponseResult testingResultForTeacher = testingService.getTestingResultForTeacher(studentTaskId, authService.getUser().orElse(null));
+        return testingResultForTeacher;
     }
 }

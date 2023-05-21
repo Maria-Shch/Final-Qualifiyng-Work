@@ -52,7 +52,7 @@ export class StudentSolutionComponent implements OnInit{
           }
 
           // @ts-ignore
-          this.taskService.getClassesByStudentTaskId(this.studentTask?.id).subscribe(
+          this.taskService.getClassesOfStudentByStudentTaskId(this.studentTask?.id).subscribe(
             (data: string[]) => {
               if (data != null){
                 this.setCodeToTextAreas(data);

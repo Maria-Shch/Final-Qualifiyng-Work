@@ -38,4 +38,8 @@ export class TestingService {
     return this.httpclient.post<ISendingOnTestingResponse>(environment.apiUrl +
       `/${studentTaskId}/onTestingT`, codes);
   }
+
+  getTestingResultForTeacher(studentTaskId: number): Observable<ICodeCheckResponseResult> {
+    return this.httpclient.get<ICodeCheckResponseResult>(environment.apiUrl + `/auth/${studentTaskId}/getTestingResultT`);
+  }
 }

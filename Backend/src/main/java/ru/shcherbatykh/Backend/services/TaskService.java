@@ -215,12 +215,12 @@ public class TaskService {
     public List<String> getClassesForTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        return getClassesForTask(stTask);
+        return getClassesForTask(stTask, true);
     }
 
-    public List<String> getClassesForTask(StudentTask stTask){
-        if(stTask == null) return null;
-        String path = getPathToSave(stTask, true);
+    public List<String> getClassesForTask(StudentTask stTask, boolean forUser){
+        if (stTask == null) return null;
+        String path = getPathToSave(stTask, forUser);
         if (Files.exists(Path.of(path))) {
             try (Stream<Path> paths = Files.walk(Paths.get(path))) {
                 return paths
@@ -242,6 +242,12 @@ public class TaskService {
         else {
             return null;
         }
+    }
+
+    public boolean arePresentCodesOfTeacher(StudentTask stTask) {
+        if (stTask == null) return false;
+        String path = getPathToSave(stTask, false);
+        return Files.exists(Path.of(path));
     }
 
     public boolean cancelReview(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user) {

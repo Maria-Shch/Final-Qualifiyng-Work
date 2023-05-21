@@ -128,7 +128,7 @@
           <p class="p4" style="color: var(--c6); margin: 15px 0 5px 0">
             Вы отправили решение задачи на проверку. Редактирование решения и функция тестирования станут вновь доступны после ответа преподавателя.
           </p>
-          <div  style="display:flex; flex-direction: row; margin: 0">
+          <div style="display:flex; flex-direction: row; margin: 0">
             <p class="p4" style="color: var(--c6); margin: 10px 0 20px 0">Вы можете&nbsp;</p>
             <p class="p4" style="margin: 10px 0 20px 0; text-decoration: revert; color: var(--c2); cursor: pointer" (click)="openModalDialogAboutCancelReview()">
               отменить запрос на проверку задачи.
@@ -176,9 +176,9 @@
           </app-code-check-response-result-drop-down-list>
         </div>
         <div *ngIf="lastTestingResultForStudent?.code == 'CH-002'" class="div-group">
-          <p class="p5" style="padding: 0px 15px;">{{lastTestingResultForStudent?.message}}</p>
+          <p class="p5" style="padding: 0 15px;">{{lastTestingResultForStudent?.message}}</p>
         </div>
-        <div *ngIf="lastTestingResultForStudent?.code == 'CH-003'" class="div-group"  style="padding: 0px 15px;">
+        <div *ngIf="lastTestingResultForStudent?.code == 'CH-003'" class="div-group"  style="padding: 0 15px;">
           <p class="h5">Ошибка при разборе кода</p>
           <p class="p5">{{lastTestingResultForStudent?.message}}</p>
         </div>
@@ -334,7 +334,7 @@
           Когда сервер обработает его, то после обновления данной страницы вы сможете увидеть результат.
         </p>
         <footer style="display: flex; flex-direction: row; justify-content: center; ">
-          <button class="p4 d-violet-button" (click)="closeModalTestsPassedSuccessfully()">ОК</button>
+          <button class="p4 d-violet-button" (click)="closeModalCodeSentSuccessfully()">ОК</button>
         </footer>
       </div>
     </div>
@@ -350,7 +350,7 @@
           </p>
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; ">
-          <button class="p5 d-violet-button" (click)="closeModalTestsPassedUnsuccessfully()">ОК</button>
+          <button class="p5 d-violet-button" (click)="closeModalCodeSentUnsuccessfully()">ОК</button>
         </footer>
       </div>
     </div>

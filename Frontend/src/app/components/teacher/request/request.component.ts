@@ -7,6 +7,7 @@ import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
 import {TaskService} from "../../../services/task.service";
 import {TestingService} from "../../../services/testing.service";
 import {ISendingOnTestingResponse} from "../../../dto_interfaces/ISendingOnTestingResponse";
+import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 
 @Component({
   selector: 'app-request',
@@ -23,6 +24,8 @@ export class RequestComponent implements OnInit{
   sendingOnTestingResponse: ISendingOnTestingResponse | null = null;
   showModalCodeSentSuccessfully: boolean = false;
   showModalCodeSentUnsuccessfully: boolean = false;
+  lastTestingResultForTeacher: ICodeCheckResponseResult | null = null;
+  arePresentCodesOfTeacher: boolean = false;
 
   constructor(
     private requestService: RequestService,
@@ -41,7 +44,7 @@ export class RequestComponent implements OnInit{
       (data: IRequest) => {
         this.request = data;
         // @ts-ignore
-        this.taskService.getClassesByStudentTaskId(this.request?.studentTask.id).subscribe(
+        this.taskService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
           (data: string[]) => {
             if (data == null || data.length === 0){
               this.codeTextAreas = [{id: 0, content: ""}];
@@ -52,6 +55,17 @@ export class RequestComponent implements OnInit{
             }
           },
           (error)=>{ toErrorPage(error, this.router);});
+
+        this.taskService.arePresentClassesOfTeacherByStudentTaskId(this.request?.studentTask?.id).subscribe((data: boolean) => {
+            this.arePresentCodesOfTeacher = data;
+          },
+          (error)=>{ toErrorPage(error, this.router);})
+
+        this.testingService.getTestingResultForTeacher(this.request?.studentTask?.id).subscribe((data: ICodeCheckResponseResult) => {
+            this.lastTestingResultForTeacher = data;
+            console.log(this.lastTestingResultForTeacher);
+          },
+          (error)=>{ toErrorPage(error, this.router);})
       },
       (error)=>{ toErrorPage(error, this.router);});
     });
@@ -118,6 +132,7 @@ export class RequestComponent implements OnInit{
 
         if (this.sendingOnTestingResponse.codeSuccessfulSent){
           this.openModalCodeSentSuccessfully();
+
         } else if(!this.sendingOnTestingResponse.codeSuccessfulSent){
           this.openModalCodeSentUnsuccessfully();
         }
@@ -134,6 +149,36 @@ export class RequestComponent implements OnInit{
       }
     }
     return codes;
+  }
+
+  showStudentCode() {
+    // @ts-ignore
+    this.taskService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
+      (data: string[]) => {
+        if (data == null || data.length === 0){
+          this.codeTextAreas = [{id: 0, content: ""}];
+          this.counterCodeTextArea = this.counterCodeTextArea + 1;
+        } else {
+          this.setCodeToTextAreas(data);
+          this.codes = data;
+        }
+      },
+      (error)=>{ toErrorPage(error, this.router);});
+  }
+
+  showTeacherCode() {
+// @ts-ignore
+    this.taskService.getClassesOfTeacherByStudentTaskId(this.request?.studentTask.id).subscribe(
+      (data: string[]) => {
+        if (data == null || data.length === 0){
+          this.codeTextAreas = [{id: 0, content: ""}];
+          this.counterCodeTextArea = this.counterCodeTextArea + 1;
+        } else {
+          this.setCodeToTextAreas(data);
+          this.codes = data;
+        }
+      },
+      (error)=>{ toErrorPage(error, this.router);});
   }
 
   removeTextArea(id: number) {

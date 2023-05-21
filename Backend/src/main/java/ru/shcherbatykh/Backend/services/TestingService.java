@@ -61,7 +61,7 @@ public class TestingService {
         return new ResponseAboutTestingAllowed(true);
     }
 
-    public void sendOnTesting(StudentTask stTask, User teacher, List<String> codes) {
+    public void  sendOnTesting(StudentTask stTask, User teacher, List<String> codes) {
         List<CodeSource> codeSources = codes.stream()
                 .map(code -> code.getBytes(StandardCharsets.UTF_8))
                 .map(Base64::encodeBase64)
@@ -112,9 +112,9 @@ public class TestingService {
 
     @Transactional
     public CodeCheckResponseResult getTestingResultForStudent(int serialNumberOfChapter, int serialNumberOfBlock,
-                                                            int serialNumberOfTask, User user) {
+                                                            int serialNumberOfTask, User student) {
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
-        StudentTask stTask = studentTasksService.getStudentTask(user, task);
+        StudentTask stTask = studentTasksService.getStudentTask(student, task);
         if (stTask == null) return null;
         CheckTest checkTest = checkTestRepo.findFirstByStudentTaskAndTeacherIsNull(stTask);
         if (checkTest == null || checkTest.getCodeCheckResponseResultJson() == null) return null;
@@ -133,6 +133,28 @@ public class TestingService {
                 } else {
                     studentTasksService.setStatusNotPassedTests(stTask);
                 }
+                checkTest.setHasBeenAnalyzed(true);
+                checkTestRepo.save(checkTest);
+            }
+            return codeCheckResponseResult;
+        } catch (JsonProcessingException e) {
+            log.error("Exception during reading CodeCheckResponse from JSON type to object", e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
+    public CodeCheckResponseResult getTestingResultForTeacher(long studentTaskId, User teacher) {
+        StudentTask stTask = studentTasksService.findById(studentTaskId);
+        if (stTask == null) return null;
+        CheckTest checkTest = checkTestRepo.findFirstByStudentTaskAndTeacher(stTask, teacher);
+        if (checkTest == null || checkTest.getCodeCheckResponseResultJson() == null) return null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            CodeCheckResponseResult codeCheckResponseResult =
+                    objectMapper.readValue(checkTest.getCodeCheckResponseResultJson(), CodeCheckResponseResult.class);
+            if (!checkTest.isHasBeenAnalyzed()){
                 checkTest.setHasBeenAnalyzed(true);
                 checkTestRepo.save(checkTest);
             }

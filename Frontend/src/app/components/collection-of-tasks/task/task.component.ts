@@ -317,11 +317,11 @@ export class TaskComponent implements OnInit{
     this.showModalCodeSentUnsuccessfully = true;
   }
 
-  closeModalTestsPassedSuccessfully() {
+  closeModalCodeSentSuccessfully() {
     this.showModalCodeSentSuccessfully = false;
   }
 
-  closeModalTestsPassedUnsuccessfully() {
+  closeModalCodeSentUnsuccessfully() {
     this.showModalCodeSentUnsuccessfully = false;
   }
 }

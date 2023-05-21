@@ -75,7 +75,7 @@ public class RequestController {
     public Request getRequestById(@PathVariable long id) {
         User teacher = authService.getUser().orElse(null);
         Request request = requestService.findById(id);
-        if(request != null && request.getTeacher().getId() == teacher.getId()){
+        if(request != null && Objects.equals(request.getTeacher().getId(), teacher.getId())){
             if (Objects.equals(request.getRequestState().getName(), "Не просмотрен")){
                 return requestService.markRequestViewed(request);
             } else return request;
@@ -83,9 +83,21 @@ public class RequestController {
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
-    @GetMapping("/getClasses/{idStudentTask}")
-    public List<String> getCodes(@PathVariable long idStudentTask) {
-        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask));
+    @GetMapping("/getClassesOfStudent/{idStudentTask}")
+    public List<String> getCodesOfStudent(@PathVariable long idStudentTask) {
+        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), true);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/arePresentClassesOfTeacher/{idStudentTask}")
+    public boolean arePresentCodesOfTeacher(@PathVariable long idStudentTask) {
+        return taskService.arePresentCodesOfTeacher(studentTaskService.findById(idStudentTask));
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+    @GetMapping("/getClassesOfTeacher/{idStudentTask}")
+    public List<String> getCodesOfTeacher(@PathVariable long idStudentTask) {
+        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), false);
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
