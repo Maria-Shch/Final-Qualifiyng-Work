@@ -1,7 +1,14 @@
 <div class="d-container">
-  <h1 class="header">Мы рады приветствовать вас в системе тестирования объектно-ориентированных задач на языке Java </h1>
-  <p class="p3" style="color: var(--c1); margin: 5px 0 70px 0;">Выберите, что вы хотели бы сделать</p>
-  <a routerLink="/chapters" class="a-home to-tasks h5 a-none">Перейти к сборнику задач</a>
-  <a routerLink="/login" class=" a-home to-login h5 a-none">Войти в систему</a>
-  <a routerLink="/registration" class="a-home to-registration h5 a-none">Зарегистрироваться</a>
+  <h1 class="header">Мы рады приветствовать Вас в системе тестирования объектно-ориентированных задач на языке Java </h1>
+  <div *ngIf="isLoggedIn()">
+    <p class="p3" style="color: var(--c1); margin: 5px 0 70px 0;">Привет, {{user?.name}}! Выберите, что Вы хотели бы сделать</p>
+    <a routerLink="/chapters" class="a-home to-tasks h5 a-none">Перейти к сборнику задач</a>
+    <a (click)="logout()" class=" a-home to-login h5 a-none">Выйти из системы</a>
+  </div>
+  <div *ngIf="!isLoggedIn()">
+    <p class="p3" style="color: var(--c1); margin: 5px 0 70px 0;">Привет! Выберите, что Вы хотели бы сделать</p>
+    <a routerLink="/chapters" class="a-home to-tasks h5 a-none">Перейти к сборнику задач</a>
+    <a routerLink="/login" class=" a-home to-login h5 a-none">Войти в систему</a>
+    <a routerLink="/registration" class="a-home to-registration h5 a-none">Зарегистрироваться</a>
+  </div>
 </div>

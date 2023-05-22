@@ -36,7 +36,10 @@
       </div>
 
       <div *ngIf="responseAboutTestingAllowed?.testingAllowed" style="display:flex; flex-direction: column; padding: 0 30px 0 0;">
-        <p class="p4" style="color: var(--c2); margin: 0 0 20px 0">Разместите код каждого класса в отдельном окне</p>
+        <div style="display: flex; flex-direction: row; align-items: center; margin: 0 0 20px 0">
+          <p class="p4" style="color: var(--c2); margin: 0 10px 0 0">Разместите код каждого класса в отдельном окне</p>
+          <button class="b-info" (click)="showModalAboutTesting=true"></button>
+        </div>
 
         <div *ngFor="let codeTA of codeTextAreas" style="display: flex; flex-direction: row; align-items: start; justify-content: space-between">
           <textarea class="textarea-code"
@@ -49,7 +52,7 @@
             <button class="b-violet-cycle b-delete" (click)="removeTextArea(codeTA.id)"></button>
           </div>
         </div>
-        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 15px; width: 995px">
+        <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: 15px; width: 1020px">
           <button class="h5 d-white-button" style="width: 300px" (click)="addEmptyTextAreaForCode()">+ Новое окно</button>
           <button *ngIf="codeTextAreas.length>0" class="h5 d-violet-button" style="width: 300px" (click)="saveCodeAndTesting()">Сохранить код и проверить</button>
         </div>
@@ -351,6 +354,23 @@
         </div>
         <footer style="display: flex; flex-direction: row; justify-content: center; ">
           <button class="p5 d-violet-button" (click)="closeModalCodeSentUnsuccessfully()">ОК</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showModalAboutTesting" class="fixed-overlay">
+    <div class="modal" style="width: 40%">
+      <div class="modal_container"
+           style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Правила загрузки кода</p>
+        <div style="width: 100%">
+          <p class="p4">1. Каждый класс необходимо разместить в отдельном окне.</p>
+          <p class="p4">2. Метод <b>public static void main (String[] args)</b> необходимо разместить в отдельном классе.</p>
+          <p class="p4">3. Запрещено использование сторонних библиотек и зависимостей, например Lombok.</p>
+        </div>
+        <footer style="display: flex; flex-direction: row; justify-content: center; ">
+          <button class="p5 d-violet-button" (click)="showModalAboutTesting=false">ОК</button>
         </footer>
       </div>
     </div>

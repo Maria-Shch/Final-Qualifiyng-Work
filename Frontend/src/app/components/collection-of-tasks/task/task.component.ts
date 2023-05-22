@@ -38,6 +38,7 @@ export class TaskComponent implements OnInit{
   showModalOnCancelConsideration: boolean = false;
   showModalCodeSentSuccessfully: boolean = false;
   showModalCodeSentUnsuccessfully: boolean = false;
+  showModalAboutTesting: boolean = false;
   currUser: IUser | null = null;
   lastTestingResultForStudent: ICodeCheckResponseResult | null = null;
 
