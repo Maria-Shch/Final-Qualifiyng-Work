@@ -6,7 +6,7 @@ spring:
   jackson:
       default-property-inclusion: non_null
 autochecker:
-  source_files_folder: C:\Users\maria\Documents\FQW\CodeStorage
+  source_files_folder: C:\Users\maria\Documents\FQW\CodeStorageAutochecker
   process_timeout: 3
 logging:
   level:

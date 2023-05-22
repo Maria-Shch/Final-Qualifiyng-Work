@@ -69,7 +69,7 @@ public class Task_1_1_2_Test extends AbstractOneClassTaskTest {
     private static final Map<String, Object> CLASS_VARIABLE_TYPES_RULE_INPUT_CONTEXT = Map.of(
             ClassVariableTypesRule.EXPECTED_AMOUNT_OF_VARIABLES, 2,
             ClassVariableTypesRule.VARIABLE_2_TYPE_MAP, Map.of("name", "java.lang.String",
-                    "height", "t_integer")
+                    "height", ClassVariableTypesRule.INTEGER_TYPE)
     );
 
     private final ClassConstructorRule classConstructorRule;

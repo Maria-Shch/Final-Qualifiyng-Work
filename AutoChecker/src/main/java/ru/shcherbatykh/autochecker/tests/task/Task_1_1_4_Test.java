@@ -64,7 +64,7 @@ public class Task_1_1_4_Test extends AbstractOneClassTaskTest {
     );
     private static final Map<String, Object> CLASS_VARIABLE_TYPES_RULE_INPUT_CONTEXT = Map.of(
             ClassVariableTypesRule.EXPECTED_AMOUNT_OF_VARIABLES, 1,
-            ClassVariableTypesRule.VARIABLE_2_TYPE_MAP, Map.of("ALL", "t_int_or_long")
+            ClassVariableTypesRule.VARIABLE_2_TYPE_MAP, Map.of(ClassVariableTypesRule.ALL_VAR, "t_int_or_long")
     );
 
     private final ClassConstructorRule classConstructorRule;

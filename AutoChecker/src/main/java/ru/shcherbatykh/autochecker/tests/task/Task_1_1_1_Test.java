@@ -64,7 +64,7 @@ public class Task_1_1_1_Test extends AbstractOneClassTaskTest {
     );
     private static final Map<String, Object> CLASS_VARIABLE_TYPES_RULE_INPUT_CONTEXT = Map.of(
             ClassVariableTypesRule.EXPECTED_AMOUNT_OF_VARIABLES, 2,
-            ClassVariableTypesRule.VARIABLE_2_TYPE_MAP, Map.of("ALL", "t_number")
+            ClassVariableTypesRule.VARIABLE_2_TYPE_MAP, Map.of(ClassVariableTypesRule.ALL_VAR, ClassVariableTypesRule.NUMBER_TYPE)
     );
 
     private final ClassConstructorRule classConstructorRule;
@@ -157,6 +157,7 @@ public class Task_1_1_1_Test extends AbstractOneClassTaskTest {
         if (clazzInstance == null) {
             try {
                 Constructor<?> constructor = clazz.getDeclaredConstructors()[0];
+                constructor.setAccessible(true);
                 clazzInstance = constructor.newInstance(first, second);
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 log.error("Error during class object creation", e);

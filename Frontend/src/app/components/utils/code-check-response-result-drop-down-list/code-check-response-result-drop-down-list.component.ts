@@ -3,6 +3,7 @@ import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckRespon
 import {INokRunTestResult} from "../../../dto_interfaces/INokRunTestResult";
 import {INokAstOrReflexivityTestResult} from "../../../dto_interfaces/INokAstOrReflexivityTestResult";
 import {ISimpleNokAstOrReflexivityTestResult} from "../../../dto_interfaces/ISimpleNokAstOrReflexivityTestResult";
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-code-check-response-result-drop-down-list',
@@ -37,11 +38,12 @@ export class CodeCheckResponseResultDropDownListComponent implements OnInit{
           this.decodedNokRunTestResult = nokRunTestResult;
           if (nokRunTestResult.error == null){
             let decodedNokRunTestResult = {} as INokRunTestResult;
-            decodedNokRunTestResult.expectedValue = atob(nokRunTestResult.expectedValue);
-            decodedNokRunTestResult.actualValue = atob(nokRunTestResult.actualValue);
+            decodedNokRunTestResult.expectedValue = Buffer.from(nokRunTestResult.expectedValue, "base64").toString();
+            decodedNokRunTestResult.actualValue = Buffer.from(nokRunTestResult.actualValue, "base64").toString();
             this.decodedNokRunTestResult = decodedNokRunTestResult;
             this.decodedNokRunTestResult.actualValueArray = this.decodedNokRunTestResult.actualValue.split(/\n/);
             this.decodedNokRunTestResult.expectedValueArray = this.decodedNokRunTestResult.expectedValue.split(/\n/);
+            console.log(this.decodedNokRunTestResult);
           }
         }
 

@@ -22,9 +22,23 @@ import java.util.stream.Collectors;
 @Component
 @Scope("prototype")
 public class ClassVariableTypesRule extends AbstractRule<ClassOrInterfaceDeclaration> {
-    private static final String ALL_VAR = "ALL";
+    public static final String ALL_VAR = "ALL";
     public static final String EXPECTED_AMOUNT_OF_VARIABLES = "EXPECTED_AMOUNT_OF_VARIABLES";
     public static final String VARIABLE_2_TYPE_MAP = "VARIABLE_TO_TYPE_MAP";
+
+    public static final String NUMBER_TYPE = "t_number";
+    public static final String INTEGER_TYPE = "t_integer";
+    public static final String REAL_TYPE = "t_real";
+    public static final String ANY_TYPE = "t_any";
+    public static final String INT_OR_LONG_TYPE = "t_int_or_long";
+
+    private static final Map<String, String> TYPE_2_NAME_MAP = Map.of(
+            NUMBER_TYPE, "число",
+            INTEGER_TYPE, "целое число",
+            REAL_TYPE, "действительное число",
+            ANY_TYPE, "любой",
+            INT_OR_LONG_TYPE, "int или long"
+    );
 
     @Override
     @SuppressWarnings("unchecked")
@@ -82,26 +96,29 @@ public class ClassVariableTypesRule extends AbstractRule<ClassOrInterfaceDeclara
 
     private String getAllVariablesHavingUnexpectedTypeDescription(String expectedType,
                                                                   List<VariableDeclarator> wrongVariables) {
-        return MessageFormat.format("Тип данных полей класса. Ожидалось: все поля имеют тип ''{0}''. По факту: " +
-                "поле(-я) {1} имеет(-ют) неверный тип.", expectedType, wrongVariables.stream()
-                .map(vd -> vd.getName().asString())
-                .collect(Collectors.joining(", ", "'", "'"))
+        return MessageFormat.format("Неверный тип данных полей класса. Ожидалось: все поля имеют тип ''{0}''. По факту: " +
+                        "поле(-я) {1} имеет(-ют) неверный тип.",
+                TYPE_2_NAME_MAP.getOrDefault(expectedType, expectedType),
+                wrongVariables.stream()
+                        .map(vd -> vd.getName().asString())
+                        .collect(Collectors.joining(", ", "'", "'"))
         );
     }
 
     private String getVariableHavingUnexpectedTypeDescription(String variableName, String expectedType, String actualType) {
-        return MessageFormat.format("Тип данных полей класса. Ожидалось: поле ''{0}'' имеет тип ''{1}''. " +
+        return MessageFormat.format("Неверный тип данных полей класса. Ожидалось: поле ''{0}'' имеет тип ''{1}''. " +
                         "Актуальный тип: ''{2}''.", variableName,
-                expectedType, actualType);
+                TYPE_2_NAME_MAP.getOrDefault(expectedType, expectedType),
+                actualType);
     }
 
     private Predicate<ResolvedType> getPredicateForType(String type) {
         return switch (type) {
-            case "t_number" -> Predicates.NUMBER_TYPE_PREDICATE;
-            case "t_integer" -> Predicates.INT_NUMBER_TYPE_PREDICATE;
-            case "t_real" -> Predicates.REAL_NUMBER_TYPE_PREDICATE;
-            case "t_any" -> Predicates.TYPE_ANY_PREDICATE;
-            case "t_int_or_long" -> Predicates.INT_OR_LONG_TYPE_PREDICATE;
+            case NUMBER_TYPE -> Predicates.NUMBER_TYPE_PREDICATE;
+            case INTEGER_TYPE -> Predicates.INT_NUMBER_TYPE_PREDICATE;
+            case REAL_TYPE -> Predicates.REAL_NUMBER_TYPE_PREDICATE;
+            case ANY_TYPE -> Predicates.TYPE_ANY_PREDICATE;
+            case INT_OR_LONG_TYPE -> Predicates.INT_OR_LONG_TYPE_PREDICATE;
             case "java.lang.String" -> Predicates.STRING_TYPE_PREDICATE;
             default -> throw new IllegalArgumentException("Unknown type " + type);
         };

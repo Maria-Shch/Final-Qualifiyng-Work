@@ -32,7 +32,7 @@ public class CodeSourceASTParser {
         List<Triple<CompilationUnit, ClassOrInterfaceDeclaration, MethodDeclaration>> mainUnits = findMainClasses(compilationUnits);
         log.debug("mainUnits: {}", mainUnits);
         if (mainUnits.size() > 1) {
-            throw new ParseException("Found more than 1 main classes");
+            throw new ParseException("Найдено более одного класса с main методом");
         }
 
         return CodeCheckContext.builder()
@@ -57,7 +57,7 @@ public class CodeSourceASTParser {
                 List<MethodDeclaration> mainMethods = classOrInterfaceDeclaration
                         .findAll(MethodDeclaration.class, Predicates.MAIN_METHOD_PREDICATE);
                 if (mainMethods.size() > 1) {
-                    throw new ParseException("Found more than 1 main methods in class "
+                    throw new ParseException("Найдено более одного main метода в классе "
                             + AstUtils.getFullyQualifiedName(classOrInterfaceDeclaration));
                 }
                 if (!mainMethods.isEmpty()) {

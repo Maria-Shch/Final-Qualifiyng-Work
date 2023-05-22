@@ -59,7 +59,7 @@ public abstract class AbstractOneClassTaskTest extends AbstractTaskTest {
             if (!reflexivityViolations.isEmpty()) {
                 results.add(CodeTestResult.builder()
                         .status(Status.NOK)
-                        .type(CodeTestType.AST)
+                        .type(CodeTestType.REFLEXIVITY)
                         .result(createRuleViolationsNode(violations))
                         .build());
             }

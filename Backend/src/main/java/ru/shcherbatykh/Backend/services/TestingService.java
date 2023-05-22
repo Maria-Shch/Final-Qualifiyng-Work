@@ -72,7 +72,7 @@ public class TestingService {
         CheckTest savedCheckTest = checkTestRepo.save(newCheckTest);
         String chapterSN = String.valueOf(stTask.getTask().getBlock().getChapter().getSerialNumber());
         String blockSN = String.valueOf(stTask.getTask().getBlock().getSerialNumber());
-        String taskSN = String.valueOf(stTask.getTask().getBlock().getSerialNumber());
+        String taskSN = String.valueOf(stTask.getTask().getSerialNumber());
         String taskPath = chapterSN + '.' + blockSN + '.' + taskSN;
         CodeCheckRequest codeCheckRequest = new CodeCheckRequest(
                 stTask.getUser().getId().toString(),
