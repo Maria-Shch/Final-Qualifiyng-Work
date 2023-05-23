@@ -11,5 +11,7 @@ import java.util.List;
 public interface ChapterRepo extends CrudRepository<Chapter, Long> {
     List<Chapter> findAll(Sort sort);
     Chapter findChapterBySerialNumber(int serialNumber);
+    Chapter findChapterByName(String name);
     long count();
+
 }

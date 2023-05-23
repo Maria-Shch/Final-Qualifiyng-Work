@@ -17,24 +17,12 @@ import java.util.List;
 @RestController
 public class TaskController {
 
-    private final ChapterService chapterService;
     private final AuthService authService;
     private final TaskService taskService;
 
-    public TaskController(ChapterService chapterService,AuthService authService, TaskService taskService) {
-        this.chapterService = chapterService;
+    public TaskController(AuthService authService, TaskService taskService) {
         this.authService = authService;
         this.taskService = taskService;
-    }
-
-    @GetMapping("/chapter/all")
-    public List<Chapter> getChapters(){
-        return chapterService.getChaptersSortBySerialNumber();
-    }
-
-    @GetMapping("/chapters/count")
-    public long getCountOfChapters(){
-        return chapterService.getCountOfChapters();
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/practice")

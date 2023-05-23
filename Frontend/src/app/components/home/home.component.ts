@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit{
     if (this.authService.isLoggedIn()) {
       this.userService.getUser().subscribe((data: IUser) => {
         this.user = data;
-        console.log(this.user);
       });
     };
   }

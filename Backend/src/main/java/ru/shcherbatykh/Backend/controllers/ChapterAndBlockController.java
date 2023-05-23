@@ -3,18 +3,33 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsOfChapter;
 import ru.shcherbatykh.Backend.models.Block;
+import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.services.BlockService;
+import ru.shcherbatykh.Backend.services.ChapterService;
 
 import java.util.List;
 
 @RestController
-public class BlockController {
+public class ChapterAndBlockController {
 
+    private final ChapterService chapterService;
     private final BlockService blockService;
 
-    public BlockController(BlockService blockService) {
+    public ChapterAndBlockController(ChapterService chapterService, BlockService blockService) {
+        this.chapterService = chapterService;
         this.blockService = blockService;
+    }
+
+    @GetMapping("/chapter/all")
+    public List<Chapter> getChapters(){
+        return chapterService.getChaptersSortBySerialNumber();
+    }
+
+    @GetMapping("/chapters/count")
+    public long getCountOfChapters(){
+        return chapterService.getCountOfChapters();
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/blocks")
@@ -52,5 +67,17 @@ public class BlockController {
     public Block saveTextOfTheory(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock,
                                   @RequestBody String textOfTheory) {
         return blockService.saveTextOfTheory(serialNumberOfChapter, serialNumberOfBlock, textOfTheory);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/create/chapter")
+    public Chapter createNewChapter(@RequestBody Chapter newChapter) {
+        return chapterService.createNewChapter(newChapter);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/check/chapter")
+    public ResponseRepeatedParamsOfChapter checkIsPresentNameOrSerialNumberOfChapter(@RequestBody Chapter newChapter) {
+        return chapterService.checkIsPresentNameOrSerialNumberOfChapter(newChapter);
     }
 }

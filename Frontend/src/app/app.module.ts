@@ -53,6 +53,7 @@ import {TeachersComponent} from './components/admin/teachers/teachers.component'
 import {TeacherComponent} from './components/admin/teacher/teacher.component';
 import {FooterComponent} from './components/utils/footer/footer.component';
 import { CodeCheckResponseResultDropDownListComponent } from './components/utils/code-check-response-result-drop-down-list/code-check-response-result-drop-down-list.component';
+import { NewChapterComponent } from './components/admin/new-chapter/new-chapter.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { CodeCheckResponseResultDropDownListComponent } from './components/utils
     TeachersComponent,
     TeacherComponent,
     FooterComponent,
-    CodeCheckResponseResultDropDownListComponent
+    CodeCheckResponseResultDropDownListComponent,
+    NewChapterComponent
   ],
   imports: [
     BrowserModule,

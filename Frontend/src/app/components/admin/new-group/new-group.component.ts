@@ -13,7 +13,6 @@ import {CheckboxItem} from "../../../classes/CheckboxItem";
 import {forkJoin} from "rxjs";
 import {FormUtils} from "../../../utils/FormUtils";
 import {Router} from "@angular/router";
-import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 
 @Component({
   selector: 'app-new-group',

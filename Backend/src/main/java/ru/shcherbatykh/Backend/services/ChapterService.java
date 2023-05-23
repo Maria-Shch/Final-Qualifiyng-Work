@@ -2,6 +2,7 @@ package ru.shcherbatykh.Backend.services;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsOfChapter;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.ChapterRepo;
 
@@ -29,5 +30,16 @@ public class ChapterService {
 
     public Chapter getChapterBySerialNumber(int serialNumber){
         return chapterRepo.findChapterBySerialNumber(serialNumber);
+    }
+
+    public Chapter createNewChapter(Chapter newChapter) {
+        return chapterRepo.save(newChapter);
+    }
+
+    public ResponseRepeatedParamsOfChapter checkIsPresentNameOrSerialNumberOfChapter(Chapter newChapter) {
+        ResponseRepeatedParamsOfChapter response = new ResponseRepeatedParamsOfChapter();
+        response.setRepeatedSerialNumber(chapterRepo.findChapterBySerialNumber(newChapter.getSerialNumber())!=null);
+        response.setRepeatedName(chapterRepo.findChapterByName(newChapter.getName())!=null);
+        return response;
     }
 }
