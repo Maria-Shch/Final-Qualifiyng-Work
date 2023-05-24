@@ -7,8 +7,6 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
-import {IGroup} from "../interfaces/IGroup";
-import {INewGroupWithIdStudents} from "../dto_interfaces/INewGroupWithIdStudents";
 import {IChapter} from "../interfaces/IChapter";
 import {IResponseRepeatedParamsOfChapter} from "../dto_interfaces/IResponseRepeatedParamsOfChapter";
 
@@ -119,5 +117,13 @@ export class TaskService {
   checkIsPresentNameOrSerialNumberOfChapter(newChapter: IChapter): Observable<IResponseRepeatedParamsOfChapter> {
     return this.httpclient.post<IResponseRepeatedParamsOfChapter>(environment.apiUrl +
       `/check/chapter`, newChapter);
+  }
+
+  getChapterById(chapterId: number): Observable<IChapter> {
+    return this.httpclient.get<IChapter>(environment.apiUrl + `/chapter/${chapterId}`);
+  }
+
+  updateChapter(updatedChapter: IChapter): Observable<IChapter>  {
+    return this.httpclient.post<IChapter>(environment.apiUrl + `/update/chapter`, updatedChapter);
   }
 }

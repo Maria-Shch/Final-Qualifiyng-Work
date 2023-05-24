@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.classes.CodeCheckResponseResult;
 import ru.shcherbatykh.Backend.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.Backend.dto.SendingOnTestingResponse;
-import ru.shcherbatykh.Backend.dto.TestingResultResponse;
 import ru.shcherbatykh.Backend.models.User;
 import ru.shcherbatykh.Backend.services.AuthService;
 import ru.shcherbatykh.Backend.services.TestingService;

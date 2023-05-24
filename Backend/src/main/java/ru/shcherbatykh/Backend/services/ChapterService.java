@@ -42,4 +42,12 @@ public class ChapterService {
         response.setRepeatedName(chapterRepo.findChapterByName(newChapter.getName())!=null);
         return response;
     }
+
+    public Chapter getChapterById(long chapterId) {
+        return chapterRepo.findById(chapterId).orElse(null);
+    }
+
+    public Chapter updateChapter(Chapter updatedChapter) {
+        return chapterRepo.save(updatedChapter);
+    }
 }

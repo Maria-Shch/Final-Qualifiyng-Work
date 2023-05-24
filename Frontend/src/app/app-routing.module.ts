@@ -25,6 +25,7 @@ import {ChangeGroupMembersComponent} from "./components/admin/change-group-membe
 import {TeachersComponent} from "./components/admin/teachers/teachers.component";
 import {TeacherComponent} from "./components/admin/teacher/teacher.component";
 import {NewChapterComponent} from "./components/admin/new-chapter/new-chapter.component";
+import {EditChapterComponent} from "./components/admin/edit-chapter/edit-chapter.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -51,7 +52,8 @@ const routes: Routes = [
   { path: 'group/changeMembers/:id', component: ChangeGroupMembersComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'teachers', component: TeachersComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'teacher/:id', component: TeacherComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'newChapter', component: NewChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
+  { path: 'newChapter', component: NewChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapter/edit/:id', component: EditChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
 ];
 
 @NgModule({

@@ -80,4 +80,16 @@ public class ChapterAndBlockController {
     public ResponseRepeatedParamsOfChapter checkIsPresentNameOrSerialNumberOfChapter(@RequestBody Chapter newChapter) {
         return chapterService.checkIsPresentNameOrSerialNumberOfChapter(newChapter);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/chapter/{chapterId}")
+    public Chapter getChapterById(@PathVariable long chapterId){
+        return chapterService.getChapterById(chapterId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/chapter")
+    public Chapter updateChapter(@RequestBody Chapter updatedChapter) {
+        return chapterService.updateChapter(updatedChapter);
+    }
 }

@@ -45,4 +45,8 @@ export class ChaptersComponent {
   createNewChapter() {
     this.router.navigate(['/newChapter']);
   }
+
+  editChapter(idChapter: number) {
+    this.router.navigate(['/chapter/edit/', idChapter]);
+  }
 }

@@ -152,7 +152,7 @@ public class GroupController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/update")
-    public Group addNewGroup(@RequestBody Group updatedGroup) {
+    public Group updateGroup(@RequestBody Group updatedGroup) {
         return groupService.updateGroup(updatedGroup);
     }
 

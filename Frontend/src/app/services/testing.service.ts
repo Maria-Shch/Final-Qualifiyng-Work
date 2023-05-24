@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
 import {environment} from "../environments/enviroment";
-import {ITestingResultResponse} from "../dto_interfaces/ITestingResultResponse";
 import {ISendingOnTestingResponse} from "../dto_interfaces/ISendingOnTestingResponse";
 import {ICodeCheckResponseResult} from "../dto_interfaces/ICodeCheckResponseResult";
 

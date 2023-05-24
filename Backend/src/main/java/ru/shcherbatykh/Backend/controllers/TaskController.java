@@ -5,11 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.RBOnConsideration;
 import ru.shcherbatykh.Backend.dto.SendingOnReviewOrConsiderationResponse;
 import ru.shcherbatykh.Backend.dto.TaskOfBlock;
-import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.models.Status;
 import ru.shcherbatykh.Backend.models.Task;
 import ru.shcherbatykh.Backend.services.AuthService;
-import ru.shcherbatykh.Backend.services.ChapterService;
 import ru.shcherbatykh.Backend.services.TaskService;
 
 import java.util.List;

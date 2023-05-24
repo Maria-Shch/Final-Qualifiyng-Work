@@ -3,7 +3,7 @@ import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckRespon
 import {INokRunTestResult} from "../../../dto_interfaces/INokRunTestResult";
 import {INokAstOrReflexivityTestResult} from "../../../dto_interfaces/INokAstOrReflexivityTestResult";
 import {ISimpleNokAstOrReflexivityTestResult} from "../../../dto_interfaces/ISimpleNokAstOrReflexivityTestResult";
-import { Buffer } from 'buffer';
+import {Buffer} from 'buffer';
 
 @Component({
   selector: 'app-code-check-response-result-drop-down-list',

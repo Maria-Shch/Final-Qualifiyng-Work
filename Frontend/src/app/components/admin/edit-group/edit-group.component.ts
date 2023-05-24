@@ -66,8 +66,7 @@ export class EditGroupComponent implements OnInit{
     private route: ActivatedRoute,
     private groupService: GroupService,
     private userService: UserService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

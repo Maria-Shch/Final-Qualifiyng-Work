@@ -7,9 +7,15 @@
   </div>
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start;">
     <div *ngFor="let chapter of chapters" class="d-chapter" (click)="toChapter(chapter.serialNumber)">
-      <a routerLink="/chapter/{{chapter.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+      <a *ngIf="user?.role != 'ADMIN'" routerLink="/chapter/{{chapter.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
         Глава {{chapter.serialNumber}}
       </a>
+      <div *ngIf="user?.role == 'ADMIN'" style="display: flex; width: 100%; justify-content: space-between; flex-direction: row; align-items: center">
+        <a routerLink="/chapter/{{chapter.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+          Глава {{chapter.serialNumber}}
+        </a>
+        <button class="b-violet-cycle b-edit-chapter" style="width: 33px; height: 33px" (click)="editChapter(chapter.id)"></button>
+      </div>
       <ul style="margin: 0; padding-left: 25px">
         <li style="color: var(--c2);">
           <p class="p3" style="color: var(--c2); margin: 15px 0 0 0"> {{chapter.name}}</p>

@@ -3,7 +3,6 @@ package ru.shcherbatykh.Backend.services;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.Backend.models.Faculty;
-import ru.shcherbatykh.Backend.models.Year;
 import ru.shcherbatykh.Backend.repositories.FacultyRepo;
 
 import java.util.List;

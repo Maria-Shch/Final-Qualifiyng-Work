@@ -7,9 +7,9 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import ru.shcherbatykh.autochecker.model.CodeCheckResponse;
 import ru.shcherbatykh.Backend.classes.Constants;
 import ru.shcherbatykh.Backend.services.TestingService;
+import ru.shcherbatykh.autochecker.model.CodeCheckResponse;
 
 @Slf4j
 @Service
