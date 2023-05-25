@@ -5,6 +5,7 @@ import {FormUtils} from "../../../utils/FormUtils";
 import {IChapter} from "../../../interfaces/IChapter";
 import {IBlock} from "../../../interfaces/IBlock";
 import {BlockService} from "../../../services/block.service";
+import {ChapterService} from "../../../services/chapter.service";
 
 @Component({
   selector: 'app-new-block',
@@ -13,8 +14,10 @@ import {BlockService} from "../../../services/block.service";
 })
 export class NewBlockComponent {
 
+  countOfBlocks: number | null = null;
   chapter: IChapter | null = null;
   creatingBlockFormHasBeenSubmitted: boolean = false;
+  repeatedNameOfBlock: boolean = false;
 
   creatingBlockForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -23,6 +26,7 @@ export class NewBlockComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private chapterService: ChapterService,
     private blockService: BlockService,
     private router:Router
   ) {}
@@ -30,8 +34,15 @@ export class NewBlockComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       // @ts-ignore
-      this.blockService.getChapterById(this.route.snapshot.paramMap.get("chapterId")).subscribe((data: IChapter) => {
+      this.chapterService.getChapterById(this.route.snapshot.paramMap.get("chapterId")).subscribe((data: IChapter) => {
         this.chapter = data;
+        this.blockService.getCountOfBlocks(this.chapter?.serialNumber.toString()).subscribe((data: number) => {
+          this.countOfBlocks = data;
+          this.creatingBlockForm = new FormGroup({
+            name: new FormControl<string | null>(null, [Validators.required]),
+            serialNumber: new FormControl<number | null>(this.countOfBlocks+1, [Validators.required])
+          });
+        });
       });
     });
   }
@@ -40,18 +51,17 @@ export class NewBlockComponent {
     this.creatingBlockFormHasBeenSubmitted = true;
     if (FormUtils.getControlErrors(this.creatingBlockForm) == null){
       let newBlock = this.creatingBlockForm.value as IBlock;
-      if (this.chapter) {
-        newBlock.chapter = this.chapter;
-      }
-      this.blockService.checkIsPresentNameOrSerialNumberOfBlock(newBlock).subscribe((data: boolean) => {
-        // this.checkResult = data;
-        // if (!this.checkResult.repeatedSerialNumber && !this.checkResult.repeatedName){
-        //   this.blockService.createNewBlock(newBlock).subscribe((data: IBlock) =>{
-        //     this.router.navigate(['/chapter/']);
-        //     alert("Вы создали новый блок: Блок " + this.chapter?.serialNumber + '. ' + data.serialNumber + '. ' + data.name);
-        //   });
-        // }
-      })
+      // @ts-ignore
+      newBlock.chapter = this.chapter;
+      this.blockService.checkIsPresentNameOfBlock(newBlock).subscribe((data: boolean) => {
+        this.repeatedNameOfBlock = data;
+        if (!data){
+          this.blockService.createNewBlock(newBlock).subscribe((data: IBlock) =>{
+            this.router.navigate(['/chapter', this.chapter?.serialNumber, 'block', data.serialNumber, 'theory']);
+            alert("Вы создали новый блок: Блок " + this.chapter?.serialNumber + '. ' + data.serialNumber + '. ' + data.name);
+          });
+        }
+      });
     }
   }
 

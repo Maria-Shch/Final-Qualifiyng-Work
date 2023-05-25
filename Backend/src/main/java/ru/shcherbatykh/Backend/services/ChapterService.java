@@ -8,7 +8,6 @@ import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.ChapterRepo;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ChapterService {

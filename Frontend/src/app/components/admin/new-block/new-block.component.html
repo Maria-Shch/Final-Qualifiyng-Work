@@ -4,23 +4,32 @@
     <img src="../../../../assets/icons/book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
     <h2 style="var(--c6);">Глава {{chapter?.serialNumber}}. {{chapter?.name}}</h2>
   </div>
-  <p class="p3" style="margin: 0 0 30px 0;">Заполните информацию о новом блоке для данной главы</p>
+  <h4 style="margin: 0">Создание нового блока</h4>
+  <p class="p4" style="margin: 20px 0 0 0;">Заполните информацию о новом блоке для данной главы</p>
+
+  <div style="display: flex; flex-direction: row; margin: 20px 0 5px 0">
+    <p class="p5" style="color: var(--c2); margin: 0">Порядковый номер блока устанавливается автоматически для соблюдения порядка. Изменить нумерацию блоков Вы можете&nbsp;</p>
+    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapter/{{chapter?.serialNumber}}/blocks/numbering">здесь</a>
+  </div>
+  <p class="p5" style="color: var(--c2); margin: 0 0 20px 0">Добавить теоретический материал блока вы сможете после его создания.</p>
 
   <h5 *ngIf="(name.errors?.['required'] ||
             serialNumber.errors?.['required']) &&
             creatingBlockFormHasBeenSubmitted" class="error">
     Заполните все поля</h5>
+  <h5 *ngIf="repeatedNameOfBlock && creatingBlockFormHasBeenSubmitted" class="error">
+    В главе уже есть блок с таким названием</h5>
 
   <form [formGroup]="creatingBlockForm" (ngSubmit)="onSubmitCreatingBlockForm()" >
     <div class="d-row-form">
-      <p class="p4 form-param">Порядковый номер</p>
-      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4">
+      <p class="p4 form-param">Номер блока</p>
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4 input-readonly" readonly>
     </div>
     <div class="d-row-form">
       <p class="p4 form-param">Название</p>
       <input formControlName="name" id="name" type="text" class="input-params p4">
     </div>
-    <input type="submit" value="Создать блок" class="i-submit h5" style="margin: 40px 0 40px 0; width: 200px">
+    <input type="submit" value="Создать блок" class="i-submit h5" style="margin: 30px 0 0 0; width: 200px">
   </form>
 </div>
 <app-footer></app-footer>

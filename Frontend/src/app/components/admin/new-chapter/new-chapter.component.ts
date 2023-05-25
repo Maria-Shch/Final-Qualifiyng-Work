@@ -44,7 +44,7 @@ export class NewChapterComponent {
         this.repeatedNameOfChapter = data;
         if (!data){
           this.chapterService.createNewChapter(newChapter).subscribe((data: IChapter) =>{
-            this.router.navigate(['/chapters']);
+            this.router.navigate(['/chapter', data.serialNumber]);
             alert("Вы создали новую главу сборника: Глава " + data.serialNumber + '. ' + data.name);
           });
         }

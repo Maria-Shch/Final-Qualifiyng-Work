@@ -57,9 +57,10 @@ import {
 } from './components/utils/code-check-response-result-drop-down-list/code-check-response-result-drop-down-list.component';
 import {NewChapterComponent} from './components/admin/new-chapter/new-chapter.component';
 import {EditChapterComponent} from './components/admin/edit-chapter/edit-chapter.component';
-import { NewBlockComponent } from './components/admin/new-block/new-block.component';
-import { EditBlockComponent } from './components/admin/edit-block/edit-block.component';
-import { ChaptersNumberingComponent } from './components/admin/chapters-numbering/chapters-numbering.component';
+import {NewBlockComponent} from './components/admin/new-block/new-block.component';
+import {EditBlockComponent} from './components/admin/edit-block/edit-block.component';
+import {ChaptersNumberingComponent} from './components/admin/chapters-numbering/chapters-numbering.component';
+import {BlocksNumberingComponent} from './components/admin/blocks-numbering/blocks-numbering.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { ChaptersNumberingComponent } from './components/admin/chapters-numberin
     EditChapterComponent,
     NewBlockComponent,
     EditBlockComponent,
-    ChaptersNumberingComponent
+    ChaptersNumberingComponent,
+    BlocksNumberingComponent
   ],
   imports: [
     BrowserModule,

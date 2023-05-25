@@ -1,38 +1,43 @@
-import {Component, OnInit} from '@angular/core';
-import {IChapter} from "../../../interfaces/IChapter";
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
-import {ChapterService} from "../../../services/chapter.service";
-import {Router} from "@angular/router";
 import {IRequestUpdateNumbering} from "../../../dto_interfaces/IRequestUpdateNumbering";
 import {INumberingPair} from "../../../dto_interfaces/INumberingPair";
+import {IBlock} from "../../../interfaces/IBlock";
+import {BlockService} from "../../../services/block.service";
 
 @Component({
-  selector: 'app-chapters-numbering',
-  templateUrl: './chapters-numbering.component.html',
-  styleUrls: ['./chapters-numbering.component.css']
+  selector: 'app-blocks-numbering',
+  templateUrl: './blocks-numbering.component.html',
+  styleUrls: ['./blocks-numbering.component.css']
 })
-export class ChaptersNumberingComponent implements OnInit{
+export class BlocksNumberingComponent {
 
-  chapters: IChapter[] = [];
+  blocks: IBlock[] = [];
   serialNumbers: number[] = [];
   errorRepeatedSerialNumbers: boolean = false;
   repeatedValue: string | null = null;
 
   constructor(
-    private chapterService: ChapterService,
+    private blockService: BlockService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.chapterService.getChapters().subscribe(
-      (data: IChapter[]) => {
-        this.chapters = data;
-        this.serialNumbers = [];
-        for (let i = 1; i <= this.chapters.length; i++) {
-          this.serialNumbers.push(i);
-        }
-      },
-      (error)=>{ toErrorPage(error, this.router);});
+    this.route.paramMap.subscribe(params => {
+      // @ts-ignore
+      this.blockService.getBlocksOfChapter(this.route.snapshot.paramMap.get("chapterId")).subscribe(
+        (data: IBlock[]) => {
+          this.blocks = data;
+          this.serialNumbers = [];
+          for (let i = 1; i <= this.blocks.length; i++) {
+            this.serialNumbers.push(i);
+          }
+        },(error: any) => {
+          toErrorPage(error, this.router);
+        });
+    });
   }
 
   getValueOfSelect(selectId: number): string | undefined {
@@ -44,8 +49,8 @@ export class ChaptersNumberingComponent implements OnInit{
     this.errorRepeatedSerialNumbers = false;
     this.repeatedValue = null;
     let selectedSerialNumbers = [] as number[];
-    for (let i = 0; i < this.chapters.length; i++) {
-      let e = document.getElementById(this.chapters[i].id.toString()) as HTMLInputElement | null;
+    for (let i = 0; i < this.blocks.length; i++) {
+      let e = document.getElementById(this.blocks[i].id.toString()) as HTMLInputElement | null;
       // @ts-ignore
       selectedSerialNumbers.push(e?.value);
     }
@@ -65,23 +70,23 @@ export class ChaptersNumberingComponent implements OnInit{
   saveNumbering() {
     if (this.checkNumbering()){
       let request = {numberingPairs: []} as IRequestUpdateNumbering;
-      for (let i = 0; i < this.chapters.length; i++) {
-        let e = document.getElementById(this.chapters[i].id.toString()) as HTMLInputElement | null;
+      for (let i = 0; i < this.blocks.length; i++) {
+        let e = document.getElementById(this.blocks[i].id.toString()) as HTMLInputElement | null;
         let newSerialNumber = e?.value as unknown as number;
-        if (this.chapters[i].serialNumber != newSerialNumber){
+        if (this.blocks[i].serialNumber != newSerialNumber){
           let pair = {} as INumberingPair;
-          pair.objId = this.chapters[i].id;
+          pair.objId = this.blocks[i].id;
           pair.newSerialNumber = newSerialNumber;
           request.numberingPairs.push(pair);
         }
       }
       if (request.numberingPairs.length != 0){
-        this.chapterService.updateChaptersNumbering(request).subscribe(
+        this.blockService.updateBlocksNumbering(request).subscribe(
           (data: boolean) => {
-            alert("Нумерация глав сборника успешно обновлена");
+            alert("Нумерация блоков главы успешно обновлена");
             this.ngOnInit();
           },
-          (error)=>{ toErrorPage(error, this.router);});
+          (error: any)=>{ toErrorPage(error, this.router);});
       }
     }
   }

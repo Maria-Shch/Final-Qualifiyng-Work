@@ -30,7 +30,7 @@ export class EditChapterComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       // @ts-ignore
-      this.chapterService.getChapterById(this.route.snapshot.paramMap.get("id")).subscribe((data: IChapter) => {
+      this.chapterService.getChapterById(this.route.snapshot.paramMap.get("chapterId")).subscribe((data: IChapter) => {
         this.chapter = data;
         this.editingChapterForm = new FormGroup({
           name: new FormControl<string | null>(this.chapter?.name, [Validators.required]),

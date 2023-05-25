@@ -4,7 +4,7 @@
     <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
     <h2 style="var(--c6);">Редактирование главы сборника</h2>
   </div>
-  <p class="p3" style="margin: 0 0 20px 0;">Вы редактируете: <b>Глава {{chapter?.serialNumber}}. {{chapter?.name}}</b></p>
+  <p class="p3" style="margin: 0;">Вы редактируете: <b>Глава {{chapter?.serialNumber}}. {{chapter?.name}}</b></p>
 
   <div style="display: flex; flex-direction: row; margin: 20px 0 20px 0">
     <p class="p5" style="color: var(--c2); margin: 0">Изменить нумерацию глав сборника Вы можете&nbsp;</p>
@@ -20,8 +20,8 @@
 
   <form [formGroup]="editingChapterForm" (ngSubmit)="onSubmitEditingChapterForm()" >
     <div class="d-row-form">
-      <p class="p4 form-param">Порядковый номер</p>
-      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4" readonly>
+      <p class="p4 form-param">Номер главы</p>
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4 input-readonly" readonly>
     </div>
     <div class="d-row-form">
       <p class="p4 form-param">Название</p>

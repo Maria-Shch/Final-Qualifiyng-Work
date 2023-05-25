@@ -15,7 +15,5 @@ public interface BlockRepo extends CrudRepository<Block, Long> {
 
     int countByChapter(Chapter chapter);
 
-    Block findBlockByChapterAndSerialNumber(Chapter chapter, int serialNumber);
-
     Block findBlockByChapterAndName(Chapter chapter, String name);
 }

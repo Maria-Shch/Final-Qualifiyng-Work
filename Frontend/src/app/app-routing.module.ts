@@ -29,6 +29,7 @@ import {EditChapterComponent} from "./components/admin/edit-chapter/edit-chapter
 import {NewBlockComponent} from "./components/admin/new-block/new-block.component";
 import {EditBlockComponent} from "./components/admin/edit-block/edit-block.component";
 import {ChaptersNumberingComponent} from "./components/admin/chapters-numbering/chapters-numbering.component";
+import {BlocksNumberingComponent} from "./components/admin/blocks-numbering/blocks-numbering.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -56,10 +57,11 @@ const routes: Routes = [
   { path: 'teachers', component: TeachersComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'teacher/:id', component: TeacherComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'newChapter', component: NewChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'chapter/edit/:id', component: EditChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapter/edit/:chapterId', component: EditChapterComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'newBlock/:chapterId', component: NewBlockComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'block/edit/:id', component: EditBlockComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'chapters/numbering', component: ChaptersNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
+  { path: 'block/edit/:blockId', component: EditBlockComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapters/numbering', component: ChaptersNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapter/:chapterId/blocks/numbering', component: BlocksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
 ];
 
 @NgModule({

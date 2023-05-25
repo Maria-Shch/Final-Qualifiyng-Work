@@ -1,0 +1,21 @@
+:host{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.select-error{
+  background: var(--c10);
+}
+
+.select{
+  width: 100px;
+  padding: 10px;
+  border: 2px solid #d7d7e5;
+}
+
+.d-row-form{
+  width: 850px;
+  padding: 10px 15px;
+  border-radius: 10px;
+}

@@ -68,6 +68,5 @@ export class ChapterComponent implements OnInit{
   editBlock(blockId: number) {
     this.router.navigate(['/block/edit/', blockId]);
   }
-
 }
 

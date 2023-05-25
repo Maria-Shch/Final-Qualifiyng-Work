@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IBlock} from "../interfaces/IBlock";
 import {environment} from "../environments/enviroment";
+import {IRequestUpdateNumbering} from "../dto_interfaces/IRequestUpdateNumbering";
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,19 @@ export class BlockService {
     return this.httpclient.post<IBlock>(environment.apiUrl + '/create/block', newBlock);
   }
 
-  checkIsPresentNameOrSerialNumberOfBlock(newBlock: IBlock): Observable<boolean> {
-    return this.httpclient.post<boolean>(environment.apiUrl +
-      `/check/block`, newBlock);
+  checkIsPresentNameOfBlock(newBlock: IBlock): Observable<boolean> {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/check/block`, newBlock);
+  }
+
+  getBlockById(blockId: number): Observable<IBlock> {
+    return this.httpclient.get<IBlock>(environment.apiUrl + `/block/${blockId}`);
+  }
+
+  updateBlock(updatedBlock: IBlock): Observable<IBlock>  {
+    return this.httpclient.post<IBlock>(environment.apiUrl + `/update/block`, updatedBlock);
+  }
+
+  updateBlocksNumbering(request: IRequestUpdateNumbering): Observable<boolean>  {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/update/blocks/numbering`, request);
   }
 }

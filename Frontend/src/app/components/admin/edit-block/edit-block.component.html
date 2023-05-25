@@ -1,1 +1,43 @@
-<p>edit-block works!</p>
+<app-header></app-header>
+<div class="div-main-body">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Глава {{block?.chapter?.serialNumber}}. {{block?.chapter?.name}}</h2>
+  </div>
+  <p class="p3" style="margin: 0;">Вы редактируете: <b>Блок {{block?.serialNumber}}. {{block?.name}}</b></p>
+
+  <div style="display: flex; flex-direction: row; margin: 20px 0 7px 0">
+    <p class="p5" style="color: var(--c2); margin: 0">Изменить нумерацию блоков Вы можете&nbsp;</p>
+    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapter/{{block?.chapter?.serialNumber}}/blocks/numbering">здесь</a>
+  </div>
+  <p class="p5" style="color: var(--c2); margin: 0 0 7px 0">Добавить или отредактировать теоретический материал вы можете на странице блока.</p>
+  <p class="p5" style="color: var(--c2); margin: 0 0 20px 0">Если вы измените главу, то блок автоматически станет последним в новой главе. Блоки в текущей главе будут заново пронумерованы.</p>
+
+  <h5 *ngIf="(name.errors?.['required'] ||
+            serialNumber.errors?.['required']) &&
+            editingBlockFormHasBeenSubmitted" class="error">
+    Заполните все поля</h5>
+  <h5 *ngIf="repeatedNameOfBlock && editingBlockFormHasBeenSubmitted" class="error">
+    В сборнике уже есть глава с таким названием</h5>
+
+  <form [formGroup]="editingBlockForm" (ngSubmit)="onSubmitEditingBlockForm()">
+    <div class="d-row-form">
+      <p class="p4 form-param">Глава</p>
+      <select formControlName="chapter" id="chapter" class="input-params p4 select">
+        <option [ngValue]="chapter" *ngFor="let chapter of chapters">
+          Глава {{chapter.serialNumber}}. {{chapter.name}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Номер блока</p>
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4 input-readonly" readonly>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Название</p>
+      <input formControlName="name" id="name" type="text" class="input-params p4">
+    </div>
+    <input type="submit" value="Сохранить изменения" class="i-submit h5" style="margin: 30px 0 40px 0; width: 250px">
+  </form>
+</div>
+<app-footer></app-footer>

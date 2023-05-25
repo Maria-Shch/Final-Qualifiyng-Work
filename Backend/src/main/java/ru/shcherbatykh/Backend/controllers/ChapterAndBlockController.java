@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.Backend.dto.RequestUpdateNumbering;
-import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsAndSequence;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.services.BlockService;
@@ -102,13 +101,31 @@ public class ChapterAndBlockController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/check/block")
-    public ResponseRepeatedParamsAndSequence checkIsPresentNameOrSerialNumberOfBlock(@RequestBody Block newBlock) {
-        return blockService.checkIsPresentNameOrSerialNumberOfBlock(newBlock);
+    public boolean checkIsPresentNameOfBlock(@RequestBody Block newBlock) {
+        return blockService.checkIsPresentNameOfBlock(newBlock);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/update/chapters/numbering")
     public boolean updateChaptersNumbering(@RequestBody RequestUpdateNumbering request) {
         return chapterService.updateChaptersNumbering(request);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/block/{blockId}")
+    public Block getBlockById(@PathVariable long blockId){
+        return blockService.getBlockById(blockId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/block")
+    public Block updateBlock(@RequestBody Block updatedBlock) {
+        return blockService.updateBlock(updatedBlock);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/blocks/numbering")
+    public boolean updateBlocksNumbering(@RequestBody RequestUpdateNumbering request) {
+        return blockService.updateBlocksNumbering(request);
     }
 }

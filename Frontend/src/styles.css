@@ -427,7 +427,7 @@ textarea::-webkit-scrollbar-thumb {
 
 
 .b-edit-chapter:hover{
-  background: var(--c11) url("/assets/icons/pencil.png") no-repeat center;
+  background: #b7befcc7 url("/assets/icons/pencil.png") no-repeat center;
   background-size: 20px;
 }
 
@@ -617,4 +617,11 @@ textarea::-webkit-scrollbar-thumb {
 
 .select{
   width: 400px;
+}
+
+.input-readonly{
+  padding: 13px;
+  border: 2px solid #e5e5f3;
+  background: var(--c1);
+  cursor: auto;
 }
