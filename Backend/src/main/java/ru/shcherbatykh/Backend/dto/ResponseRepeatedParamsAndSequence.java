@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseRepeatedParamsOfChapter {
+public class ResponseRepeatedParamsAndSequence {
     private boolean repeatedSerialNumber;
     private boolean repeatedName;
+    private boolean sequenceRight;
 }

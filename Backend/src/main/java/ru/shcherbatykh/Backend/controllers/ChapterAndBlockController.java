@@ -3,7 +3,8 @@ package ru.shcherbatykh.Backend.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsOfChapter;
+import ru.shcherbatykh.Backend.dto.RequestUpdateNumbering;
+import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsAndSequence;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.services.BlockService;
@@ -77,8 +78,8 @@ public class ChapterAndBlockController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/check/chapter")
-    public ResponseRepeatedParamsOfChapter checkIsPresentNameOrSerialNumberOfChapter(@RequestBody Chapter newChapter) {
-        return chapterService.checkIsPresentNameOrSerialNumberOfChapter(newChapter);
+    public boolean checkIsPresentNameOfChapter(@RequestBody Chapter newChapter) {
+        return chapterService.checkIsPresentNameOfChapter(newChapter);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -91,5 +92,23 @@ public class ChapterAndBlockController {
     @PostMapping("/update/chapter")
     public Chapter updateChapter(@RequestBody Chapter updatedChapter) {
         return chapterService.updateChapter(updatedChapter);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/create/block")
+    public Block createNewBlock(@RequestBody Block newBlock) {
+        return blockService.createNewBlock(newBlock);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/check/block")
+    public ResponseRepeatedParamsAndSequence checkIsPresentNameOrSerialNumberOfBlock(@RequestBody Block newBlock) {
+        return blockService.checkIsPresentNameOrSerialNumberOfBlock(newBlock);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/chapters/numbering")
+    public boolean updateChaptersNumbering(@RequestBody RequestUpdateNumbering request) {
+        return chapterService.updateChaptersNumbering(request);
     }
 }

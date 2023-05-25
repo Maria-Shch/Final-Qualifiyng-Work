@@ -57,6 +57,9 @@ import {
 } from './components/utils/code-check-response-result-drop-down-list/code-check-response-result-drop-down-list.component';
 import {NewChapterComponent} from './components/admin/new-chapter/new-chapter.component';
 import {EditChapterComponent} from './components/admin/edit-chapter/edit-chapter.component';
+import { NewBlockComponent } from './components/admin/new-block/new-block.component';
+import { EditBlockComponent } from './components/admin/edit-block/edit-block.component';
+import { ChaptersNumberingComponent } from './components/admin/chapters-numbering/chapters-numbering.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +101,10 @@ import {EditChapterComponent} from './components/admin/edit-chapter/edit-chapter
     FooterComponent,
     CodeCheckResponseResultDropDownListComponent,
     NewChapterComponent,
-    EditChapterComponent
+    EditChapterComponent,
+    NewBlockComponent,
+    EditBlockComponent,
+    ChaptersNumberingComponent
   ],
   imports: [
     BrowserModule,

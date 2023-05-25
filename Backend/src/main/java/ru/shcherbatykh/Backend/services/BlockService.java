@@ -1,6 +1,7 @@
 package ru.shcherbatykh.Backend.services;
 
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsAndSequence;
 import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.BlockRepo;
@@ -77,6 +78,17 @@ public class BlockService {
             }
             else return getBlock(sNOfChapter + 1, 1);
         } else return getBlock(sNOfChapter, sNOfBlock + 1);
+    }
+
+    public Block createNewBlock(Block newBlock) {
+        return blockRepo.save(newBlock);
+    }
+
+    public ResponseRepeatedParamsAndSequence checkIsPresentNameOrSerialNumberOfBlock(Block newBlock) {
+        ResponseRepeatedParamsAndSequence response = new ResponseRepeatedParamsAndSequence();
+        response.setRepeatedSerialNumber(blockRepo.findBlockByChapterAndSerialNumber(newBlock.getChapter(), newBlock.getSerialNumber())!=null);
+        response.setRepeatedName(blockRepo.findBlockByChapterAndName(newBlock.getChapter(), newBlock.getName())!=null);
+        return response;
     }
 
 }

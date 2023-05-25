@@ -3,8 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {FormUtils} from "../../../utils/FormUtils";
 import {IChapter} from "../../../interfaces/IChapter";
-import {TaskService} from "../../../services/task.service";
-import {IResponseRepeatedParamsOfChapter} from "../../../dto_interfaces/IResponseRepeatedParamsOfChapter";
+import {ChapterService} from "../../../services/chapter.service";
 
 @Component({
   selector: 'app-new-chapter',
@@ -13,8 +12,9 @@ import {IResponseRepeatedParamsOfChapter} from "../../../dto_interfaces/IRespons
 })
 export class NewChapterComponent {
 
+  countOfChapters: number | null = null;
   creatingChapterFormHasBeenSubmitted: boolean = false;
-  checkResult: IResponseRepeatedParamsOfChapter | null = null;
+  repeatedNameOfChapter: boolean = false;
 
   creatingChapterForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -22,27 +22,33 @@ export class NewChapterComponent {
   });
 
   constructor(
-    private taskService: TaskService,
+    private chapterService: ChapterService,
     private router:Router
   ) {}
 
   ngOnInit(): void {
-
+    this.chapterService.getCountOfChapters().subscribe((data: number) => {
+      this.countOfChapters = data;
+      this.creatingChapterForm = new FormGroup({
+        name: new FormControl<string | null>(null, [Validators.required]),
+        serialNumber: new FormControl<number | null>(this.countOfChapters+1, [Validators.required])
+      });
+    });
   }
 
   onSubmitCreatingChapterForm() {
     this.creatingChapterFormHasBeenSubmitted = true;
     if (FormUtils.getControlErrors(this.creatingChapterForm) == null){
       let newChapter = this.creatingChapterForm.value as IChapter;
-      this.taskService.checkIsPresentNameOrSerialNumberOfChapter(newChapter).subscribe((data: IResponseRepeatedParamsOfChapter) => {
-        this.checkResult = data;
-        if (!this.checkResult.repeatedSerialNumber && !this.checkResult.repeatedName){
-          this.taskService.createNewChapter(newChapter).subscribe((data: IChapter) =>{
+      this.chapterService.checkIsPresentNameOfChapter(newChapter).subscribe((data: boolean) => {
+        this.repeatedNameOfChapter = data;
+        if (!data){
+          this.chapterService.createNewChapter(newChapter).subscribe((data: IChapter) =>{
             this.router.navigate(['/chapters']);
             alert("Вы создали новую главу сборника: Глава " + data.serialNumber + '. ' + data.name);
           });
         }
-      })
+      });
     }
   }
 

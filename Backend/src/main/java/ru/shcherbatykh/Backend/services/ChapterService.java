@@ -2,11 +2,13 @@ package ru.shcherbatykh.Backend.services;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.shcherbatykh.Backend.dto.ResponseRepeatedParamsOfChapter;
+import ru.shcherbatykh.Backend.dto.NumberingPair;
+import ru.shcherbatykh.Backend.dto.RequestUpdateNumbering;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.ChapterRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChapterService {
@@ -36,11 +38,8 @@ public class ChapterService {
         return chapterRepo.save(newChapter);
     }
 
-    public ResponseRepeatedParamsOfChapter checkIsPresentNameOrSerialNumberOfChapter(Chapter newChapter) {
-        ResponseRepeatedParamsOfChapter response = new ResponseRepeatedParamsOfChapter();
-        response.setRepeatedSerialNumber(chapterRepo.findChapterBySerialNumber(newChapter.getSerialNumber())!=null);
-        response.setRepeatedName(chapterRepo.findChapterByName(newChapter.getName())!=null);
-        return response;
+    public boolean checkIsPresentNameOfChapter(Chapter newChapter) {
+        return chapterRepo.findChapterByName(newChapter.getName())!=null;
     }
 
     public Chapter getChapterById(long chapterId) {
@@ -49,5 +48,14 @@ public class ChapterService {
 
     public Chapter updateChapter(Chapter updatedChapter) {
         return chapterRepo.save(updatedChapter);
+    }
+
+    public boolean updateChaptersNumbering(RequestUpdateNumbering request) {
+        for(NumberingPair pair: request.getNumberingPairs()){
+            Chapter chapter = chapterRepo.findById(pair.getObjId()).get();
+            chapter.setSerialNumber(pair.getNewSerialNumber());
+            chapterRepo.save(chapter);
+        }
+        return true;
     }
 }

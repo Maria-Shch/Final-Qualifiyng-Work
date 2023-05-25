@@ -4,6 +4,7 @@
     <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
       <img src="../../../../assets/icons/book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
       <h2 style="color: var(--c6); margin:0">Глава {{serialNumberOfChapter}}</h2>
+      <button *ngIf="user?.role == 'ADMIN'" type="button" class="d-violet-button b-add-box" (click)="createNewBlock(chapter!.id)"></button>
     </div>
     <div class="d-row" *ngIf="serialNumberOfChapter === '1' && !isChapterLast">
       <app-to-chapters></app-to-chapters>
@@ -30,9 +31,16 @@
   <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start">
     <div *ngFor="let block of blocks" class="d-block" (click)="toTheoryOfBlock(serialNumberOfChapter, block.serialNumber)">
 
-      <h3  style="color: var(--c6); margin: 15px 0 0 10px;">
+      <a *ngIf="user?.role != 'ADMIN'" routerLink="/chapter/{{chapter?.serialNumber}}/block{{block?.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
         Блок {{serialNumberOfChapter}}. {{block.serialNumber}}
-      </h3>
+      </a>
+      <div *ngIf="user?.role == 'ADMIN'" style="display: flex; width: 100%; justify-content: space-between; flex-direction: row; align-items: center">
+        <a routerLink="/chapter/{{chapter?.serialNumber}}/block{{block?.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+          Блок {{serialNumberOfChapter}}. {{block.serialNumber}}
+        </a>
+        <button class="b-violet-cycle b-edit-chapter" style="width: 33px; height: 33px" (click)="editBlock(block.id)"></button>
+      </div>
+
       <h4 style="color: var(--c2); margin: 13px 0 0 10px"> {{block.name}}</h4>
 
       <div>

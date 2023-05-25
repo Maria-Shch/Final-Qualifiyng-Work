@@ -1,0 +1,23 @@
+<app-header></app-header>
+<div class="div-main-body">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Редактирование нумерации глав сборника</h2>
+  </div>
+  <h5 *ngIf="errorRepeatedSerialNumbers" class="error">
+    Найдены повторяющиеся номера глав
+  </h5>
+  <div *ngFor="let chapter of chapters, let i = index" class="d-row-form" [ngClass]="{'bc-clr-light' : i%2 === 0,'bc-clr-dark' : i%2 != 0}">
+    <a routerLink="/chapter/{{chapter.serialNumber}}" class="h4 a-none" style="margin: 15px 0 10px 10px; width: 700px">
+      Глава {{chapter.serialNumber}}. {{chapter?.name}}
+    </a>
+    <select class="input-params p4 select" id="{{chapter.id}}"
+        [ngClass]="{'select-error' : errorRepeatedSerialNumbers && (getValueOfSelect(chapter.id) == repeatedValue)}">
+      <option [value]="s" [selected]="chapter.serialNumber==s" *ngFor="let s of serialNumbers">
+        {{s}}
+      </option>
+    </select>
+  </div>
+  <button class="i-submit h5" style="margin: 40px 0 40px 0; width: 300px;" (click)="saveNumbering()">Сохранить нумерацию</button>
+</div>
+<app-footer></app-footer>

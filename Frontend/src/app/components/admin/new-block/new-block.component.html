@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="div-main-body">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Глава {{chapter?.serialNumber}}. {{chapter?.name}}</h2>
+  </div>
+  <p class="p3" style="margin: 0 0 30px 0;">Заполните информацию о новом блоке для данной главы</p>
+
+  <h5 *ngIf="(name.errors?.['required'] ||
+            serialNumber.errors?.['required']) &&
+            creatingBlockFormHasBeenSubmitted" class="error">
+    Заполните все поля</h5>
+
+  <form [formGroup]="creatingBlockForm" (ngSubmit)="onSubmitCreatingBlockForm()" >
+    <div class="d-row-form">
+      <p class="p4 form-param">Порядковый номер</p>
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4">
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Название</p>
+      <input formControlName="name" id="name" type="text" class="input-params p4">
+    </div>
+    <input type="submit" value="Создать блок" class="i-submit h5" style="margin: 40px 0 40px 0; width: 200px">
+  </form>
+</div>
+<app-footer></app-footer>

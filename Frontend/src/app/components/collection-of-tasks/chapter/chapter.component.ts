@@ -5,6 +5,9 @@ import {IChapter} from "../../../interfaces/IChapter";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {BlockService} from "../../../services/block.service";
 import {ChapterService} from "../../../services/chapter.service";
+import {IUser} from "../../../interfaces/IUser";
+import {AuthorizationService} from "../../../services/authorization.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-chapter',
@@ -16,12 +19,15 @@ export class ChapterComponent implements OnInit{
   blocks:IBlock[] = [];
   chapter: IChapter | null = null;
   isChapterLast: boolean = false;
+  user: IUser | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private chapterService: ChapterService,
     private blockService: BlockService,
-    private router: Router
+    private router: Router,
+    private authService: AuthorizationService,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
@@ -42,11 +48,26 @@ export class ChapterComponent implements OnInit{
         this.chapter = this.blocks[1].chapter;
       },
       (error)=>{ toErrorPage(error, this.router);});
+
+      if (this.authService.isLoggedIn()) {
+        this.userService.getUser().subscribe((data: IUser) => {
+          this.user = data;
+        });
+      };
     });
   }
 
   toTheoryOfBlock(serialNumberOfChapter: any, serialNumberOfBlock: number) {
     this.router.navigate(['/chapter', serialNumberOfChapter, 'block', serialNumberOfBlock, 'theory']);
   }
+
+  createNewBlock(chapterId: number) {
+    this.router.navigate(['/newBlock/', chapterId]);
+  }
+
+  editBlock(blockId: number) {
+    this.router.navigate(['/block/edit/', blockId]);
+  }
+
 }
 

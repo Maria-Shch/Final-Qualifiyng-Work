@@ -4,27 +4,30 @@
     <img src="../../../../assets/icons/book.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
     <h2 style="var(--c6);">Создание новой главы сборника</h2>
   </div>
-  <p class="p3" style="margin: 0 0 30px 0;">Заполните информацию о новой главе</p>
+  <p class="p4" style="margin: 0 0 15px 0;">Заполните информацию о новой главе</p>
+
+  <div style="display: flex; flex-direction: row; margin: 20px 0 20px 0">
+    <p class="p5" style="color: var(--c2); margin: 0">Порядковый номер главы устанавливается автоматически для соблюдения порядка. Изменить нумерацию глав сборника Вы можете&nbsp;</p>
+    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapters/numbering">здесь</a>
+  </div>
 
   <h5 *ngIf="(name.errors?.['required'] ||
             serialNumber.errors?.['required']) &&
             creatingChapterFormHasBeenSubmitted" class="error">
     Заполните все поля</h5>
-  <h5 *ngIf="checkResult?.repeatedSerialNumber && creatingChapterFormHasBeenSubmitted" class="error">
-    В сборнике уже есть глава с таким порядковым номером</h5>
-  <h5 *ngIf="checkResult?.repeatedName && creatingChapterFormHasBeenSubmitted" class="error">
+  <h5 *ngIf="repeatedNameOfChapter && creatingChapterFormHasBeenSubmitted" class="error">
     В сборнике уже есть глава с таким названием</h5>
 
   <form [formGroup]="creatingChapterForm" (ngSubmit)="onSubmitCreatingChapterForm()" >
     <div class="d-row-form">
       <p class="p4 form-param">Порядковый номер</p>
-      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4">
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4" readonly>
     </div>
     <div class="d-row-form">
       <p class="p4 form-param">Название</p>
       <input formControlName="name" id="name" type="text" class="input-params p4">
     </div>
-    <input type="submit" value="Создать главу" class="i-submit h5" style="margin: 40px 0 40px 0; width: 200px">
+    <input type="submit" value="Создать главу" class="i-submit h5" style="margin: 30px 0 40px 0; width: 200px">
   </form>
 </div>
 <app-footer></app-footer>

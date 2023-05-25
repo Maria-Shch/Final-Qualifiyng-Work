@@ -186,7 +186,6 @@ export class NewGroupComponent implements OnInit{
         this.isRepeatedFaculty = isRepeatedFaculty;
         if(!isRepeatedFaculty){
           let newYear = this.newYearForm.value as IYear;
-          console.log(newYear);
           this.showModalAddNewYear = false;
           this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
             this.years = data;
@@ -194,7 +193,6 @@ export class NewGroupComponent implements OnInit{
           });
         }
       });
-
     }
   }
 
@@ -209,7 +207,6 @@ export class NewGroupComponent implements OnInit{
         this.isRepeatedYear = isRepeatedYear;
         if(!isRepeatedYear){
           let newYear = this.newYearForm.value as IYear;
-          console.log(newYear);
           this.showModalAddNewYear = false;
           this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
             this.years = data;
