@@ -32,8 +32,8 @@
   height: var(--imgXY-theory-pencil);
 }
 
-.icon-pencil {
-  background: url("../../../../assets/icons/pencil.png") no-repeat;
+.icon-computer {
+  background: url("../../../../assets/icons/computer.png") no-repeat;
   background-size: var(--imgXY-theory-pencil);
   width: var(--imgXY-theory-pencil);
   height: var(--imgXY-theory-pencil);

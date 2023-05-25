@@ -35,9 +35,9 @@
          'bc-clr-on-testing' : task.status?.name === 'На тестировании'
          }"
          (click)="toTask(serialNumberOfChapter, serialNumberOfBlock, task.serialNumber)">
-      <h3  style="color: var(--c6); margin: 5px 0 0 10px;">
-         Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
-      </h3>
+      <a  routerLink="/chapter/{{serialNumberOfChapter}}/block{{serialNumberOfBlock}}/task/{{task.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+        Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
+      </a>
       <h4 style="color: var(--c2); margin: 13px 0 0 10px;">{{task.name}}</h4>
       <p class="p4" style="color: var(--c6); margin: 13px 0 0 10px;">{{task.status?.name}}</p>
     </div>
