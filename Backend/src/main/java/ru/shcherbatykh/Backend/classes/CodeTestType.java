@@ -4,5 +4,6 @@ public enum CodeTestType {
     COMPILE,
     RUN,
     AST,
-    REFLEXIVITY
+    REFLEXIVITY,
+    CHECKSTYLE
 }

@@ -12,6 +12,7 @@ import ru.shcherbatykh.autochecker.rules.model.RuleViolation;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public interface CodeTest {
@@ -57,7 +58,14 @@ public interface CodeTest {
     default ArrayNode createRuleViolationsNode(List<RuleViolation> violations) {
         ArrayNode arrayNode = JsonNodeFactory.instance.arrayNode();
         Map<String, List<RuleViolation>> details = violations.stream()
+                .filter(ruleViolation -> Objects.nonNull(ruleViolation.node()))
                 .collect(Collectors.groupingBy(RuleViolation::node));
+        List<RuleViolation> nonNodeViolations = violations.stream()
+                .filter(ruleViolation -> Objects.isNull(ruleViolation.node()))
+                .toList();
+        if(!nonNodeViolations.isEmpty()){
+            details.put("—", nonNodeViolations);
+        }
         for (Map.Entry<String, List<RuleViolation>> entry : details.entrySet()) {
             ObjectNode node = JsonNodeFactory.instance.objectNode();
             node.put("node", entry.getKey());

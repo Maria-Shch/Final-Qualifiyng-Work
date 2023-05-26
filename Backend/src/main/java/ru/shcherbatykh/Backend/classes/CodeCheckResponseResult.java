@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CodeCheckResponseResult {
+    //enum ResponseCode = code + message
     private String code;
     private String message;
     private List<CodeTestResult> results;

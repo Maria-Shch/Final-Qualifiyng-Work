@@ -128,7 +128,9 @@ public class Task_1_1_1_Test extends AbstractOneClassTaskTest {
         boolean defaultConstructorExists = (boolean) ruleContext.getData().get("default_constructor").get(targetClass);
         if (defaultConstructorExists) {
             try {
-                clazzInstance = clazz.getDeclaredConstructor().newInstance();
+                Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
+                declaredConstructor.setAccessible(true);
+                clazzInstance = declaredConstructor.newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 log.error("Error during class object creation using default constructor", e);

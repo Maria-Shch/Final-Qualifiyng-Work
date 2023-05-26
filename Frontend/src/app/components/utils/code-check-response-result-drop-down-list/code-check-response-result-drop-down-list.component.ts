@@ -43,12 +43,13 @@ export class CodeCheckResponseResultDropDownListComponent implements OnInit{
             this.decodedNokRunTestResult = decodedNokRunTestResult;
             this.decodedNokRunTestResult.actualValueArray = this.decodedNokRunTestResult.actualValue.split(/\n/);
             this.decodedNokRunTestResult.expectedValueArray = this.decodedNokRunTestResult.expectedValue.split(/\n/);
-            console.log(this.decodedNokRunTestResult);
           }
         }
 
         if (this.lastTestingResultForStudent?.results[i].status == 'NOK' &&
-          (this.lastTestingResultForStudent.results[i].type == 'AST' || this.lastTestingResultForStudent.results[i].type == 'REFLEXIVITY')){
+          (this.lastTestingResultForStudent.results[i].type == 'AST' ||
+            this.lastTestingResultForStudent.results[i].type == 'REFLEXIVITY' ||
+            this.lastTestingResultForStudent.results[i].type == 'CHECKSTYLE')){
           if (this.isArray(this.lastTestingResultForStudent?.results[i].result)){
             let resultArray = this.toArray(this.lastTestingResultForStudent?.results[i].result);
             for (let j = 0; j < resultArray.length; j++) {
@@ -60,6 +61,8 @@ export class CodeCheckResponseResultDropDownListComponent implements OnInit{
           }
         }
       }
+
+      console.log(this.nokAstOrReflexivityTestResults);
     }
   }
 }

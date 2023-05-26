@@ -15,6 +15,7 @@ import ru.shcherbatykh.autochecker.ast.CodeSourceASTParser;
 import ru.shcherbatykh.autochecker.broker.KafkaMessageProducer;
 import ru.shcherbatykh.autochecker.class_loader.TaskClassLoader;
 import ru.shcherbatykh.autochecker.model.*;
+import ru.shcherbatykh.autochecker.tests.CheckCodeStyleTest;
 import ru.shcherbatykh.autochecker.tests.CodeTest;
 import ru.shcherbatykh.autochecker.tests.CompilationTest;
 

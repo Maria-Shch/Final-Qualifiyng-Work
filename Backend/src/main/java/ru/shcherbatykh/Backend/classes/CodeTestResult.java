@@ -27,4 +27,9 @@ public class CodeTestResult {
             .status(Status.OK)
             .type(CodeTestType.REFLEXIVITY)
             .build();
+
+    public static final CodeTestResult OK_CHECKSTYLE_RESULT = CodeTestResult.builder()
+            .status(Status.OK)
+            .type(CodeTestType.CHECKSTYLE)
+            .build();
 }

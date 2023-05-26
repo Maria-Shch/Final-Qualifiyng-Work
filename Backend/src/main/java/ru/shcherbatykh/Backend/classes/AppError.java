@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum AppError {
-    APP_ERR_001("APP_ERR_001", "Не удалось сохранить код"),
-    APP_ERR_002("APP_ERR_002", "Тестирование завершилось неудачей");
+    APP_ERR_001("APP_ERR_001", "Не удалось сохранить код");
 
     private final String code;
     private final String message;
