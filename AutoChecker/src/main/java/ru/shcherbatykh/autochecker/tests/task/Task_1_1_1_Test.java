@@ -200,7 +200,8 @@ public class Task_1_1_1_Test extends AbstractOneClassTaskTest {
         RuleViolation violation = new RuleViolation("Проверка результата метода toString",
                 AstUtils.getFullyQualifiedName(targetClass),
                 MessageFormat.format("Неверный результат работы метода toString. Ожидалось: {0}. Найдено: {1}.",
-                        expectedResult, actualResult)
+                        expectedResult, actualResult),
+                true
         );
         ruleContext.addViolation(violation);
     }

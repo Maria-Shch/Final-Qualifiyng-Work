@@ -8,16 +8,19 @@
   width: 100%;
   padding: 15px 5px;
   margin-bottom: 5px;
+  border-top: 1px solid var(--c19);
+  border-bottom: 1px solid var(--c19);
 }
 
 .div-test-result:hover{
+
   box-shadow: var(--box-shadow-panel-tests);
 }
 
 .hr-1{
   width: 100%;
   height: 1px;
-  background-color: var(--c15);
+  background-color: var(--c19);
   color: var(--c15);
   border: none;
   margin: 0;
@@ -25,5 +28,9 @@
 
 .div-group{
   min-height: fit-content;
-  width: 1030px;
+  width: 1250px;
+}
+
+.mb{
+  margin-bottom: 40px;
 }

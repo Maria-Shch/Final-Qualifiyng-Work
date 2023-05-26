@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 import {INokRunTestResult} from "../../../dto_interfaces/INokRunTestResult";
-import {INokAstOrReflexivityTestResult} from "../../../dto_interfaces/INokAstOrReflexivityTestResult";
+import {INokAstOrReflexivityOrCheckstyleTestResult} from "../../../dto_interfaces/INokAstOrReflexivityOrCheckstyleTestResult";
 import {ISimpleNokAstOrReflexivityTestResult} from "../../../dto_interfaces/ISimpleNokAstOrReflexivityTestResult";
 import {Buffer} from 'buffer';
 
@@ -14,8 +14,11 @@ export class CodeCheckResponseResultDropDownListComponent implements OnInit{
   @Input() lastTestingResultForStudent: ICodeCheckResponseResult | null = null;
   panelOpenState = false;
   decodedNokRunTestResult: INokRunTestResult | null = null;
-  nokAstOrReflexivityTestResults: INokAstOrReflexivityTestResult[] = [];
-  simpleNokAstOrReflexivityTestResult: ISimpleNokAstOrReflexivityTestResult | null = null;
+  nokAstTestResults: INokAstOrReflexivityOrCheckstyleTestResult[] = [];
+  nokReflexivityTestResults: INokAstOrReflexivityOrCheckstyleTestResult[] = [];
+  nokCheckstyleTestResults: INokAstOrReflexivityOrCheckstyleTestResult[] = [];
+  simpleNokAstTestResult: ISimpleNokAstOrReflexivityTestResult | null = null;
+  simpleNokReflexivityTestResult: ISimpleNokAstOrReflexivityTestResult | null = null;
 
   isArray(obj : any) {
     return Array.isArray(obj);
@@ -47,22 +50,31 @@ export class CodeCheckResponseResultDropDownListComponent implements OnInit{
         }
 
         if (this.lastTestingResultForStudent?.results[i].status == 'NOK' &&
-          (this.lastTestingResultForStudent.results[i].type == 'AST' ||
+            (this.lastTestingResultForStudent.results[i].type == 'AST' ||
             this.lastTestingResultForStudent.results[i].type == 'REFLEXIVITY' ||
             this.lastTestingResultForStudent.results[i].type == 'CHECKSTYLE')){
+
           if (this.isArray(this.lastTestingResultForStudent?.results[i].result)){
             let resultArray = this.toArray(this.lastTestingResultForStudent?.results[i].result);
             for (let j = 0; j < resultArray.length; j++) {
-              let nokAstOrReflexivityTestResult = resultArray[j] as unknown as INokAstOrReflexivityTestResult;
-              this.nokAstOrReflexivityTestResults.push(nokAstOrReflexivityTestResult);
+              let res = resultArray[j] as unknown as INokAstOrReflexivityOrCheckstyleTestResult;
+              if (this.lastTestingResultForStudent.results[i].type == 'AST') {
+                this.nokAstTestResults.push(res);
+              } else if (this.lastTestingResultForStudent.results[i].type == 'REFLEXIVITY'){
+                this.nokReflexivityTestResults.push(res);
+              } else if (this.lastTestingResultForStudent.results[i].type == 'CHECKSTYLE'){
+                this.nokCheckstyleTestResults.push(res);
+              }
             }
           } else {
-            this.simpleNokAstOrReflexivityTestResult = this.lastTestingResultForStudent?.results[i].result as unknown as ISimpleNokAstOrReflexivityTestResult;
+            if (this.lastTestingResultForStudent.results[i].type == 'AST') {
+              this.simpleNokAstTestResult = this.lastTestingResultForStudent?.results[i].result as unknown as ISimpleNokAstOrReflexivityTestResult;
+            } else if (this.lastTestingResultForStudent.results[i].type == 'REFLEXIVITY'){
+              this.simpleNokReflexivityTestResult = this.lastTestingResultForStudent?.results[i].result as unknown as ISimpleNokAstOrReflexivityTestResult;
+            }
           }
         }
       }
-
-      console.log(this.nokAstOrReflexivityTestResults);
     }
   }
 }
