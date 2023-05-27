@@ -185,10 +185,10 @@ export class NewGroupComponent implements OnInit{
       this.groupService.isPresentFaculty(this.newFacultyForm.value.name).subscribe((isRepeatedFaculty: boolean) => {
         this.isRepeatedFaculty = isRepeatedFaculty;
         if(!isRepeatedFaculty){
-          let newYear = this.newYearForm.value as IYear;
-          this.showModalAddNewYear = false;
-          this.groupService.addNewYear(newYear).subscribe((data: IYear[]) =>{
-            this.years = data;
+          let newFaculty = this.newFacultyForm.value as IFaculty;
+          this.showModalAddNewFaculty = false;
+          this.groupService.addNewFaculty(newFaculty).subscribe((data: IFaculty[]) =>{
+            this.faculties = data;
             this.initCreatingGroupForm();
           });
         }
