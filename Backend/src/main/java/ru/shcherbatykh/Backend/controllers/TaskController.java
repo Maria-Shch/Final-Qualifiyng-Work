@@ -2,9 +2,7 @@ package ru.shcherbatykh.Backend.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.shcherbatykh.Backend.dto.RBOnConsideration;
-import ru.shcherbatykh.Backend.dto.SendingOnReviewOrConsiderationResponse;
-import ru.shcherbatykh.Backend.dto.TaskOfBlock;
+import ru.shcherbatykh.Backend.dto.*;
 import ru.shcherbatykh.Backend.models.Status;
 import ru.shcherbatykh.Backend.models.Task;
 import ru.shcherbatykh.Backend.services.AuthService;
@@ -129,7 +127,13 @@ public class TaskController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/create/task")
-    public Task createNewTask(@RequestBody Task newTask) {
+    public Task createNewTask(@RequestBody NewTask newTask) {
         return taskService.createNewTask(newTask);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/simpleTaskCollection")
+    public SimpleCollection getSimpleTaskCollection() {
+        return taskService.getSimpleTaskCollection();
     }
 }

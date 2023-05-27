@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TaskService} from "../../../services/task.service";
 import {ITask} from "../../../interfaces/ITask";
 import tinymce from "tinymce";
-import {forkJoin, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {UserService} from "../../../services/user.service";
 import {AuthorizationService} from "../../../services/authorization.service";
 import {IStatus} from "../../../interfaces/IStatus";

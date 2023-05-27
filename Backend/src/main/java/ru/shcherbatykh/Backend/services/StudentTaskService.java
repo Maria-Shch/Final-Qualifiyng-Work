@@ -160,7 +160,7 @@ public class StudentTaskService {
             chapterAndStatInfo.setCountOfAllTasks(getCountTasksByChapter(chapter));
             List<BlockAndStatInfo> blockAndStatInfoList = new ArrayList<>();
 
-            List<Block> blocks = blockService.getBlocksOfChapterWithoutTheory(chapter.getSerialNumber());
+            List<Block> blocks = blockService.getSortedBlocksOfChapterWithoutTheory(chapter.getSerialNumber());
             for(Block block: blocks){
                 BlockAndStatInfo blockAndStatInfo = new BlockAndStatInfo();
                 blockAndStatInfo.setBlock(block);

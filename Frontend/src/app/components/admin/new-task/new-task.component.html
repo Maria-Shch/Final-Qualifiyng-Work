@@ -29,7 +29,11 @@
       <p class="p4 form-param">Название</p>
       <input formControlName="name" id="name" type="text" class="input-params p4">
     </div>
-    <input type="submit" value="Создать задачу" class="i-submit h5" style="margin: 30px 0 0 0; width: 200px">
+
+    <p class="p4" style="margin: 30px 0 20px 0;">Ниже Вы можете выбрать те задачи, которые необходимо решить перед тем как приступать к данной задаче</p>
+    <app-checkbox-group-previous-tasks [simpleCollection]="simpleTaskCollection" (change)="onChangeSelectedPreviousTasks()">
+    </app-checkbox-group-previous-tasks>
+    <input type="submit" value="Создать задачу" class="i-submit h5" style="margin: 30px 0 30px 0; width: 200px">
   </form>
 </div>
 <app-footer></app-footer>

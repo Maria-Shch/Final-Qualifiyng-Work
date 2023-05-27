@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ICodeCheckResponseResult} from "../../../dto_interfaces/ICodeCheckResponseResult";
 import {INokRunTestResult} from "../../../dto_interfaces/INokRunTestResult";
-import {INokAstOrReflexivityOrCheckstyleTestResult} from "../../../dto_interfaces/INokAstOrReflexivityOrCheckstyleTestResult";
+import {
+  INokAstOrReflexivityOrCheckstyleTestResult
+} from "../../../dto_interfaces/INokAstOrReflexivityOrCheckstyleTestResult";
 import {ISimpleNokAstOrReflexivityTestResult} from "../../../dto_interfaces/ISimpleNokAstOrReflexivityTestResult";
 import {Buffer} from 'buffer';
 

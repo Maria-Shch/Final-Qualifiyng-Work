@@ -34,7 +34,7 @@ public class ChapterAndBlockController {
 
     @GetMapping("/chapter/{serialNumberOfChapter}/blocks")
     public List<Block> getBlocksOfChapter(@PathVariable int serialNumberOfChapter){
-        return blockService.getBlocksOfChapterWithoutTheory(serialNumberOfChapter);
+        return blockService.getSortedBlocksOfChapterWithoutTheory(serialNumberOfChapter);
     }
 
     @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/name")

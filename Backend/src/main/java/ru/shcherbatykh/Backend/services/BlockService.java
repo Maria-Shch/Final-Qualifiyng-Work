@@ -21,7 +21,7 @@ public class BlockService {
         this.chapterService = chapterService;
     }
 
-    public List<Block> getBlocksOfChapterWithoutTheory(int serialNumberOfChapter) {
+    public List<Block> getSortedBlocksOfChapterWithoutTheory(int serialNumberOfChapter) {
         Chapter chapter = chapterService.getChapterBySerialNumber(serialNumberOfChapter);
         List<Block> blocksByChapter = blockRepo.getBlocksByChapter(chapter);
         for(Block block: blocksByChapter) block.setTextTheory(null);

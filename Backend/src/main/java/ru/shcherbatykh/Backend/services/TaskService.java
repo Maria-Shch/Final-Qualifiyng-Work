@@ -5,10 +5,9 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.Backend.classes.AppError;
-import ru.shcherbatykh.Backend.dto.RBOnConsideration;
-import ru.shcherbatykh.Backend.dto.SendingOnReviewOrConsiderationResponse;
-import ru.shcherbatykh.Backend.dto.TaskOfBlock;
+import ru.shcherbatykh.Backend.dto.*;
 import ru.shcherbatykh.Backend.models.*;
+import ru.shcherbatykh.Backend.repositories.PreviousTaskRepo;
 import ru.shcherbatykh.Backend.repositories.TaskRepo;
 
 import java.io.File;
@@ -17,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -30,14 +30,16 @@ public class TaskService {
     private String CODE_STORAGE_PATH;
 
     private final TaskRepo taskRepo;
+    private final PreviousTaskRepo previousTaskRepo;
     private final ChapterService chapterService;
     private final BlockService blockService;
     private final StudentTaskService studentTasksService;
     private final RequestService requestService;
 
-    public TaskService(TaskRepo taskRepo, ChapterService chapterService, BlockService blockService,
-                       StudentTaskService studentTasksService, RequestService requestService) {
+    public TaskService(TaskRepo taskRepo, PreviousTaskRepo previousTaskRepo, ChapterService chapterService,
+                       BlockService blockService, StudentTaskService studentTasksService, RequestService requestService) {
         this.taskRepo = taskRepo;
+        this.previousTaskRepo = previousTaskRepo;
         this.chapterService = chapterService;
         this.blockService = blockService;
         this.studentTasksService = studentTasksService;
@@ -51,13 +53,15 @@ public class TaskService {
                 .toList();
     }
 
-    public List<Task> getTasksOfBlock(Block block){
-        return taskRepo.getTaskByBlock(block);
+    public List<Task> getSortedTasksOfBlock(Block block){
+        return taskRepo.getTaskByBlock(block).stream()
+                .sorted(Comparator.comparing(Task::getSerialNumber))
+                .toList();
     }
 
     public List<Task> getTasks(int serialNumberOfChapter, int serialNumberOfBlock){
         Block block = blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock);
-        return getTasksOfBlock(block);
+        return getSortedTasksOfBlock(block);
     }
 
     public List<TaskOfBlock> getPracticeForAuthUser(int serialNumberOfChapter, int serialNumberOfBlock, User user){
@@ -274,7 +278,54 @@ public class TaskService {
         return taskRepo.findTaskByBlockAndName(newTask.getBlock(), newTask.getName()) != null;
     }
 
-    public Task createNewTask(Task newTask) {
-        return taskRepo.save(newTask);
+    public Task createNewTask(NewTask newTask) {
+        Task savedTask = taskRepo.save(newTask.getTask());
+        for(Long taskId: newTask.getSelectedPreviousTaskIds()){
+            Task task = findById(taskId);
+            PreviousTask previousTask = new PreviousTask();
+            previousTask.setTask(savedTask);
+            previousTask.setPreviousTask(task);
+            previousTaskRepo.save(previousTask);
+        }
+        return savedTask;
+    }
+
+    public SimpleCollection getSimpleTaskCollection() {
+        SimpleCollection simpleCollection = new SimpleCollection();
+        List<SimpleChapter> simpleChapterList = new ArrayList<>();
+        simpleCollection.setSimpleChapterList(simpleChapterList);
+
+        List<Chapter> chapters = chapterService.getChaptersSortBySerialNumber();
+        for (Chapter chapter: chapters) {
+            SimpleChapter simpleChapter = new SimpleChapter();
+            simpleChapterList.add(simpleChapter);
+            List<SimpleBlock> simpleBlockList = new ArrayList<>();
+            simpleChapter.setSerialNumber(chapter.getSerialNumber());
+            simpleChapter.setFullname("Глава " + chapter.getSerialNumber() + ". " + chapter.getName());
+            simpleChapter.setSimpleBlockList(simpleBlockList);
+
+            List<Block> blocks = blockService.getSortedBlocksOfChapterWithoutTheory(chapter.getSerialNumber());
+            for(Block block: blocks){
+                SimpleBlock simpleBlock = new SimpleBlock();
+                simpleBlockList.add(simpleBlock);
+
+                simpleBlock.setSerialNumber(block.getSerialNumber());
+                simpleBlock.setFullname("Блок " + chapter.getSerialNumber() + ". " + block.getSerialNumber() + ". " + block.getName());
+
+                List<SimpleTask> simpleTaskList = new ArrayList<>();
+                simpleBlock.setSimpleTaskList(simpleTaskList);
+
+                List<Task> tasks = getSortedTasksOfBlock(block);
+                for(Task task: tasks){
+                    SimpleTask simpleTask = new SimpleTask(
+                            task.getId(),
+                            task.getSerialNumber(),
+                            "Задача " + chapter.getSerialNumber() + ". " + block.getSerialNumber() + ". " + task.getSerialNumber() + ". " + task.getName()
+                    );
+                    simpleTaskList.add(simpleTask);
+                }
+            }
+        }
+        return simpleCollection;
     }
 }

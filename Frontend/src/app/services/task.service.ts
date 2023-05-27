@@ -7,7 +7,7 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
-import {IBlock} from "../interfaces/IBlock";
+import {ISimpleCollection} from "../dto_interfaces/ISimpleCollection";
 
 @Injectable({
   providedIn: 'root'
@@ -118,7 +118,15 @@ export class TaskService {
     return this.httpclient.post<boolean>(environment.apiUrl + `/check/task`, newTask);
   }
 
-  createNewTask(newTask: ITask): Observable<ITask> {
+  createNewTask(task: ITask, selectedPreviousTaskIds: number[]): Observable<ITask> {
+    let newTask = {
+      task : task,
+      selectedPreviousTaskIds : selectedPreviousTaskIds
+    }
     return this.httpclient.post<ITask>(environment.apiUrl + '/create/task', newTask);
+  }
+
+  getSimpleTaskCollection(): Observable<ISimpleCollection> {
+    return this.httpclient.get<ISimpleCollection>(environment.apiUrl + `/simpleTaskCollection`);
   }
 }

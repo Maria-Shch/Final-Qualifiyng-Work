@@ -61,8 +61,11 @@ import {NewBlockComponent} from './components/admin/new-block/new-block.componen
 import {EditBlockComponent} from './components/admin/edit-block/edit-block.component';
 import {ChaptersNumberingComponent} from './components/admin/chapters-numbering/chapters-numbering.component';
 import {BlocksNumberingComponent} from './components/admin/blocks-numbering/blocks-numbering.component';
-import { NewTaskComponent } from './components/admin/new-task/new-task.component';
-import { EditTaskComponent } from './components/admin/edit-task/edit-task.component';
+import {NewTaskComponent} from './components/admin/new-task/new-task.component';
+import {EditTaskComponent} from './components/admin/edit-task/edit-task.component';
+import {
+  CheckboxGroupPreviousTasksComponent
+} from './components/utils/checkbox-group-previous-tasks/checkbox-group-previous-tasks.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +113,8 @@ import { EditTaskComponent } from './components/admin/edit-task/edit-task.compon
     ChaptersNumberingComponent,
     BlocksNumberingComponent,
     NewTaskComponent,
-    EditTaskComponent
+    EditTaskComponent,
+    CheckboxGroupPreviousTasksComponent
   ],
   imports: [
     BrowserModule,
