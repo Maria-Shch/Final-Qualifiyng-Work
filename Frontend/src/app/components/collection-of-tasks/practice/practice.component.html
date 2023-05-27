@@ -4,12 +4,13 @@
     <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
       <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
       <h2 style="color: var(--c6); margin:0">Блок {{serialNumberOfChapter}}. {{serialNumberOfBlock}}</h2>
+      <button *ngIf="user?.role == 'ADMIN'" type="button" class="d-violet-button b-add-box" (click)="createNewTask(block!.id)"></button>
     </div>
     <app-block-switcher [section]="'practice'" ></app-block-switcher>
   </div>
 
   <div style="display: flex; justify-content: space-between; align-items: end;  margin: 5px 0 20px 0">
-    <h3 style="color: var(--c6); margin: 0">{{blockName}}</h3>
+    <h3 style="color: var(--c6); margin: 0">{{block?.name}}</h3>
     <div style="display: flex; justify-content: space-between; width: 420px; margin-right: 30px;">
       <div class="d-white-button to-section">
         <a routerLink="/chapter/{{serialNumberOfChapter}}/block/{{serialNumberOfBlock}}/theory" class="a-img icon-open-book"></a>
@@ -35,9 +36,16 @@
          'bc-clr-on-testing' : task.status?.name === 'На тестировании'
          }"
          (click)="toTask(serialNumberOfChapter, serialNumberOfBlock, task.serialNumber)">
-      <a  routerLink="/chapter/{{serialNumberOfChapter}}/block{{serialNumberOfBlock}}/task/{{task.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+      <a *ngIf="user?.role != 'ADMIN'" routerLink="/chapter/{{serialNumberOfChapter}}/block{{serialNumberOfBlock}}/task/{{task.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
         Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
       </a>
+      <div *ngIf="user?.role == 'ADMIN'" style="display: flex; width: 100%; justify-content: space-between; flex-direction: row; align-items: center">
+        <a routerLink="/chapter/{{serialNumberOfChapter}}/block{{serialNumberOfBlock}}/task/{{task.serialNumber}}" class="h3 a-none" style="margin: 15px 0 10px 10px; ">
+          Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task.serialNumber}}
+        </a>
+        <button class="b-violet-cycle b-edit-chapter" style="width: 33px; height: 33px" (click)="editTask(task.id)"></button>
+      </div>
+
       <h4 style="color: var(--c2); margin: 13px 0 0 10px;">{{task.name}}</h4>
       <p class="p4" style="color: var(--c6); margin: 13px 0 0 10px;">{{task.status?.name}}</p>
     </div>

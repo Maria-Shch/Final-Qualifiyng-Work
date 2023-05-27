@@ -185,6 +185,11 @@ ALTER TABLE check_tests
 
 ALTER TABLE check_tests ADD getting_result_time timestamp;
 ALTER TABLE check_tests ADD has_been_analyzed boolean;
+
+ALTER TABLE student_tasks
+    ADD CONSTRAINT unique_student_task
+        UNIQUE(user_id, task_id);
+
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');

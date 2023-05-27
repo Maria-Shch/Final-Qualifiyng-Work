@@ -14,4 +14,5 @@ public interface TaskRepo extends CrudRepository<Task, Long> {
     int countByBlock(Block block);
     Task getTasksByBlockAndSerialNumber(Block block, int serialNumber);
     int count(Specification specification);
+    Task findTaskByBlockAndName(Block block, String name);
 }

@@ -113,4 +113,23 @@ public class TaskController {
     public boolean setManualCheckValue(@PathVariable Long taskId, @PathVariable boolean manualCheckValue) {
         return taskService.setManualCheckValue(taskId, manualCheckValue);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count")
+    public long getCountOfBlocks(@PathVariable int serialNumberOfChapter,
+                                 @PathVariable int serialNumberOfBlock){
+        return taskService.getCountOfTasks(serialNumberOfChapter, serialNumberOfBlock);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/check/task")
+    public boolean checkIsPresentNameOfTask(@RequestBody Task newTask) {
+        return taskService.checkIsPresentNameOfTask(newTask);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/create/task")
+    public Task createNewTask(@RequestBody Task newTask) {
+        return taskService.createNewTask(newTask);
+    }
 }

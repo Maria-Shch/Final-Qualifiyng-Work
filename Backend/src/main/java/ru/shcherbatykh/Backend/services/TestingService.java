@@ -90,9 +90,6 @@ public class TestingService {
                                                       int serialNumberOfTask, User user, List<String> codes){
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if(stTask == null){
-            stTask = studentTasksService.addNew(user, task);
-        }
 
         if (!taskService.saveCodeToFiles(stTask, codes, true)){
             return new SendingOnTestingResponse(false, stTask.getCurrStatus(), AppError.APP_ERR_001);
@@ -117,7 +114,6 @@ public class TestingService {
                                                             int serialNumberOfTask, User student) {
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(student, task);
-        if (stTask == null) return null;
         CheckTest checkTest = checkTestRepo.findFirstByStudentTaskAndTeacherIsNull(stTask);
         if (checkTest == null || checkTest.getCodeCheckResponseResultJson() == null) return null;
 
@@ -182,7 +178,7 @@ public class TestingService {
             checkTest.setGettingResultTime(LocalDateTime.now());
             checkTestRepo.save(checkTest);
        } catch (JsonProcessingException e) {
-            log.error("Exception during saving CodeCheckResponse to data base", e.getMessage());
+            log.error("Exception during saving CodeCheckResponse to database", e.getMessage());
         }
     }
 }

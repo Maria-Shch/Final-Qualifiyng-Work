@@ -20,7 +20,7 @@
                   <mat-expansion-panel-header>
                     <mat-panel-title style="display: flex; flex-direction: column; align-items: start">
                       <div style="display: flex; flex-direction: row; align-items: end; margin: 0">
-                        <h4 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибка компиляции</h4>
+                        <h4 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Не удалось скомпилировать код из-за следующих ошибок:</h4>
                         <h4 *ngIf="codeTestResult.type == 'RUN'" style="margin: 10px 0 10px 0; color: var(--c2)">Некорректные результаты при запуске программы</h4>
                         <h4 *ngIf="codeTestResult.type == 'AST'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при проверке синтаксической структуры кода</h4>
                         <h4 *ngIf="codeTestResult.type == 'REFLEXIVITY'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при рефлексивном анализе кода</h4>
@@ -108,7 +108,7 @@
                 <mat-expansion-panel-header>
                   <mat-panel-title style="display: flex; flex-direction: column; align-items: start">
                     <div style="display: flex; flex-direction: row; align-items: end; margin: 0">
-                      <h4 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибка компиляции</h4>
+                      <h4 *ngIf="codeTestResult.type == 'COMPILE'" style="margin: 10px 0 10px 0; color: var(--c2)">Не удалось скомпилировать код из-за следующих ошибок:</h4>
                       <h4 *ngIf="codeTestResult.type == 'RUN'" style="margin: 10px 0 10px 0; color: var(--c2)">Некорректные результаты при запуске программы</h4>
                       <h4 *ngIf="codeTestResult.type == 'AST'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при проверке синтаксической структуры кода</h4>
                       <h4 *ngIf="codeTestResult.type == 'REFLEXIVITY'" style="margin: 10px 0 10px 0; color: var(--c2)">Ошибки при рефлексивном анализе кода</h4>

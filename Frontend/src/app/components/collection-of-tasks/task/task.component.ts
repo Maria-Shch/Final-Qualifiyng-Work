@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TaskService} from "../../../services/task.service";
 import {ITask} from "../../../interfaces/ITask";
 import tinymce from "tinymce";
-import {Observable} from "rxjs";
+import {forkJoin, Observable} from "rxjs";
 import {UserService} from "../../../services/user.service";
 import {AuthorizationService} from "../../../services/authorization.service";
 import {IStatus} from "../../../interfaces/IStatus";
@@ -86,11 +86,17 @@ export class TaskComponent implements OnInit{
           this.currUser = data;
         });
 
+        this.testingService.getTestingResultForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe((data: ICodeCheckResponseResult) => {
+            this.lastTestingResultForStudent = data;
+            console.log(this.lastTestingResultForStudent);
+          },
+          (error)=>{ toErrorPage(error, this.router);});
+
         this.taskService.getStatusOfTask(this.serialNumberOfChapter,this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
-        (data: IStatus) => {
-          this.status = data;
-        },
-        (error)=>{ toErrorPage(error, this.router);});
+          (data: IStatus) => {
+            this.status = data;
+          },
+          (error)=>{ toErrorPage(error, this.router);});
 
         this.testingService.isTestingAllowed(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
         (data: IResponseAboutTestingAllowed) => {
@@ -108,12 +114,6 @@ export class TaskComponent implements OnInit{
           }
         },
         (error)=>{ toErrorPage(error, this.router);});
-
-        this.testingService.getTestingResultForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe((data: ICodeCheckResponseResult) => {
-          this.lastTestingResultForStudent = data;
-          console.log(this.lastTestingResultForStudent);
-        },
-          (error)=>{ toErrorPage(error, this.router);})
       }
     });
   }

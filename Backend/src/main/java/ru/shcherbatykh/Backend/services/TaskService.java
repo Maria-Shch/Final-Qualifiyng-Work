@@ -269,4 +269,12 @@ public class TaskService {
         taskRepo.save(task);
         return true;
     }
+
+    public boolean checkIsPresentNameOfTask(Task newTask) {
+        return taskRepo.findTaskByBlockAndName(newTask.getBlock(), newTask.getName()) != null;
+    }
+
+    public Task createNewTask(Task newTask) {
+        return taskRepo.save(newTask);
+    }
 }

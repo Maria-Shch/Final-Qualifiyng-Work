@@ -7,6 +7,7 @@ import {ITaskOfBlock} from "../dto_interfaces/ITaskOfBlock";
 import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
+import {IBlock} from "../interfaces/IBlock";
 
 @Injectable({
   providedIn: 'root'
@@ -106,5 +107,18 @@ export class TaskService {
   setManualCheckValue(taskId: number, manualCheckValue: boolean): Observable<any>{
     return this.httpclient.put<any>(environment.apiUrl +
       `/task/${taskId}/manualCheck/${manualCheckValue}`, null);
+  }
+
+  getCountOfTasks(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<number> {
+    return this.httpclient.get<number>(environment.apiUrl +
+      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/tasks/count`);
+  }
+
+  checkIsPresentNameOfTask(newTask: ITask): Observable<boolean> {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/check/task`, newTask);
+  }
+
+  createNewTask(newTask: ITask): Observable<ITask> {
+    return this.httpclient.post<ITask>(environment.apiUrl + '/create/task', newTask);
   }
 }

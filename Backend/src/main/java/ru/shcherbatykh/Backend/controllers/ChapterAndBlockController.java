@@ -42,7 +42,7 @@ public class ChapterAndBlockController {
         return ResponseEntity.ok(blockService.getBlock(serialNumberOfChapter, serialNumberOfBlock).getName());
     }
 
-    @GetMapping("/chapters/{serialNumberOfChapter}/blocks/count")
+    @GetMapping("/chapter/{serialNumberOfChapter}/blocks/count")
     public long getCountOfBlocks(@PathVariable int serialNumberOfChapter){
         return blockService.getCountOfBlocks(serialNumberOfChapter);
     }

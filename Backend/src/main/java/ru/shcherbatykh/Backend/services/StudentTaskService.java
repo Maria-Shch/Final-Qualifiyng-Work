@@ -1,8 +1,12 @@
 package ru.shcherbatykh.Backend.services;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.Backend.dto.BlockAndStatInfo;
 import ru.shcherbatykh.Backend.dto.ChapterAndStatInfo;
 import ru.shcherbatykh.Backend.dto.StudentProgress;
@@ -13,10 +17,12 @@ import ru.shcherbatykh.Backend.repositories.TaskRepo;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class StudentTaskService {
     private final TaskRepo taskRepo;
@@ -37,7 +43,9 @@ public class StudentTaskService {
         this.blockService = blockService;
     }
 
+    @Transactional
     public StudentTask getStudentTask(User user, Task task){
+        studentTaskRepo.lockTable();
         StudentTask stTask = studentTaskRepo.findStudentTaskByUserAndTask(user, task).orElse(null);
         if (stTask == null){
             stTask = addNew(user, task);
@@ -50,7 +58,17 @@ public class StudentTaskService {
     }
 
     public StudentTask addNew(User user, Task task){
-        return studentTaskRepo.save(new StudentTask(user, task, statusService.getStatusByName("Не решена")));
+        try {
+            return studentTaskRepo.save(new StudentTask(user, task, statusService.getStatusByName("Не решена")));
+        } catch (DataIntegrityViolationException e){
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            if (rootCause instanceof SQLException sqlException && "23505".equals(sqlException.getSQLState())){
+                log.error("Error during save StudentTask", e);
+                return getStudentTask(user, task);
+            } else {
+                throw e;
+            }
+        }
     }
 
     public Status getStatusByUserAndTask(User user, Task task){

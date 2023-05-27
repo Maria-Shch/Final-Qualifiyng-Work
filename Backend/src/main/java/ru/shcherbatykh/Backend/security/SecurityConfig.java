@@ -55,7 +55,7 @@ public class SecurityConfig {
                                         "/chapters/count",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/name",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/practice",
-                                        "/chapters/{serialNumberOfChapter}/blocks/count",
+                                        "/chapter/{serialNumberOfChapter}/blocks/count",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks/count",
                                         "/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/task/{serialNumberOfTask}",

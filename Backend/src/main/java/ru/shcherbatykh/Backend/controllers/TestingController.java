@@ -57,7 +57,6 @@ public class TestingController {
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")
     @GetMapping("/auth/{studentTaskId}/getTestingResultT")
     public CodeCheckResponseResult getTestingResultForTeacher(@PathVariable long studentTaskId){
-        CodeCheckResponseResult testingResultForTeacher = testingService.getTestingResultForTeacher(studentTaskId, authService.getUser().orElse(null));
-        return testingResultForTeacher;
+        return testingService.getTestingResultForTeacher(studentTaskId, authService.getUser().orElse(null));
     }
 }

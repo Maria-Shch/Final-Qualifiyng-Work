@@ -4,6 +4,10 @@ import {TaskService} from "../../../services/task.service";
 import {ITaskOfBlock} from "../../../dto_interfaces/ITaskOfBlock";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {BlockService} from "../../../services/block.service";
+import {IUser} from "../../../interfaces/IUser";
+import {AuthorizationService} from "../../../services/authorization.service";
+import {UserService} from "../../../services/user.service";
+import {IBlock} from "../../../interfaces/IBlock";
 
 @Component({
   selector: 'app-practice',
@@ -14,14 +18,17 @@ export class PracticeComponent implements OnInit{
   serialNumberOfChapter: string = "";
   serialNumberOfBlock: string = "";
   tasksOfBlock: ITaskOfBlock[] = [];
-  blockName: string = "";
   isBlockLast: boolean = false;
+  user: IUser | null = null;
+  block: IBlock | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private taskService: TaskService,
     private blockService: BlockService,
-    private router: Router
+    private router: Router,
+    private authService: AuthorizationService,
+    public userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -31,9 +38,9 @@ export class PracticeComponent implements OnInit{
       // @ts-ignore
       this.serialNumberOfBlock = this.route.snapshot.paramMap.get("serialNumberOfBlock");
 
-      this.blockService.getNameOfBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
-      (data : string) => {
-        this.blockName = data;
+      this.blockService.getBlock(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
+      (data : IBlock) => {
+        this.block = data;
       });
 
       this.taskService.getPractice(this.serialNumberOfChapter, this.serialNumberOfBlock).subscribe(
@@ -47,10 +54,24 @@ export class PracticeComponent implements OnInit{
           else this.isBlockLast = false;
         },
       (error)=>{ toErrorPage(error, this.router);});
+
+      if (this.authService.isLoggedIn()) {
+        this.userService.getUser().subscribe((data: IUser) => {
+          this.user = data;
+        });
+      };
     });
   }
 
   toTask(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: number) {
     this.router.navigate(['/chapter', serialNumberOfChapter, 'block', serialNumberOfBlock, 'task', serialNumberOfTask]);
+  }
+
+  editTask(taskId: number) {
+    this.router.navigate(['/task/edit/', taskId]);
+  }
+
+  createNewTask(blockId: number) {
+    this.router.navigate(['/newTask/', blockId]);
   }
 }

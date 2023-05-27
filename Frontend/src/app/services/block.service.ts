@@ -29,7 +29,7 @@ export class BlockService {
 
   getCountOfBlocks(serialNumberOfChapter: string): Observable<number> {
     return this.httpclient.get<number>(environment.apiUrl +
-      `/chapters/${serialNumberOfChapter}/blocks/count`, {
+      `/chapter/${serialNumberOfChapter}/blocks/count`, {
       headers: new HttpHeaders({ 'No-Auth': 'True' })
     });
   }

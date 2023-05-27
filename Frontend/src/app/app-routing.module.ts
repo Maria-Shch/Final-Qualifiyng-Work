@@ -30,6 +30,8 @@ import {NewBlockComponent} from "./components/admin/new-block/new-block.componen
 import {EditBlockComponent} from "./components/admin/edit-block/edit-block.component";
 import {ChaptersNumberingComponent} from "./components/admin/chapters-numbering/chapters-numbering.component";
 import {BlocksNumberingComponent} from "./components/admin/blocks-numbering/blocks-numbering.component";
+import {NewTaskComponent} from "./components/admin/new-task/new-task.component";
+import {EditTaskComponent} from "./components/admin/edit-task/edit-task.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -61,7 +63,9 @@ const routes: Routes = [
   { path: 'newBlock/:chapterId', component: NewBlockComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'block/edit/:blockId', component: EditBlockComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'chapters/numbering', component: ChaptersNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'chapter/:chapterId/blocks/numbering', component: BlocksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
+  { path: 'chapter/:chapterId/blocks/numbering', component: BlocksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'newTask/:blockId', component: NewTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'task/edit/:taskId', component: EditTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
 ];
 
 @NgModule({
