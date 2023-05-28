@@ -43,6 +43,9 @@ public class TestingService {
 
     public ResponseAboutTestingAllowed getResponseAboutTestingAllowed(int serialNumberOfChapter, int serialNumberOfBlock,
                                                                       int serialNumberOfTask, User user) {
+        if (user.getRole() != Role.USER){
+            return new ResponseAboutTestingAllowed(true);
+        }
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         Task prevTask = taskService.getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         if (prevTask != null){
