@@ -66,6 +66,7 @@ import {EditTaskComponent} from './components/admin/edit-task/edit-task.componen
 import {
   CheckboxGroupPreviousTasksComponent
 } from './components/utils/checkbox-group-previous-tasks/checkbox-group-previous-tasks.component';
+import { TasksNumberingComponent } from './components/admin/tasks-numbering/tasks-numbering.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import {
     BlocksNumberingComponent,
     NewTaskComponent,
     EditTaskComponent,
-    CheckboxGroupPreviousTasksComponent
+    CheckboxGroupPreviousTasksComponent,
+    TasksNumberingComponent
   ],
   imports: [
     BrowserModule,

@@ -136,4 +136,28 @@ public class TaskController {
     public SimpleCollection getSimpleTaskCollection() {
         return taskService.getSimpleTaskCollection();
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/task/{taskId}")
+    public Task getTaskById(@PathVariable long taskId){
+        return taskService.getTaskById(taskId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/task")
+    public Task updateTask(@RequestBody Task updatedTask) {
+        return taskService.updateTask(updatedTask);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/chapter/{serialNumberOfChapter}/block/{serialNumberOfBlock}/tasks")
+    public List<Task> getTasks(@PathVariable int serialNumberOfChapter, @PathVariable int serialNumberOfBlock) {
+        return taskService.getTasks(serialNumberOfChapter, serialNumberOfBlock);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/update/tasks/numbering")
+    public boolean updateTasksNumbering(@RequestBody RequestUpdateNumbering request) {
+        return taskService.updateTasksNumbering(request);
+    }
 }

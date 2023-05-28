@@ -16,10 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -327,5 +324,49 @@ public class TaskService {
             }
         }
         return simpleCollection;
+    }
+
+    public Task getTaskById(long taskId) {
+        return taskRepo.findById(taskId).get();
+    }
+
+    public Task updateTask(Task updatedTask) {
+        Task task = taskRepo.findById(updatedTask.getId()).get();
+        task.setName(updatedTask.getName());
+        if (!Objects.equals(task.getBlock().getId(), updatedTask.getBlock().getId())){
+            Block oldBlock = task.getBlock();
+            int oldSerialNumber = task.getSerialNumber();
+            int newSerialNumber = getCountOfTasks(updatedTask.getBlock().getChapter().getSerialNumber(),
+                    updatedTask.getBlock().getSerialNumber())+1;
+            task.setSerialNumber(newSerialNumber);
+            task.setBlock(updatedTask.getBlock());
+            task = taskRepo.save(task);
+
+            if (oldSerialNumber - getCountOfTasks(oldBlock.getChapter().getSerialNumber(),
+                    oldBlock.getSerialNumber()) != 1){
+                if (getCountOfTasks(oldBlock.getChapter().getSerialNumber(),
+                        oldBlock.getSerialNumber()) != 0){
+                    for (int i = oldSerialNumber + 1; i <= getCountOfTasks(oldBlock.getChapter().getSerialNumber(),
+                            oldBlock.getSerialNumber())+1; i++) {
+                        Task t = getTask(oldBlock.getChapter().getSerialNumber(), oldBlock.getSerialNumber(), i);
+                        int currSerialNumber = t.getSerialNumber();
+                        t.setSerialNumber(currSerialNumber - 1);
+                        taskRepo.save(t);
+                    }
+                }
+            }
+        } else {
+            task = taskRepo.save(task);
+        }
+        return task;
+    }
+
+    public boolean updateTasksNumbering(RequestUpdateNumbering request) {
+        for(NumberingPair pair: request.getNumberingPairs()){
+            Task task = taskRepo.findById(pair.getObjId()).get();
+            task.setSerialNumber(pair.getNewSerialNumber());
+            taskRepo.save(task);
+        }
+        return true;
     }
 }

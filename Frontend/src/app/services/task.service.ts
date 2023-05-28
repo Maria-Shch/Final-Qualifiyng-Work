@@ -8,6 +8,8 @@ import {ITask} from "../interfaces/ITask";
 import {IStatus} from "../interfaces/IStatus";
 import {ISendingOnReviewOrConsiderationResponse} from "../dto_interfaces/ISendingOnReviewOrConsiderationResponse";
 import {ISimpleCollection} from "../dto_interfaces/ISimpleCollection";
+import {IBlock} from "../interfaces/IBlock";
+import {IRequestUpdateNumbering} from "../dto_interfaces/IRequestUpdateNumbering";
 
 @Injectable({
   providedIn: 'root'
@@ -128,5 +130,22 @@ export class TaskService {
 
   getSimpleTaskCollection(): Observable<ISimpleCollection> {
     return this.httpclient.get<ISimpleCollection>(environment.apiUrl + `/simpleTaskCollection`);
+  }
+
+  getTaskById(taskId: number): Observable<ITask> {
+    return this.httpclient.get<ITask>(environment.apiUrl + `/task/${taskId}`);
+  }
+
+  updateTask(updatedTask: ITask): Observable<ITask>  {
+    return this.httpclient.post<ITask>(environment.apiUrl + `/update/task`, updatedTask);
+  }
+
+  getTasks(serialNumberOfChapter: string, serialNumberOfBlock: string): Observable<ITask[]> {
+    return this.httpclient.get<ITask[]>(environment.apiUrl +
+      `/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/tasks`);
+  }
+
+  updateTasksNumbering(request: IRequestUpdateNumbering): Observable<boolean> {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/update/tasks/numbering`, request);
   }
 }

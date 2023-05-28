@@ -67,7 +67,6 @@ export class NewTaskComponent {
     });
   }
 
-
   onSubmitCreatingTaskForm() {
     this.creatingTaskFormHasBeenSubmitted = true;
     if (FormUtils.getControlErrors(this.creatingTaskForm) == null){

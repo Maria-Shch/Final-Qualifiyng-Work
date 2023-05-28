@@ -32,6 +32,7 @@ import {ChaptersNumberingComponent} from "./components/admin/chapters-numbering/
 import {BlocksNumberingComponent} from "./components/admin/blocks-numbering/blocks-numbering.component";
 import {NewTaskComponent} from "./components/admin/new-task/new-task.component";
 import {EditTaskComponent} from "./components/admin/edit-task/edit-task.component";
+import {TasksNumberingComponent} from "./components/admin/tasks-numbering/tasks-numbering.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -65,7 +66,8 @@ const routes: Routes = [
   { path: 'chapters/numbering', component: ChaptersNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'chapter/:chapterId/blocks/numbering', component: BlocksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'newTask/:blockId', component: NewTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'task/edit/:taskId', component: EditTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
+  { path: 'task/edit/:taskId', component: EditTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapter/:chapterId/block/:blockId/tasks/numbering', component: TasksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
 ];
 
 @NgModule({

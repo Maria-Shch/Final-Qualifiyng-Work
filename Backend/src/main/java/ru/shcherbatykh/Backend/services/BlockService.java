@@ -7,6 +7,7 @@ import ru.shcherbatykh.Backend.models.Block;
 import ru.shcherbatykh.Backend.models.Chapter;
 import ru.shcherbatykh.Backend.repositories.BlockRepo;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -115,6 +116,8 @@ public class BlockService {
                     }
                 }
             }
+        } else {
+            block = blockRepo.save(block);
         }
         return block;
     }
@@ -126,5 +129,14 @@ public class BlockService {
             blockRepo.save(block);
         }
         return true;
+    }
+
+    public List<Block> getAllBlocks() {
+        List<Block> blocks = new ArrayList<>();
+        List<Chapter> chaptersSortBySerialNumber = chapterService.getChaptersSortBySerialNumber();
+        for (Chapter chapter: chaptersSortBySerialNumber){
+            blocks.addAll(getSortedBlocksOfChapterWithoutTheory(chapter.getSerialNumber()));
+        }
+        return blocks;
     }
 }

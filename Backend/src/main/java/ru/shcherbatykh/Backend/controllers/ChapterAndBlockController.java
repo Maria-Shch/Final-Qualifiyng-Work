@@ -128,4 +128,9 @@ public class ChapterAndBlockController {
     public boolean updateBlocksNumbering(@RequestBody RequestUpdateNumbering request) {
         return blockService.updateBlocksNumbering(request);
     }
+
+    @GetMapping("/block/all")
+    public List<Block> getAllBlocks(){
+        return blockService.getAllBlocks();
+    }
 }

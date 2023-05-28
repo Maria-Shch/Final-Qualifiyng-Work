@@ -1,1 +1,43 @@
-<p>edit-task works!</p>
+<app-header></app-header>
+<div class="div-main-body">
+  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+    <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+    <h2 style="var(--c6);">Блок {{task?.block?.chapter?.serialNumber}}. {{task?.block?.serialNumber}}. {{task?.block?.name}}</h2>
+  </div>
+  <p class="p3" style="margin: 0;">Вы редактируете: <b>Задача {{task?.block?.chapter?.serialNumber}}. {{task?.block?.serialNumber}}. {{task?.serialNumber}}. {{task?.name}}</b></p>
+
+  <div style="display: flex; flex-direction: row; margin: 20px 0 7px 0">
+    <p class="p5" style="color: var(--c2); margin: 0">Изменить нумерацию задач Вы можете&nbsp;</p>
+    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapter/{{task?.block?.chapter?.serialNumber}}/block/{{task?.block?.serialNumber}}/tasks/numbering">здесь</a>
+  </div>
+  <p class="p5" style="color: var(--c2); margin: 0 0 7px 0">Добавить или отредактировать условия вы можете на странице задачи.</p>
+  <p class="p5" style="color: var(--c2); margin: 0 0 20px 0">Если вы измените блок, то задача автоматически станет последней в новом блоке. Задачи в текущем блоке будут заново пронумерованы.</p>
+
+  <h5 *ngIf="(name.errors?.['required'] ||
+            serialNumber.errors?.['required']) &&
+            editingTaskFormHasBeenSubmitted" class="error">
+    Заполните все поля</h5>
+  <h5 *ngIf="repeatedNameOfTask && editingTaskFormHasBeenSubmitted" class="error">
+    В блоке уже есть задача с таким названием</h5>
+
+  <form [formGroup]="editingTaskForm" (ngSubmit)="onSubmitEditingTaskForm()">
+    <div class="d-row-form">
+      <p class="p4 form-param">Блок</p>
+      <select formControlName="block" id="block" class="input-params p4 select">
+        <option [ngValue]="block" *ngFor="let block of blocks">
+          Блок {{block?.chapter?.serialNumber}}. {{block?.serialNumber}}. {{block.name}}
+        </option>
+      </select>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Номер задачи</p>
+      <input formControlName="serialNumber" id="serialNumber" type="number" class="input-params p4 input-readonly" readonly>
+    </div>
+    <div class="d-row-form">
+      <p class="p4 form-param">Название</p>
+      <input formControlName="name" id="name" type="text" class="input-params p4">
+    </div>
+    <input type="submit" value="Сохранить изменения" class="i-submit h5" style="margin: 30px 0 40px 0; width: 250px">
+  </form>
+</div>
+<app-footer></app-footer>

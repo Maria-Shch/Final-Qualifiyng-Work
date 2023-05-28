@@ -62,9 +62,8 @@ export class EditBlockComponent {
           this.repeatedNameOfBlock = false;
         }
         if (!this.repeatedNameOfBlock){
-          console.log(updatedBlock);
-          this.blockService.updateBlock(updatedBlock).subscribe((data: IChapter) =>{
-            this.router.navigate(['/chapter', this.block?.chapter.serialNumber]);
+          this.blockService.updateBlock(updatedBlock).subscribe((data: IBlock) =>{
+            this.router.navigate(['/chapter', data?.chapter.serialNumber]);
           });
         }
       });

@@ -79,4 +79,8 @@ export class BlockService {
   updateBlocksNumbering(request: IRequestUpdateNumbering): Observable<boolean>  {
     return this.httpclient.post<boolean>(environment.apiUrl + `/update/blocks/numbering`, request);
   }
+
+  getAllBlocks(): Observable<IBlock[]> {
+    return this.httpclient.get<IBlock[]>(environment.apiUrl + `/block/all`);
+  }
 }

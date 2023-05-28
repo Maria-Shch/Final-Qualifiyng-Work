@@ -18,7 +18,7 @@
             editingBlockFormHasBeenSubmitted" class="error">
     Заполните все поля</h5>
   <h5 *ngIf="repeatedNameOfBlock && editingBlockFormHasBeenSubmitted" class="error">
-    В сборнике уже есть глава с таким названием</h5>
+    В сборнике уже есть блок с таким названием</h5>
 
   <form [formGroup]="editingBlockForm" (ngSubmit)="onSubmitEditingBlockForm()">
     <div class="d-row-form">
