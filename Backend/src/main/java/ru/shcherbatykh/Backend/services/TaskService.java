@@ -204,9 +204,7 @@ public class TaskService {
         }
         path.append('/')
                 .append(stTask.getUser().getId()).append('/')
-                .append(stTask.getTask().getBlock().getChapter().getSerialNumber()).append('/')
-                .append(stTask.getTask().getBlock().getSerialNumber()).append('/')
-                .append(stTask.getTask().getSerialNumber());
+                .append(stTask.getTask().getId());
         return path.toString();
     }
 
