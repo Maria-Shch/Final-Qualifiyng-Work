@@ -44,6 +44,9 @@ export class NewGroupComponent implements OnInit{
   newYearName: string = '';
   isRepeatedYear: boolean = false;
   isRepeatedFaculty: boolean = false;
+  popupInfo: string = '';
+  showPopup: boolean = false;
+
   creatingGroupForm: FormGroup = new FormGroup({
     levelOfEdu: new FormControl<ILevelOfEdu | null>(null),
     profile: new FormControl<IProfile | null>(null),
@@ -163,9 +166,9 @@ export class NewGroupComponent implements OnInit{
   onSubmitCreatingGroupForm() {
     let newGroup = this.creatingGroupForm.value as IGroup;
     this.groupService.createNewGroup(newGroup, this.selectedStudentIds).subscribe((data: IGroup) =>{
-      this.router.navigate(['/allStudentsGroups']);
-      alert("Вы создали новую группу: " + data.name + ' (' + data.year?.name + ')\n' +
-        "Преподаватель: " + data.teacher?.lastname + ' ' + data.teacher?.name.charAt(0) + '. ' + data.teacher?.patronymic.charAt(0) + '.' );
+      this.popupInfo = "Вы создали новую группу: " + data.name + ' (' + data.year?.name + ')\n' +
+        "Преподаватель: " + data.teacher?.lastname + ' ' + data.teacher?.name.charAt(0) + '. ' + data.teacher?.patronymic.charAt(0) + '.' ;
+      this.showPopup = true;
     });
   }
 
@@ -225,5 +228,10 @@ export class NewGroupComponent implements OnInit{
     if (this.newYearForm.value.name.length == 4) {
       this.newYearName = this.newYearForm.value.name + '/';
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
+    this.router.navigate(['/allStudentsGroups']);
   }
 }

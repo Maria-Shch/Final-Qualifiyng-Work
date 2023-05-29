@@ -26,6 +26,8 @@ export class AccountComponent implements OnInit{
   showModal: boolean = false;
   historyInModal: IEventHistory | undefined | null = null;
   isPresentOtherHistories: boolean = false;
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   personalDataForm: FormGroup = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
@@ -89,7 +91,8 @@ export class AccountComponent implements OnInit{
             this.userService.updateEditableUserdata(updatedUser).subscribe(
             (data: IUser) => {
               this.user = data;
-              alert("Ваши персональные данные обновлены");
+              this.popupInfo = 'Ваши персональные данные обновлены.';
+              this.showPopup = true;
               this.ngOnInit();
             },
             (error) => {
@@ -135,5 +138,9 @@ export class AccountComponent implements OnInit{
       }
       this.currentPageOfHistory+=1;
     });
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

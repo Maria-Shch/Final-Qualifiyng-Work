@@ -17,6 +17,8 @@ export class BlocksNumberingComponent {
   serialNumbers: number[] = [];
   errorRepeatedSerialNumbers: boolean = false;
   repeatedValue: string | null = null;
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   constructor(
     private blockService: BlockService,
@@ -83,11 +85,16 @@ export class BlocksNumberingComponent {
       if (request.numberingPairs.length != 0){
         this.blockService.updateBlocksNumbering(request).subscribe(
           (data: boolean) => {
-            alert("Нумерация блоков главы успешно обновлена");
+            this.popupInfo = "Нумерация блоков главы успешно обновлена.";
+            this.showPopup = true;
             this.ngOnInit();
           },
           (error: any)=>{ toErrorPage(error, this.router);});
       }
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

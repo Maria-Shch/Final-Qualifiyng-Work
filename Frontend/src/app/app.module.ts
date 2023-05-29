@@ -9,6 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {EditorModule, TINYMCE_SCRIPT_SRC} from "@tinymce/tinymce-angular";
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import {LoginComponent} from './components/authorization/login/login.component';
 import {HeaderComponent} from './components/utils/header/header.component';
@@ -67,6 +68,7 @@ import {
   CheckboxGroupPreviousTasksComponent
 } from './components/utils/checkbox-group-previous-tasks/checkbox-group-previous-tasks.component';
 import { TasksNumberingComponent } from './components/admin/tasks-numbering/tasks-numbering.component';
+import { PopupComponent } from './components/utils/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +118,8 @@ import { TasksNumberingComponent } from './components/admin/tasks-numbering/task
     NewTaskComponent,
     EditTaskComponent,
     CheckboxGroupPreviousTasksComponent,
-    TasksNumberingComponent
+    TasksNumberingComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +133,8 @@ import { TasksNumberingComponent } from './components/admin/tasks-numbering/task
     MatRadioModule,
     MatExpansionModule,
     BrowserAnimationsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatDialogModule
   ],
   providers: [
     AuthGuard,

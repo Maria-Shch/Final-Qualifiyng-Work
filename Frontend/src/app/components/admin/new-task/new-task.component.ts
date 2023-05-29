@@ -23,6 +23,9 @@ export class NewTaskComponent {
   repeatedNameOfTask: boolean = false;
   simpleTaskCollection: ISimpleCollection | null = null;
   selectedPreviousTaskIds: number[] = [];
+  popupInfo: string = '';
+  showPopup: boolean = false;
+  newTask : ITask | null = null;
 
   creatingTaskForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -77,8 +80,9 @@ export class NewTaskComponent {
         this.repeatedNameOfTask = data;
         if (!data){
           this.taskService.createNewTask(newTask, this.selectedPreviousTaskIds).subscribe((data: ITask) =>{
-            this.router.navigate(['/chapter', this.block?.chapter?.serialNumber, 'block', this.block?.serialNumber, 'task', data.serialNumber]);
-            alert("Вы создали новую задачу: Задачу " + this.block?.chapter?.serialNumber + '. ' + this.block?.serialNumber + '. ' + data.serialNumber + '. ' + data.name);
+            this.newTask = data;
+            this.popupInfo = "Вы создали новую задачу: Задача " + this.block?.chapter?.serialNumber + '. ' + this.block?.serialNumber + '. ' + data.serialNumber + '. ' + data.name + '.';
+            this.showPopup = true;
           });
         }
       });
@@ -104,5 +108,10 @@ export class NewTaskComponent {
         }
       }
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
+    this.router.navigate(['/chapter', this.block?.chapter?.serialNumber, 'block', this.block?.serialNumber, 'task', this.newTask?.serialNumber]);
   }
 }

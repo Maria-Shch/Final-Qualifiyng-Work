@@ -108,3 +108,6 @@
   </div>
 </div>
 <app-footer></app-footer>
+
+<app-popup *ngIf="showPopup" (onChanged)="onChanged($event)" [info]="popupInfo">
+</app-popup>

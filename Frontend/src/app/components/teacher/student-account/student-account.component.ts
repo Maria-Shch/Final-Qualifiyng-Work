@@ -17,6 +17,9 @@ export class StudentAccountComponent implements OnInit{
   teacher: string = '';
   panelOpenState = false;
   studentProgress: IStudentProgress | null = null;
+  popupInfo: string = '';
+  showPopup: boolean = false;
+
   personalDataForm: FormGroup = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
     lastname: new FormControl<string>('', [Validators.required]),
@@ -60,9 +63,14 @@ export class StudentAccountComponent implements OnInit{
 
   grantTeacherAuthority(user: IUser) {
     this.userService.grantTeacherAuthority(user.id).subscribe((data: boolean) => {
-      alert(user.lastname + ' ' + user.name.charAt(0) + '. ' + user.patronymic.charAt(0) + '. назначен на должность преподавателя.');
-      this.router.navigate([`/teacher/${user.id}`]);
+      this.popupInfo = user.lastname + ' ' + user.name.charAt(0) + '. ' + user.patronymic.charAt(0) + '. назначен(-а) на должность преподавателя.';
+      this.showPopup = true;
     });
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
+    this.router.navigate([`/teacher/${this.user?.id}`]);
   }
 }
 

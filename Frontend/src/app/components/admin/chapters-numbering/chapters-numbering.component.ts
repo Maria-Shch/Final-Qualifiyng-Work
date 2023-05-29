@@ -17,6 +17,8 @@ export class ChaptersNumberingComponent implements OnInit{
   serialNumbers: number[] = [];
   errorRepeatedSerialNumbers: boolean = false;
   repeatedValue: string | null = null;
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   constructor(
     private chapterService: ChapterService,
@@ -78,11 +80,16 @@ export class ChaptersNumberingComponent implements OnInit{
       if (request.numberingPairs.length != 0){
         this.chapterService.updateChaptersNumbering(request).subscribe(
           (data: boolean) => {
-            alert("Нумерация глав сборника успешно обновлена");
+            this.popupInfo = 'Нумерация глав сборника успешно обновлена.';
+            this.showPopup = true;
             this.ngOnInit();
           },
           (error)=>{ toErrorPage(error, this.router);});
       }
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

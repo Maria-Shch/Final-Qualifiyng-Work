@@ -40,6 +40,9 @@ export class EditGroupComponent implements OnInit{
   showModalAddNewYear: boolean = false;
   newYearFormHasBeenSubmitted: boolean = false;
   newYearName: string = '';
+  popupInfo: string = '';
+  showPopup: boolean = false;
+
   editingGroupForm: FormGroup = new FormGroup({
     levelOfEdu: new FormControl<ILevelOfEdu | null>(this.group?.levelOfEdu!),
     profile: new FormControl<IProfile | null>(this.group?.profile!),
@@ -162,8 +165,9 @@ export class EditGroupComponent implements OnInit{
     editedGroup.id = this.group?.id;
     this.groupService.updateGroup(editedGroup).subscribe((data: IGroup) =>{
       this.group = data;
-      alert("Новое название группы: " + data.name + ' (' + data.year?.name + ')\n' +
-        "Преподаватель: " + data.teacher?.lastname + ' ' + data.teacher?.name.charAt(0) + '. ' + data.teacher?.patronymic.charAt(0) + '.' );
+      this.popupInfo = "Новое название группы: " + data.name + ' (' + data.year?.name + ')\n' +
+        "Преподаватель: " + data.teacher?.lastname + ' ' + data.teacher?.name.charAt(0) + '. ' + data.teacher?.patronymic.charAt(0) + '.' ;
+      this.showPopup = true;
     });
   }
 
@@ -214,5 +218,9 @@ export class EditGroupComponent implements OnInit{
     if (this.newYearForm.value.name.length == 4) {
       this.newYearName = this.newYearForm.value.name + '/';
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

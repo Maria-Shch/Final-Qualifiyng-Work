@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import {IBlock} from "../../../interfaces/IBlock";
-import {BlockService} from "../../../services/block.service";
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {IRequestUpdateNumbering} from "../../../dto_interfaces/IRequestUpdateNumbering";
@@ -19,6 +17,8 @@ export class TasksNumberingComponent {
   serialNumbers: number[] = [];
   errorRepeatedSerialNumbers: boolean = false;
   repeatedValue: string | null = null;
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   constructor(
     private taskService: TaskService,
@@ -85,11 +85,16 @@ export class TasksNumberingComponent {
       if (request.numberingPairs.length != 0){
         this.taskService.updateTasksNumbering(request).subscribe(
           (data: boolean) => {
-            alert("Нумерация задач блока успешно обновлена");
+            this.popupInfo = "Нумерация задач блока успешно обновлена.";
+            this.showPopup = true;
             this.ngOnInit();
           },
           (error: any)=>{ toErrorPage(error, this.router);});
       }
     }
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

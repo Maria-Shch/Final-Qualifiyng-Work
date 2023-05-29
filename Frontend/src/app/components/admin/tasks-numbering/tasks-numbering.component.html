@@ -21,3 +21,6 @@
   <button class="i-submit h5" style="margin: 40px 0 40px 0; width: 300px;" (click)="saveNumbering()">Сохранить нумерацию</button>
 </div>
 <app-footer></app-footer>
+
+<app-popup *ngIf="showPopup" (onChanged)="onChanged($event)" [info]="popupInfo">
+</app-popup>

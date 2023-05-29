@@ -41,6 +41,8 @@ export class TaskComponent implements OnInit{
   showModalAboutTesting: boolean = false;
   currUser: IUser | null = null;
   lastTestingResultForStudent: ICodeCheckResponseResult | null = null;
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -186,9 +188,11 @@ export class TaskComponent implements OnInit{
     (data: ISendingOnReviewOrConsiderationResponse) => {
       if(data.sendingSuccessfulCompleted){
         this.status = data.status;
-        alert("Вы отправили решение задачи на проверку.");
+        this.popupInfo = 'Вы отправили решение задачи на проверку.';
+        this.showPopup = true;
       } else {
-        alert("Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку");
+        this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
+        this.showPopup = true;
       }
       this.closeModalOnReview();
       this.ngOnInit();
@@ -211,9 +215,11 @@ export class TaskComponent implements OnInit{
     (data: ISendingOnReviewOrConsiderationResponse) => {
       if(data.sendingSuccessfulCompleted){
         this.status = data.status;
-        alert("Вы отправили решение задачи на рассмотрение.");
+        this.popupInfo = 'Вы отправили решение задачи на рассмотрение.';
+        this.showPopup = true;
       } else {
-        alert("Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку");
+        this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
+        this.showPopup = true;
       }
       this.closeModalOnConsideration();
       this.ngOnInit();
@@ -269,7 +275,8 @@ export class TaskComponent implements OnInit{
   cancelReview(){
     this.taskService.cancelReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
     (data: any) => {
-      alert("Вы отменили запрос на проверку решения.");
+      this.popupInfo = 'Вы отменили запрос на проверку решения.';
+      this.showPopup = true;
       this.ngOnInit();
     },
     (error)=>{ toErrorPage(error, this.router);});
@@ -287,7 +294,8 @@ export class TaskComponent implements OnInit{
   cancelConsideration(){
     this.taskService.cancelConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask).subscribe(
     (data: any) => {
-      alert("Вы отменили запрос на рассмотрение решения.");
+      this.popupInfo = 'Вы отменили запрос на рассмотрение решения.';
+      this.showPopup = true;
       this.ngOnInit();
     },
     (error)=>{ toErrorPage(error, this.router);});
@@ -298,9 +306,11 @@ export class TaskComponent implements OnInit{
     this.taskService.setManualCheckValue(this.task!.id, this.task!.manualCheckRequired).subscribe(
       (data: any) => {
        if (this.task!.manualCheckRequired){
-         alert("Теперь код решения данной задачи должен проверяться преподавателем.");
+         this.popupInfo = 'Теперь код решения данной задачи должен проверяться преподавателем.';
+         this.showPopup = true;
        } else {
-         alert("Вы сняли требование проверки кода решения преподавателем для данной задачи.");
+         this.popupInfo = 'Вы сняли требование проверки кода решения преподавателем для данной задачи.';
+         this.showPopup = true;
        }
       },
       (error)=>{ toErrorPage(error, this.router);});
@@ -324,6 +334,10 @@ export class TaskComponent implements OnInit{
 
   closeModalCodeSentUnsuccessfully() {
     this.showModalCodeSentUnsuccessfully = false;
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }
 

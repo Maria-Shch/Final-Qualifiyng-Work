@@ -33,6 +33,8 @@ export class AllStudentsGroupsComponent implements OnInit{
   admin: IUser | null = null;
   showModalDisbandGroup: boolean = false;
   showModalDeleteGroup: boolean = false;
+  showPopup: boolean = false;
+  popupInfo: string = '';
 
   constructor(
     private groupService: GroupService,
@@ -109,8 +111,9 @@ export class AllStudentsGroupsComponent implements OnInit{
   disbandGroup() {
     this.groupService.disbandGroup(this.groupSelectedForEditing?.id!).subscribe((data: boolean) =>{
       this.router.navigate(['/allStudentsGroups']);
-      alert("Вы расформировали группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ')');
       this.showModalDisbandGroup = false;
+      this.popupInfo = "Вы расформировали группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ').';
+      this.showPopup = true;
       this.initGroupsInfo();
     });
   }
@@ -118,9 +121,14 @@ export class AllStudentsGroupsComponent implements OnInit{
   deleteGroup() {
     this.groupService.deleteGroup(this.groupSelectedForEditing?.id!).subscribe((data: boolean) =>{
       this.router.navigate(['/allStudentsGroups']);
-      alert("Вы удалили группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ')');
       this.showModalDeleteGroup = false;
+      this.popupInfo = "Вы удалили группу " + this.groupSelectedForEditing?.name + ' (' + this.groupSelectedForEditing?.year?.name + ').';
+      this.showPopup = true;
       this.initGroupsInfo();
     });
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

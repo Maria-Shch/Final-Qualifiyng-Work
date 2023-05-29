@@ -15,6 +15,9 @@ export class NewChapterComponent {
   countOfChapters: number | null = null;
   creatingChapterFormHasBeenSubmitted: boolean = false;
   repeatedNameOfChapter: boolean = false;
+  popupInfo: string = '';
+  showPopup: boolean = false;
+  newChapter: IChapter | null = null;
 
   creatingChapterForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -44,8 +47,9 @@ export class NewChapterComponent {
         this.repeatedNameOfChapter = data;
         if (!data){
           this.chapterService.createNewChapter(newChapter).subscribe((data: IChapter) =>{
-            this.router.navigate(['/chapter', data.serialNumber]);
-            alert("Вы создали новую главу сборника: Глава " + data.serialNumber + '. ' + data.name);
+            this.newChapter = data;
+            this.popupInfo = "Вы создали новую главу сборника: Глава " + data.serialNumber + '. ' + data.name + '.';
+            this.showPopup = true;
           });
         }
       });
@@ -58,5 +62,10 @@ export class NewChapterComponent {
 
   get serialNumber(){
     return this.creatingChapterForm.controls.serialNumber as FormControl;
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
+    this.router.navigate(['/chapter', this.newChapter?.serialNumber]);
   }
 }

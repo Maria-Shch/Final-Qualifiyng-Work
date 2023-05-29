@@ -10,6 +10,8 @@ import {IUser} from "../../../interfaces/IUser";
   styleUrls: ['./teachers.component.css']
 })
 export class TeachersComponent {
+  popupInfo: string = '';
+  showPopup: boolean = false;
 
   employees: IUser[] =[];
   constructor(
@@ -31,9 +33,14 @@ export class TeachersComponent {
 
   revokeTeacherAuthority(teacher: IUser) {
     this.userService.revokeTeacherAuthority(teacher.id).subscribe((data: boolean) => {
-      alert(teacher.lastname + ' ' + teacher.name.charAt(0) + '. ' + teacher.patronymic.charAt(0) + '. снят с должности преподавателя.\n ' +
-        'Все группы под его управлением назначены администратору. \n Все необработанные запросы от студентов назначены администратору.');
+      this.popupInfo = teacher.lastname + ' ' + teacher.name.charAt(0) + '. ' + teacher.patronymic.charAt(0) + '. снят(-а) с должности преподавателя.\n ' +
+        'Все группы под его(её) управлением назначены администратору. \n Все необработанные запросы от студентов назначены администратору.';
+      this.showPopup = true;
       this.ngOnInit();
     });
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }

@@ -18,6 +18,9 @@ export class NewBlockComponent {
   chapter: IChapter | null = null;
   creatingBlockFormHasBeenSubmitted: boolean = false;
   repeatedNameOfBlock: boolean = false;
+  popupInfo: string = '';
+  showPopup: boolean = false;
+  newBlock: IBlock | null = null;
 
   creatingBlockForm: FormGroup = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -57,8 +60,9 @@ export class NewBlockComponent {
         this.repeatedNameOfBlock = data;
         if (!data){
           this.blockService.createNewBlock(newBlock).subscribe((data: IBlock) =>{
-            this.router.navigate(['/chapter', this.chapter?.serialNumber, 'block', data.serialNumber, 'theory']);
-            alert("Вы создали новый блок: Блок " + this.chapter?.serialNumber + '. ' + data.serialNumber + '. ' + data.name);
+            this.popupInfo = "Вы создали новый блок: Блок " + this.chapter?.serialNumber + '. ' + data.serialNumber + '. ' + data.name + '.';
+            this.showPopup = true;
+            this.newBlock = data;
           });
         }
       });
@@ -71,5 +75,10 @@ export class NewBlockComponent {
 
   get serialNumber(){
     return this.creatingBlockForm.controls.serialNumber as FormControl;
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
+    this.router.navigate(['/chapter', this.chapter?.serialNumber, 'block', this.newBlock?.serialNumber, 'theory']);
   }
 }

@@ -20,6 +20,9 @@ export class ChangeGroupMembersComponent {
   studentsWithoutGroupOptions = new Array<CheckboxItem>();
   unselectedStudentsOfGroupIds: number[] = [];
   selectedStudentsWithoutGroupIds: number[] = [];
+  popupInfo: string = '';
+  showPopup: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -57,8 +60,13 @@ export class ChangeGroupMembersComponent {
       selectedStudentsWithoutGroupIds: this.selectedStudentsWithoutGroupIds
     } as IChangedGroupMembers;
     this.groupService.updateGroupMembers(this.group?.id!, changedGroupMembers).subscribe((data: boolean) => {
-      alert("Состав группы был успешно изменён.");
+      this.popupInfo = 'Состав группы был успешно изменён.';
+      this.showPopup = true;
       this.ngOnInit();
     });
+  }
+
+  onChanged($event: boolean) {
+    this.showPopup = false;
   }
 }
