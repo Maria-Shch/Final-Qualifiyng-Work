@@ -42,10 +42,15 @@ export class ChapterComponent implements OnInit{
       },
       (error)=>{ toErrorPage(error, this.router);});
 
+      this.chapterService.getChapterBySerialNumber(this.serialNumberOfChapter).subscribe(
+        (data: IChapter) => {
+          this.chapter = data;
+        },
+        (error)=>{ toErrorPage(error, this.router);});
+
       this.blockService.getBlocksOfChapter(this.serialNumberOfChapter).subscribe(
       (data: IBlock[]) => {
         this.blocks = data;
-        this.chapter = this.blocks[1].chapter;
       },
       (error)=>{ toErrorPage(error, this.router);});
 

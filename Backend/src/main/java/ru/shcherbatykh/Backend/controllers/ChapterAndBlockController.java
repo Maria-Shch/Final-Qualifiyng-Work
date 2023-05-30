@@ -133,4 +133,10 @@ public class ChapterAndBlockController {
     public List<Block> getAllBlocks(){
         return blockService.getAllBlocks();
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/chapter/serialNumber/{serialNumberOfChapter}")
+    public Chapter getChapterBySerialNumber(@PathVariable int serialNumberOfChapter){
+        return chapterService.getChapterBySerialNumber(serialNumberOfChapter);
+    }
 }

@@ -34,6 +34,10 @@ export class ChapterService {
     return this.httpclient.post<boolean>(environment.apiUrl + `/check/chapter`, newChapter);
   }
 
+  getChapterBySerialNumber(serialNumberOfChapter: string): Observable<IChapter> {
+    return this.httpclient.get<IChapter>(environment.apiUrl + `/chapter/serialNumber/${serialNumberOfChapter}`);
+  }
+
   getChapterById(chapterId: number): Observable<IChapter> {
     return this.httpclient.get<IChapter>(environment.apiUrl + `/chapter/${chapterId}`);
   }

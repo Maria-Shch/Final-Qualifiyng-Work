@@ -104,15 +104,29 @@ public class TaskService {
         else if (sNOfTask != 1) {
             return getTask(sNOfChapter, sNOfBlock, sNOfTask - 1);
         }
+        //todo check
         else if (sNOfBlock != 1 && sNOfTask == 1) {
-            int sNOfLastTask = getLastTaskOfBlock(sNOfChapter, sNOfBlock - 1).getSerialNumber();
-            return getTask (sNOfChapter, sNOfBlock - 1, sNOfLastTask);
+            Task lastTaskOfBlock;
+            for (int i = 0; i < sNOfChapter; i++) {
+                for (int j = 1; j < blockService.getCountOfBlocks(sNOfChapter - i); j++) {
+                    lastTaskOfBlock = getLastTaskOfBlock(sNOfChapter-i, sNOfBlock - j);
+                    if (lastTaskOfBlock != null){
+                        return lastTaskOfBlock;
+                    }
+                }
+            }
         }
+
         else if (sNOfBlock == 1 && sNOfTask == 1){
-            int sNOfPrevChapter = sNOfChapter - 1;
-            int sNOfLastBlock = blockService.getLastBlockOfChapter(sNOfPrevChapter).getSerialNumber();
-            int sNOfLastTask = getLastTaskOfBlock(sNOfPrevChapter, sNOfLastBlock).getSerialNumber();
-            return getTask (sNOfPrevChapter, sNOfLastBlock, sNOfLastTask);
+            Task lastTaskOfBlock;
+            for (int i = 1; i < sNOfChapter; i++) {
+                for (int j = 0; j < blockService.getCountOfBlocks(sNOfChapter - i); j++) {
+                    lastTaskOfBlock = getLastTaskOfBlock(sNOfChapter-i, blockService.getCountOfBlocks(sNOfChapter-i)-j);
+                    if (lastTaskOfBlock != null){
+                        return lastTaskOfBlock;
+                    }
+                }
+            }
         }
         return null;
     }
@@ -123,15 +137,48 @@ public class TaskService {
                 if (sNOfChapter == chapterService.getCountOfChapters()){
                     return null;
                 }
-                else return getTask(sNOfChapter + 1, 1, 1);
+                else {
+                    Task task;
+                    for (int i = sNOfChapter + 1; i <= chapterService.getCountOfChapters(); i++) {
+                        for (int j = 1; j <= blockService.getCountOfBlocks(i); j++) {
+                            task = getTask(i, j, 1);
+                            if (task != null){
+                                return task;
+                            }
+                        }
+                    }
+                }
             } else {
-                return getTask(sNOfChapter, sNOfBlock +  1, 1);
+                Task task;
+                for (int i = sNOfBlock + 1; i <= blockService.getCountOfBlocks(sNOfChapter); i++) {
+                    task = getTask(sNOfChapter, i, 1);
+                    if (task != null){
+                        return task;
+                    }
+                }
+
+                for (int i = sNOfChapter + 1; i <= chapterService.getCountOfChapters(); i++) {
+                    for (int j = 1; j <= blockService.getCountOfBlocks(i); j++) {
+                        task = getTask(i, j, 1);
+                        if (task != null){
+                            return task;
+                        }
+                    }
+                }
             }
-        } else return getTask(sNOfChapter, sNOfBlock, sNOfTask + 1);
+        } else {
+            return getTask(sNOfChapter, sNOfBlock, sNOfTask + 1);
+        }
+        return null;
     }
 
     public Task getLastTaskOfBlock(int sNOfChapter, int sNOfBlock){
-        return getTask(sNOfChapter, sNOfBlock, getCountOfTasks(sNOfChapter, sNOfBlock));
+        int countOfTasks = getCountOfTasks(sNOfChapter, sNOfBlock);
+        if (countOfTasks != 0){
+            return getTask(sNOfChapter, sNOfBlock, countOfTasks);
+        } else {
+            return null;
+        }
     }
 
     public SendingOnReviewOrConsiderationResponse sendTaskOnReview(int serialNumberOfChapter, int serialNumberOfBlock,
