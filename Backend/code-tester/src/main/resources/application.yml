@@ -1,0 +1,22 @@
+server:
+  port: 8085
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+  jackson:
+    default-property-inclusion: non_null
+autochecker:
+  code_tester:
+    io:
+      student_task_source_code_folder: C:\Users\maria\Documents\FQW\ac\student_tasks
+    run_code_test:
+      process_timeout_seconds: 3
+  hot_reload:
+    backup_date_format: dd_MM_yyyy_HH_mm_ss_SSS
+    io:
+      test_source_code_folder: C:\Users\maria\Documents\FQW\ac\test_source_codes
+      test_classes_folder: C:\Users\maria\Documents\FQW\ac\test_classes
+      backup_test_classes_folder: C:\Users\maria\Documents\FQW\ac\test_classes\backup
+logging:
+  level:
+    org.apache.kafka.clients.NetworkClient: OFF
