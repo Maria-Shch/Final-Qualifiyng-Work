@@ -10,8 +10,8 @@ import {toErrorPage} from "../../../utils/ToErrorPageFunc";
   styleUrls: ['./task-switcher.component.css']
 })
 export class TaskSwitcherComponent implements OnInit{
-  @Input()
-  forUser: boolean = false;
+  @Input() forUser: boolean = false;
+  @Input() forTests: boolean = false;
   serialNumberOfChapter: string = "";
   serialNumberOfBlock: string = "";
   serialNumberOfTask: string = "";
@@ -46,6 +46,9 @@ export class TaskSwitcherComponent implements OnInit{
             this.userId = this.route.snapshot.paramMap.get("id");
             this.linkToNextTask = this.linkToNextTask + `/student/${this.userId}`;
           }
+          if (this.forTests){
+            this.linkToNextTask = this.linkToNextTask + `/tests`;
+          }
         }
       },
       (error)=>{ toErrorPage(error, this.router);});
@@ -59,6 +62,9 @@ export class TaskSwitcherComponent implements OnInit{
               // @ts-ignore
               this.userId = this.route.snapshot.paramMap.get("id");
               this.linkToPreviousTask = this.linkToPreviousTask + `/student/${this.userId}`;
+            }
+            if (this.forTests){
+              this.linkToPreviousTask = this.linkToPreviousTask + `/tests`;
             }
           }
         },

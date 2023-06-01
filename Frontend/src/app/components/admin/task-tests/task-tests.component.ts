@@ -36,6 +36,8 @@ export class TaskTestsComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this.actualCodeTestTextArea = {id: 0, content: ""};
+    this.lastCodeTestTextArea = {id: 1, content: ""};
 
     this.route.paramMap.subscribe(params => {
       // @ts-ignore
@@ -69,6 +71,8 @@ export class TaskTestsComponent implements OnInit{
               this.lastTestDefinitionResponseResult = data;
               if (this.lastTestDefinitionResponseResult != null && this.lastTestDefinitionResponseResult.code != 'TD-000'){
                 this.lastCodeTestTextArea.content = this.lastTestDefinitionResponseResult.codeTest;
+              } else {
+                this.lastCodeTestTextArea.content = "";
               }
             },
             (error)=>{ toErrorPage(error, this.router);});

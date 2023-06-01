@@ -1,9 +1,15 @@
 <app-header></app-header>
 <div class="div-main-body">
-  <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
-    <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
-    <h2 style="var(--c6);">Задача {{task?.block?.chapter?.serialNumber}}. {{task?.block?.serialNumber}}. {{task?.serialNumber}}. {{task?.name}}</h2>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: end; margin: 25px 10px 20px 0">
+    <div style="display: flex; flex-direction: row; justify-content: left; align-items: center">
+      <img src="../../../../assets/icons/pencil.png" style="margin: 0 10px 5px 0;" height="30px" width="auto">
+      <h2 style="color: var(--c6); margin:0">Задача {{serialNumberOfChapter}}. {{serialNumberOfBlock}}. {{task?.serialNumber}}</h2>
+    </div>
+    <app-task-switcher [forUser]="false" [forTests]="true"></app-task-switcher>
   </div>
+
+  <h3 style="color: var(--c6); margin: 0">{{task?.name}}</h3>
+
   <div id="description" style="padding: 0 30px 0 0;"></div>
   <div *ngIf="isPresentActualCode">
     <div style="display: flex; flex-direction: row; align-items: center; margin: 10px 0 10px 0">
