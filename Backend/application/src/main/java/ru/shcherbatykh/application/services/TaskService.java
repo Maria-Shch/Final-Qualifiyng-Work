@@ -414,4 +414,8 @@ public class TaskService {
         }
         return true;
     }
+
+    public Task save(Task task) {
+        return taskRepo.save(task);
+    }
 }

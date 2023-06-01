@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IResponseAboutTestingAllowed} from "../dto_interfaces/IResponseAboutTestingAllowed";
 import {environment} from "../environments/enviroment";
 import {ISendingOnTestingResponse} from "../dto_interfaces/ISendingOnTestingResponse";
 import {ICodeCheckResponseResult} from "../dto_interfaces/ICodeCheckResponseResult";
+import {ITestDefinitionResponseResult} from "../dto_interfaces/ITestDefinitionResponseResult";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,21 @@ export class TestingService {
 
   getTestingResultForTeacher(studentTaskId: number): Observable<ICodeCheckResponseResult> {
     return this.httpclient.get<ICodeCheckResponseResult>(environment.apiUrl + `/auth/${studentTaskId}/getTestingResultT`);
+  }
+
+  getActualTestClass(taskId: number): Observable<string> {
+    return this.httpclient.get(environment.apiCodetesterUrl + `/get/testClass/${taskId}`, {
+      headers: new HttpHeaders({ 'No-Auth': 'True' }),
+      responseType: 'text'
+    });
+  }
+
+
+  sendCodeTest(taskId: number, codeTest: string): Observable<boolean> {
+    return this.httpclient.post<boolean>(environment.apiUrl + `/saveCodeTest/${taskId}`, codeTest);
+  }
+
+  getTestDefinitionResponseResult(taskId: number): Observable<ITestDefinitionResponseResult> {
+    return this.httpclient.get<ITestDefinitionResponseResult>(environment.apiUrl + `/saveCodeTest/${taskId}/result`);
   }
 }

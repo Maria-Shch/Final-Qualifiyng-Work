@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.shcherbatykh.codetester.ast.Predicates;
 import ru.shcherbatykh.codetester.ast.AstUtils;
+import ru.shcherbatykh.codetester.ast.Predicates;
 import ru.shcherbatykh.codetester.model.CodeCheckContext;
 
 import java.text.MessageFormat;

@@ -1,5 +1,7 @@
 :host{
-  margin-bottom: 25px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .div-test-result{
@@ -25,8 +27,10 @@
   margin: 0;
 }
 
-.div-group{
-  min-height: fit-content;
+.div-container{
+  background-color: var(--c5);
+  border-radius: 10px;
+  min-height: 65px;
   width: 1250px;
 }
 

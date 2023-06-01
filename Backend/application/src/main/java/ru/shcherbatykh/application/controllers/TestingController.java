@@ -3,6 +3,7 @@ package ru.shcherbatykh.application.controllers;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.application.classes.CodeCheckResponseResult;
+import ru.shcherbatykh.application.classes.TestDefinitionResponseResult;
 import ru.shcherbatykh.application.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.application.dto.SendingOnTestingResponse;
 import ru.shcherbatykh.application.models.User;
@@ -58,5 +59,17 @@ public class TestingController {
     @GetMapping("/auth/{studentTaskId}/getTestingResultT")
     public CodeCheckResponseResult getTestingResultForTeacher(@PathVariable long studentTaskId){
         return testingService.getTestingResultForTeacher(studentTaskId, authService.getUser().orElse(null));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("/saveCodeTest/{taskId}")
+    public boolean sendCodeTest(@PathVariable long taskId, @RequestBody String codeTest) {
+        return testingService.sendCodeTest(taskId, codeTest);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/saveCodeTest/{taskId}/result")
+    public TestDefinitionResponseResult getTestDefinitionResponseResult(@PathVariable long taskId){
+        return testingService.getTestDefinitionResponseResult(taskId);
     }
 }

@@ -3,15 +3,16 @@ package ru.shcherbatykh.codetester.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.codetester.class_loader.PathClassLoader;
 import ru.shcherbatykh.codetester.tests.CodeTest;
 import ru.shcherbatykh.codetester.tests.task.TaskTest;
 import ru.shcherbatykh.codetester.visitor.TestFileVisitor;
-import ru.shcherbatykh.codetester.class_loader.PathClassLoader;
 
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,6 +87,25 @@ public class TestClassProvider {
         Path previousJavaPath = taskIdToJavaPathMap.put(taskId, javaPath);
         if (log.isInfoEnabled()) {
             log.info("Defined new path {} for task {}. Previous value: {}", javaPath, taskId, previousJavaPath);
+        }
+    }
+
+    public String getActualTestClass(long taskId) {
+        if (taskIdToCodeTestMap.containsKey(String.valueOf(taskId))){
+            Path path = taskIdToJavaPathMap.get(String.valueOf(taskId));
+            if (Files.exists(path)) {
+                try {
+                    return Files.readString(path, StandardCharsets.UTF_8);
+                } catch (IOException e) {
+                    log.error("Error during reading files", e);
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }

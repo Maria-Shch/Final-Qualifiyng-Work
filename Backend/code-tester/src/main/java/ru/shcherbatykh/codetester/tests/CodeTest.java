@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
+import ru.shcherbatykh.codetester.model.CodeCheckContext;
 import ru.shcherbatykh.codetester.model.results.RunCodeResult;
 import ru.shcherbatykh.codetester.rules.model.RuleViolation;
-import ru.shcherbatykh.codetester.model.CodeCheckContext;
 import ru.shcherbatykh.common.model.CodeTestResult;
 import ru.shcherbatykh.common.model.CompilationDiagnostic;
 

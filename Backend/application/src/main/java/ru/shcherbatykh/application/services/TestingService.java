@@ -9,14 +9,10 @@ import ru.shcherbatykh.application.broker.KafkaMessageProducer;
 import ru.shcherbatykh.application.classes.*;
 import ru.shcherbatykh.application.dto.ResponseAboutTestingAllowed;
 import ru.shcherbatykh.application.dto.SendingOnTestingResponse;
-import ru.shcherbatykh.application.models.CheckTest;
-import ru.shcherbatykh.application.models.StudentTask;
-import ru.shcherbatykh.application.models.Task;
-import ru.shcherbatykh.application.models.User;
+import ru.shcherbatykh.application.models.*;
 import ru.shcherbatykh.application.repositories.CheckTestRepo;
-import ru.shcherbatykh.common.model.CodeCheckRequest;
-import ru.shcherbatykh.common.model.CodeCheckResponse;
-import ru.shcherbatykh.common.model.CodeSource;
+import ru.shcherbatykh.application.repositories.TestDefinitionRepo;
+import ru.shcherbatykh.common.model.*;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
@@ -29,14 +25,17 @@ import java.util.Objects;
 public class TestingService {
 
     private final CheckTestRepo checkTestRepo;
+    private final TestDefinitionRepo testDefinitionRepo;
     private final TaskService taskService;
     private final StudentTaskService studentTasksService;
     private final KafkaMessageProducer kafkaMessageProducer;
     private final StatusService statusService;
 
-    public TestingService(CheckTestRepo checkTestRepo, TaskService taskService, StudentTaskService studentTasksService,
+    public TestingService(CheckTestRepo checkTestRepo, TestDefinitionRepo testDefinitionRepo, TaskService taskService,
+                          StudentTaskService studentTasksService,
                           KafkaMessageProducer kafkaMessageProducer, StatusService statusService) {
         this.checkTestRepo = checkTestRepo;
+        this.testDefinitionRepo = testDefinitionRepo;
         this.taskService = taskService;
         this.studentTasksService = studentTasksService;
         this.kafkaMessageProducer = kafkaMessageProducer;
@@ -114,7 +113,7 @@ public class TestingService {
                                                             int serialNumberOfTask, User student) {
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(student, task);
-        CheckTest checkTest = checkTestRepo.findFirstByStudentTaskAndTeacherIsNull(stTask);
+        CheckTest checkTest = checkTestRepo.findLastByStudentTaskAndTeacherIsNull(stTask);
         if (checkTest == null || checkTest.getCodeCheckResponseResultJson() == null) return null;
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -145,7 +144,7 @@ public class TestingService {
     public CodeCheckResponseResult getTestingResultForTeacher(long studentTaskId, User teacher) {
         StudentTask stTask = studentTasksService.findById(studentTaskId);
         if (stTask == null) return null;
-        CheckTest checkTest = checkTestRepo.findFirstByStudentTaskAndTeacher(stTask, teacher);
+        CheckTest checkTest = checkTestRepo.findLastByStudentTaskAndTeacher(stTask, teacher);
         if (checkTest == null || checkTest.getCodeCheckResponseResultJson() == null) return null;
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -179,6 +178,69 @@ public class TestingService {
             checkTestRepo.save(checkTest);
        } catch (JsonProcessingException e) {
             log.error("Exception during saving CodeCheckResponse to database", e.getMessage());
+        }
+    }
+
+    public boolean sendCodeTest(long taskId, String codeTest) {
+        Task task = taskService.findById(taskId);
+        String codeEncoded = new String(java.util.Base64.getEncoder().encode(codeTest.getBytes(StandardCharsets.UTF_8)));
+        TestDefinition savedTestDefinition = testDefinitionRepo.save(new TestDefinition(task, codeEncoded));
+        TestDefinitionRequest testDefinitionRequest = new TestDefinitionRequest(
+            String.valueOf(taskId),
+            String.valueOf(savedTestDefinition.getId()),
+            codeEncoded
+        );
+        kafkaMessageProducer.sendTestDefinitionMessage(testDefinitionRequest);
+        task.setOnTestChecking(true);
+        taskService.save(task);
+        return true;
+    }
+
+    public void saveTestDefinitionResponse(TestDefinitionResponse testDefinitionResponse) {
+        TestDefinition testDefinition = testDefinitionRepo.findById(Long.valueOf(testDefinitionResponse.getRequestUuid())).get();
+        String codeTest = null;
+        if (!Objects.equals(testDefinitionResponse.getCode(), TestDefinitionResponseCode.TD_000.getCode())){
+            codeTest = new String(java.util.Base64.getDecoder().decode(testDefinition.getCodeEncoded().getBytes(StandardCharsets.UTF_8)));
+        }
+        TestDefinitionResponseResult testDefinitionResponseResult = new TestDefinitionResponseResult(
+                testDefinitionResponse.getCode(),
+                testDefinitionResponse.getMessage(),
+                codeTest,
+                testDefinitionResponse.getValidationInfo(),
+                testDefinitionResponse.getCompilationInfo(),
+                testDefinitionResponse.getTechnicalErrorInfo()
+        );
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String testDefinitionResponseResultAsJson = objectMapper.writeValueAsString(testDefinitionResponseResult);
+            testDefinition.setTestDefinitionResponseResultJson(testDefinitionResponseResultAsJson);
+            testDefinition.setGettingResultTime(LocalDateTime.now());
+            testDefinitionRepo.save(testDefinition);
+            Task task = taskService.findById(Long.valueOf(testDefinitionResponse.getTaskId()));
+            task.setOnTestChecking(false);
+            taskService.save(task);
+        } catch (JsonProcessingException e) {
+            log.error("Exception during saving TestDefinitionResponse to database", e.getMessage());
+        }
+    }
+
+    @Transactional
+    public TestDefinitionResponseResult getTestDefinitionResponseResult(long taskId) {
+        TestDefinition testDefinition = testDefinitionRepo.findLastByTask(taskService.findById(taskId));
+        if (testDefinition == null ||testDefinition.getTestDefinitionResponseResultJson() == null) return null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            TestDefinitionResponseResult testDefinitionResponseResult =
+                    objectMapper.readValue(testDefinition.getTestDefinitionResponseResultJson(), TestDefinitionResponseResult.class);
+            if (!testDefinition.isHasBeenAnalyzed()){
+                testDefinition.setHasBeenAnalyzed(true);
+                testDefinitionRepo.save(testDefinition);
+            }
+            return testDefinitionResponseResult;
+        } catch (JsonProcessingException e){
+            log.error("Exception during reading TestDefinitionResponseResult from JSON type to object", e.getMessage());
+            return null;
         }
     }
 }

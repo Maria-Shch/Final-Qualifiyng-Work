@@ -6,10 +6,13 @@
   </div>
   <p class="p3" style="margin: 0;">Вы редактируете: <b>Блок {{block?.serialNumber}}. {{block?.name}}</b></p>
 
-  <div style="display: flex; flex-direction: row; margin: 20px 0 7px 0">
-    <p class="p5" style="color: var(--c2); margin: 0">Изменить нумерацию блоков Вы можете&nbsp;</p>
-    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapter/{{block?.chapter?.serialNumber}}/blocks/numbering">здесь</a>
+  <div style="display: flex;; flex-direction: row; align-items: center; justify-content: start; margin: 20px 0 20px 0">
+    <div class="d-white-button" style="width: 300px">
+      <a routerLink="/chapter/{{block?.chapter?.serialNumber}}/blocks/numbering" class="a-img icon-pencil"></a>
+      <a class="p5 a-none" style="color: var(--c6); margin: 0" routerLink="/chapter/{{block?.chapter?.serialNumber}}/blocks/numbering">Изменить нумерацию блоков</a>
+    </div>
   </div>
+
   <p class="p5" style="color: var(--c2); margin: 0 0 7px 0">Добавить или отредактировать теоретический материал вы можете на странице блока.</p>
   <p class="p5" style="color: var(--c2); margin: 0 0 20px 0">Если вы измените главу, то блок автоматически станет последним в новой главе. Блоки в текущей главе будут заново пронумерованы.</p>
 

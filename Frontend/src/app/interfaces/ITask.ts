@@ -9,4 +9,5 @@ export interface ITask {
   manualCheckRequired: boolean;
   block: IBlock;
   previousTasks: IPreviousTask[];
+  onTestChecking: boolean;
 }

@@ -190,6 +190,20 @@ ALTER TABLE student_tasks
     ADD CONSTRAINT unique_student_task
         UNIQUE(user_id, task_id);
 
+
+CREATE TABLE test_definitions(
+    id serial PRIMARY KEY,
+    task_id int NOT NULL,
+    getting_result_time timestamp,
+    has_been_analyzed boolean,
+
+    FOREIGN KEY (task_id) REFERENCES tasks (id)
+);
+
+
+ALTER TABLE tasks ADD on_test_checking boolean;
+
+ALTER TABLE test_definitions ADD code_encoded TEXT;
 ---------------------------
 
 INSERT INTO event_types (name) VALUES ('Студент отправил на рассмотрение');

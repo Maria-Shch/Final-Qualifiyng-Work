@@ -358,6 +358,21 @@ h6, .h6 {
   height: 18px;
   margin: 5px 10px 0 10px;
 }
+
+.icon-pencil {
+  background: url("/assets/icons/pencil.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
+.icon-settings {
+  background: url("/assets/icons/settings.png") no-repeat;
+  background-size: var(--imgXY-theory-pencil);
+  width: var(--imgXY-theory-pencil);
+  height: var(--imgXY-theory-pencil);
+}
+
 textarea::-webkit-scrollbar {
   width: 6px;
 }
@@ -625,4 +640,9 @@ textarea::-webkit-scrollbar-thumb {
   border: 2px solid #e5e5f3;
   background: var(--c1);
   cursor: auto;
+}
+
+.to-numbering{
+  width: 290px;
+  margin-right: 10px;
 }

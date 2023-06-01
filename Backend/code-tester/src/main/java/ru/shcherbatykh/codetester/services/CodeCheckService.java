@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.shcherbatykh.codetester.ast.CodeSourceASTParser;
 import ru.shcherbatykh.codetester.broker.KafkaMessageProducer;
-import ru.shcherbatykh.codetester.tests.CodeTest;
 import ru.shcherbatykh.codetester.class_loader.PathClassLoader;
 import ru.shcherbatykh.codetester.model.CodeCheckContext;
+import ru.shcherbatykh.codetester.tests.CodeTest;
 import ru.shcherbatykh.codetester.tests.CompilationTest;
 import ru.shcherbatykh.common.model.*;
 

@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import ru.shcherbatykh.common.constants.Constants;
-import ru.shcherbatykh.common.model.CodeCheckRequest;
 import ru.shcherbatykh.common.model.CodeCheckResponse;
-import ru.shcherbatykh.common.model.TestDefinitionRequest;
 import ru.shcherbatykh.common.model.TestDefinitionResponse;
 
 @Slf4j

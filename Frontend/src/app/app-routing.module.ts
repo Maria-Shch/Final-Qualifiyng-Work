@@ -33,6 +33,7 @@ import {BlocksNumberingComponent} from "./components/admin/blocks-numbering/bloc
 import {NewTaskComponent} from "./components/admin/new-task/new-task.component";
 import {EditTaskComponent} from "./components/admin/edit-task/edit-task.component";
 import {TasksNumberingComponent} from "./components/admin/tasks-numbering/tasks-numbering.component";
+import {TaskTestsComponent} from "./components/admin/task-tests/task-tests.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -67,7 +68,9 @@ const routes: Routes = [
   { path: 'chapter/:chapterId/blocks/numbering', component: BlocksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'newTask/:blockId', component: NewTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
   { path: 'task/edit/:taskId', component: EditTaskComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
-  { path: 'chapter/:chapterId/block/:blockId/tasks/numbering', component: TasksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}}
+  { path: 'chapter/:chapterId/block/:blockId/tasks/numbering', component: TasksNumberingComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
+  { path: 'chapter/:serialNumberOfChapter/block/:serialNumberOfBlock/task/:serialNumberOfTask/tests',
+    component: TaskTestsComponent, canActivate:[AuthGuard], data:{roles:['ADMIN']}},
 ];
 
 @NgModule({

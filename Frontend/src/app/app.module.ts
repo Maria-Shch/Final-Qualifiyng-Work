@@ -69,6 +69,7 @@ import {
 } from './components/utils/checkbox-group-previous-tasks/checkbox-group-previous-tasks.component';
 import { TasksNumberingComponent } from './components/admin/tasks-numbering/tasks-numbering.component';
 import { PopupComponent } from './components/utils/popup/popup.component';
+import { TaskTestsComponent } from './components/admin/task-tests/task-tests.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { PopupComponent } from './components/utils/popup/popup.component';
     EditTaskComponent,
     CheckboxGroupPreviousTasksComponent,
     TasksNumberingComponent,
-    PopupComponent
+    PopupComponent,
+    TaskTestsComponent
   ],
   imports: [
     BrowserModule,

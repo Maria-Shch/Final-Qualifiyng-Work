@@ -8,13 +8,11 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import ru.shcherbatykh.common.constants.Constants;
-import ru.shcherbatykh.common.model.CodeCheckRequest;
-import ru.shcherbatykh.common.model.CodeCheckResponse;
-import ru.shcherbatykh.common.model.TestDefinitionRequest;
-import ru.shcherbatykh.common.model.TestDefinitionResponse;
 import ru.shcherbatykh.codetester.services.CodeCheckService;
 import ru.shcherbatykh.codetester.services.TestDefinitionService;
+import ru.shcherbatykh.common.constants.Constants;
+import ru.shcherbatykh.common.model.CodeCheckRequest;
+import ru.shcherbatykh.common.model.TestDefinitionRequest;
 
 @Slf4j
 @Service

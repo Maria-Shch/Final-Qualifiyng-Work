@@ -8,11 +8,11 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.codetester.model.CodeCheckContext;
+import ru.shcherbatykh.codetester.model.TestDefinitionContext;
 import ru.shcherbatykh.common.model.CodeCheckRequest;
 import ru.shcherbatykh.common.model.CodeSource;
 import ru.shcherbatykh.common.model.TestDefinitionRequest;
-import ru.shcherbatykh.codetester.model.CodeCheckContext;
-import ru.shcherbatykh.codetester.model.TestDefinitionContext;
 
 import java.util.ArrayList;
 import java.util.Base64;

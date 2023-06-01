@@ -15,9 +15,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.codetester.ast.AstUtils;
 import ru.shcherbatykh.codetester.ast.CodeSourceASTParser;
 import ru.shcherbatykh.codetester.broker.KafkaMessageProducer;
-import ru.shcherbatykh.codetester.ast.AstUtils;
 import ru.shcherbatykh.codetester.class_loader.PathClassLoader;
 import ru.shcherbatykh.codetester.model.TestDefinitionContext;
 import ru.shcherbatykh.codetester.model.results.CompileCodeResult;
@@ -88,10 +88,6 @@ public class TestDefinitionService {
         kafkaMessageProducer.sendTestDefinitionResultMessage(prepareResult(testDefinitionRequest));
     }
 
-    public TestDefinitionResponse defineNewTestImmediately(TestDefinitionRequest testDefinitionRequest) {
-        return prepareResult(testDefinitionRequest);
-    }
-
     private TestDefinitionResponse prepareResult(TestDefinitionRequest testDefinitionRequest) {
         try {
             return defineNewTestInternal(testDefinitionRequest);
@@ -101,7 +97,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_001.getCode())
-                    .message(TestDefinitionResponseCode.TD_001.getCode())
+                    .message(TestDefinitionResponseCode.TD_001.getMessage())
                     .technicalErrorInfo(new TestDefinitionTechnicalErrorInfo(ExceptionUtils.getStackTrace(t)))
                     .build();
         }
@@ -122,7 +118,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_002.getCode())
-                    .message(TestDefinitionResponseCode.TD_002.getCode())
+                    .message(TestDefinitionResponseCode.TD_002.getMessage())
                     .validationInfo(new TestDefinitionValidationInfo(problems))
                     .build();
         } catch (ParseException e) {
@@ -130,7 +126,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_002.getCode())
-                    .message(TestDefinitionResponseCode.TD_002.getCode())
+                    .message(TestDefinitionResponseCode.TD_002.getMessage())
                     .validationInfo(new TestDefinitionValidationInfo(Collections.singletonList(e.getMessage())))
                     .build();
         }
@@ -144,7 +140,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_003.getCode())
-                    .message(TestDefinitionResponseCode.TD_003.getCode())
+                    .message(TestDefinitionResponseCode.TD_003.getMessage())
                     .compilationInfo(compilationInfo)
                     .build();
         }
@@ -160,7 +156,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_002.getCode())
-                    .message(TestDefinitionResponseCode.TD_002.getCode())
+                    .message(TestDefinitionResponseCode.TD_002.getMessage())
                     .validationInfo(new TestDefinitionValidationInfo(Collections.singletonList("Класс теста должен " +
                             "реализовывать интерфейс " + CodeTest.class.getName() + ".")))
                     .build();
@@ -176,7 +172,7 @@ public class TestDefinitionService {
                     .taskId(testDefinitionRequest.getTaskId())
                     .requestUuid(testDefinitionRequest.getRequestUuid())
                     .code(TestDefinitionResponseCode.TD_002.getCode())
-                    .message(TestDefinitionResponseCode.TD_002.getCode())
+                    .message(TestDefinitionResponseCode.TD_002.getMessage())
                     .validationInfo(new TestDefinitionValidationInfo(Collections.singletonList("Класс теста должен " +
                             "иметь публичный конструктор без параметров.")))
                     .build();
@@ -189,7 +185,7 @@ public class TestDefinitionService {
                 .taskId(testDefinitionRequest.getTaskId())
                 .requestUuid(testDefinitionRequest.getRequestUuid())
                 .code(TestDefinitionResponseCode.TD_000.getCode())
-                .message(TestDefinitionResponseCode.TD_000.getCode())
+                .message(TestDefinitionResponseCode.TD_000.getMessage())
                 .compilationInfo(compilationInfo)
                 .build();
     }
@@ -271,8 +267,7 @@ public class TestDefinitionService {
     private void copyFilesToTestFolderPath(TestDefinitionContext testDefinitionContext) {
         Path javaFilePath = testDefinitionContext.getJavaFilePath();
         try {
-            Files.createDirectories(testDefinitionContext.getTestFolderJavaFilePath()
-                    .subpath(0, testDefinitionContext.getTestFolderJavaFilePath().getNameCount() - 1));
+            Files.createDirectories(testDefinitionContext.getTestFolderJavaFilePath().getParent());
             Files.copy(javaFilePath, testDefinitionContext.getTestFolderJavaFilePath());
         } catch (IOException e) {
             throw new RuntimeException(e);

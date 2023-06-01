@@ -6,9 +6,11 @@
   </div>
   <p class="p3" style="margin: 0;">Вы редактируете: <b>Глава {{chapter?.serialNumber}}. {{chapter?.name}}</b></p>
 
-  <div style="display: flex; flex-direction: row; margin: 20px 0 20px 0">
-    <p class="p5" style="color: var(--c2); margin: 0">Изменить нумерацию глав сборника Вы можете&nbsp;</p>
-    <a class="p5" style="color: var(--c2); text-decoration: revert;" routerLink="/chapters/numbering">здесь</a>
+  <div style="display: flex;; flex-direction: row; align-items: center; justify-content: start; margin: 20px 0 20px 0">
+    <div class="d-white-button" style="width: 277px">
+      <a routerLink="/chapters/numbering" class="a-img icon-pencil"></a>
+      <a class="p5 a-none" style="color: var(--c6); margin: 0" routerLink="/chapters/numbering">Изменить нумерацию глав</a>
+    </div>
   </div>
 
   <h5 *ngIf="(name.errors?.['required'] ||

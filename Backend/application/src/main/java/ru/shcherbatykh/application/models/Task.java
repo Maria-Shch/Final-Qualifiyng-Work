@@ -24,6 +24,9 @@ public class Task {
     @JoinColumn(name = "block_id")
     private Block block;
 
+    @Column(name = "on_test_checking")
+    private boolean onTestChecking;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
     @ToString.Exclude
     private List<PreviousTask> previousTasks = new ArrayList<>();

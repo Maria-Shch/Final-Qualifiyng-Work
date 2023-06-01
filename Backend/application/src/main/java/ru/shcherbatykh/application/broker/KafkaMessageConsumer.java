@@ -46,4 +46,5 @@ public class KafkaMessageConsumer {
         log.info("Consumed test definition result message: {} - timestamp = {}, topic = {}, partition = {}, offset = {}\n{}",
                 Thread.currentThread().getName(), timestamp, topic, partition, offset, message);
         acknowledgment.acknowledge();
+        testingService.saveTestDefinitionResponse(message);
     }}
