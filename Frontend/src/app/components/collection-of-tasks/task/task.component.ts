@@ -163,19 +163,26 @@ export class TaskComponent implements OnInit{
 
   saveCodeAndTesting() {
     let codes: string[] = this.saveCodeToArray();
-    this.testingService.sendOnTestingForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
-    (data: ISendingOnTestingResponse) => {
-      this.status = data.status;
-      this.sendingOnTestingResponse = data;
+    if (codes.length != 0) {
+      this.testingService.sendOnTestingForStudent(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+        (data: ISendingOnTestingResponse) => {
+          this.status = data.status;
+          this.sendingOnTestingResponse = data;
 
-      if (this.sendingOnTestingResponse.codeSuccessfulSent){
-        this.openModalCodeSentSuccessfully();
-      } else if(!this.sendingOnTestingResponse.codeSuccessfulSent){
-        this.openModalCodeSentUnsuccessfully();
-      }
-      this.ngOnInit();
-    },
-    (error)=>{ toErrorPage(error, this.router);});
+          if (this.sendingOnTestingResponse.codeSuccessfulSent) {
+            this.openModalCodeSentSuccessfully();
+          } else if (!this.sendingOnTestingResponse.codeSuccessfulSent) {
+            this.openModalCodeSentUnsuccessfully();
+          }
+          this.ngOnInit();
+        },
+        (error) => {
+          toErrorPage(error, this.router);
+        });
+    } else {
+      this.popupInfo = 'Вы пытаетесь отправить запрос не содержащий код.';
+      this.showPopup = true;
+    }
   }
 
   openModalDialogAboutReview() {
@@ -184,20 +191,25 @@ export class TaskComponent implements OnInit{
 
   saveCodeAndSendOnReview(){
     let codes: string[] = this.saveCodeToArray();
-    this.taskService.sendOnReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
-    (data: ISendingOnReviewOrConsiderationResponse) => {
-      if(data.sendingSuccessfulCompleted){
-        this.status = data.status;
-        this.popupInfo = 'Вы отправили решение задачи на проверку.';
-        this.showPopup = true;
-      } else {
-        this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
-        this.showPopup = true;
-      }
-      this.closeModalOnReview();
-      this.ngOnInit();
-    },
-    (error)=>{ toErrorPage(error, this.router);});
+    if (codes.length != 0){
+      this.taskService.sendOnReview(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes).subscribe(
+        (data: ISendingOnReviewOrConsiderationResponse) => {
+          if(data.sendingSuccessfulCompleted){
+            this.status = data.status;
+            this.popupInfo = 'Вы отправили решение задачи на проверку.';
+            this.showPopup = true;
+          } else {
+            this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
+            this.showPopup = true;
+          }
+          this.closeModalOnReview();
+          this.ngOnInit();
+        },
+        (error)=>{ toErrorPage(error, this.router);});
+    } else {
+      this.popupInfo = 'Вы пытаетесь отправить запрос не содержащий код.';
+      this.showPopup = true;
+    }
   }
 
   closeModalOnReview() {
@@ -211,20 +223,27 @@ export class TaskComponent implements OnInit{
   saveCodeAndSendOnConsideration(){
     let codes: string[] = this.saveCodeToArray();
     let message = (<HTMLInputElement>document.getElementById("#messageToConsideration"))?.value;
-    this.taskService.sendOnConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes, message).subscribe(
-    (data: ISendingOnReviewOrConsiderationResponse) => {
-      if(data.sendingSuccessfulCompleted){
-        this.status = data.status;
-        this.popupInfo = 'Вы отправили решение задачи на рассмотрение.';
-        this.showPopup = true;
-      } else {
-        this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
-        this.showPopup = true;
-      }
-      this.closeModalOnConsideration();
-      this.ngOnInit();
-    },
-    (error)=>{ toErrorPage(error, this.router);});
+    if (codes.length != 0) {
+      this.taskService.sendOnConsideration(this.serialNumberOfChapter, this.serialNumberOfBlock, this.serialNumberOfTask, codes, message).subscribe(
+        (data: ISendingOnReviewOrConsiderationResponse) => {
+          if (data.sendingSuccessfulCompleted) {
+            this.status = data.status;
+            this.popupInfo = 'Вы отправили решение задачи на рассмотрение.';
+            this.showPopup = true;
+          } else {
+            this.popupInfo = 'Не удалось сохранить код вашего решения. Пожалуйста, повторите попытку.';
+            this.showPopup = true;
+          }
+          this.closeModalOnConsideration();
+          this.ngOnInit();
+        },
+        (error) => {
+          toErrorPage(error, this.router);
+        });
+    } else {
+      this.popupInfo = 'Вы пытаетесь отправить запрос не содержащий код.';
+      this.showPopup = true;
+    }
   }
 
   closeModalOnConsideration() {
