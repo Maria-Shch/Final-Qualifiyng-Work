@@ -26,6 +26,7 @@ export class RequestComponent implements OnInit{
   showModalCodeSentUnsuccessfully: boolean = false;
   lastTestingResultForTeacher: ICodeCheckResponseResult | null = null;
   arePresentCodesOfTeacher: boolean = false;
+  isStudentCode: boolean = true;
 
   constructor(
     private requestService: RequestService,
@@ -44,7 +45,7 @@ export class RequestComponent implements OnInit{
       (data: IRequest) => {
         this.request = data;
         // @ts-ignore
-        this.taskService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
+        this.requestService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
           (data: string[]) => {
             if (data == null || data.length === 0){
               this.codeTextAreas = [{id: 0, content: ""}];
@@ -56,7 +57,7 @@ export class RequestComponent implements OnInit{
           },
           (error)=>{ toErrorPage(error, this.router);});
 
-        this.taskService.arePresentClassesOfTeacherByStudentTaskId(this.request?.studentTask?.id).subscribe((data: boolean) => {
+        this.requestService.arePresentClassesOfTeacherByStudentTaskId(this.request?.studentTask?.id, this.request?.id).subscribe((data: boolean) => {
             this.arePresentCodesOfTeacher = data;
           },
           (error)=>{ toErrorPage(error, this.router);})
@@ -126,7 +127,7 @@ export class RequestComponent implements OnInit{
   testing() {
     let codes: string[] = this.saveCodeToArray();
     // @ts-ignore
-    this.testingService.sendOnTestingForTeacher(this.request?.studentTask.id, codes).subscribe(
+    this.testingService.sendOnTestingForTeacher(this.request?.studentTask.id, this.request?.id, codes).subscribe(
       (data: ISendingOnTestingResponse) => {
         this.sendingOnTestingResponse = data;
 
@@ -153,8 +154,9 @@ export class RequestComponent implements OnInit{
 
   showStudentCode() {
     // @ts-ignore
-    this.taskService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
+    this.requestService.getClassesOfStudentByStudentTaskId(this.request?.studentTask.id).subscribe(
       (data: string[]) => {
+        this.isStudentCode = true;
         if (data == null || data.length === 0){
           this.codeTextAreas = [{id: 0, content: ""}];
           this.counterCodeTextArea = this.counterCodeTextArea + 1;
@@ -168,8 +170,9 @@ export class RequestComponent implements OnInit{
 
   showTeacherCode() {
 // @ts-ignore
-    this.taskService.getClassesOfTeacherByStudentTaskId(this.request?.studentTask.id).subscribe(
+    this.requestService.getClassesOfTeacherByStudentTaskId(this.request?.studentTask.id, this.request?.id).subscribe(
       (data: string[]) => {
+        this.isStudentCode = false;
         if (data == null || data.length === 0){
           this.codeTextAreas = [{id: 0, content: ""}];
           this.counterCodeTextArea = this.counterCodeTextArea + 1;

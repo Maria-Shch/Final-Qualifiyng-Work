@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.shcherbatykh.application.classes.AppError;
 import ru.shcherbatykh.application.dto.*;
 import ru.shcherbatykh.application.models.*;
@@ -185,7 +186,7 @@ public class TaskService {
                                                                    int serialNumberOfTask, User user, List<String> codes){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (!saveCodeToFiles(stTask, codes, true)){
+        if (!saveCodeToFiles(stTask, codes, true, null)){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnReview(stTask);
@@ -199,7 +200,7 @@ public class TaskService {
                                                                           RBOnConsideration rbOnConsideration) {
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        if (!saveCodeToFiles(stTask, rbOnConsideration.getCodes(), true)){
+        if (!saveCodeToFiles(stTask,  rbOnConsideration.getCodes(), true, null)){
             return new SendingOnReviewOrConsiderationResponse(stTask.getCurrStatus(),false, AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnConsideration(stTask);
@@ -208,8 +209,8 @@ public class TaskService {
         }
     }
 
-    public boolean saveCodeToFiles(StudentTask stTask, List<String> codes, boolean isStrategyOfSavingForStudent)  {
-        String path = getPathToSave(stTask, isStrategyOfSavingForStudent);
+    public boolean saveCodeToFiles(StudentTask stTask, List<String> codes, boolean isStrategyOfSavingForStudent, Long requestId)  {
+        String path = getPathToSave(stTask, isStrategyOfSavingForStudent, requestId);
         if (Files.exists(Path.of(path))) {
             try {
                 FileUtils.cleanDirectory(new File(path));
@@ -244,7 +245,7 @@ public class TaskService {
         return UUID.randomUUID().toString();
     }
 
-    private String getPathToSave(StudentTask stTask, boolean isStrategyOfSavingForStudent){
+    private String getPathToSave(StudentTask stTask, boolean isStrategyOfSavingForStudent, Long requestId){
         StringBuilder path = new StringBuilder(CODE_STORAGE_PATH);
         if (!isStrategyOfSavingForStudent){
             path.append('/').append("requestsCodes");
@@ -252,18 +253,21 @@ public class TaskService {
         path.append('/')
                 .append(stTask.getUser().getId()).append('/')
                 .append(stTask.getTask().getId());
+        if (!isStrategyOfSavingForStudent){
+            path.append('/').append(requestId);
+        }
         return path.toString();
     }
 
     public List<String> getClassesForTask(int serialNumberOfChapter, int serialNumberOfBlock, int serialNumberOfTask, User user){
         Task task = getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
-        return getClassesForTask(stTask, true);
+        return getClassesForTask(stTask, true, null);
     }
 
-    public List<String> getClassesForTask(StudentTask stTask, boolean forUser){
+    public List<String> getClassesForTask(StudentTask stTask, boolean forUser, Long requestId){
         if (stTask == null) return null;
-        String path = getPathToSave(stTask, forUser);
+        String path = getPathToSave(stTask, forUser, requestId);
         if (Files.exists(Path.of(path))) {
             try (Stream<Path> paths = Files.walk(Paths.get(path))) {
                 return paths
@@ -287,9 +291,9 @@ public class TaskService {
         }
     }
 
-    public boolean arePresentCodesOfTeacher(StudentTask stTask) {
+    public boolean arePresentCodesOfTeacher(StudentTask stTask, Long requestId) {
         if (stTask == null) return false;
-        String path = getPathToSave(stTask, false);
+        String path = getPathToSave(stTask,false, requestId);
         return Files.exists(Path.of(path));
     }
 

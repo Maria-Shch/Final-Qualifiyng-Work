@@ -34,9 +34,9 @@ export class TestingService {
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getTestingResultS`);
   }
 
-  sendOnTestingForTeacher(studentTaskId: number, codes: string[]): Observable<ISendingOnTestingResponse>  {
+  sendOnTestingForTeacher(studentTaskId: number, requestId: number,  codes: string[]): Observable<ISendingOnTestingResponse>  {
     return this.httpclient.post<ISendingOnTestingResponse>(environment.apiUrl +
-      `/${studentTaskId}/onTestingT`, codes);
+      `/${studentTaskId}/${requestId}/onTestingT`, codes);
   }
 
   getTestingResultForTeacher(studentTaskId: number): Observable<ICodeCheckResponseResult> {

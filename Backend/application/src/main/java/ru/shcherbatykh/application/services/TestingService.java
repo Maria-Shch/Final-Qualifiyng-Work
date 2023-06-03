@@ -90,7 +90,7 @@ public class TestingService {
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         StudentTask stTask = studentTasksService.getStudentTask(user, task);
 
-        if (!taskService.saveCodeToFiles(stTask, codes, true)){
+        if (!taskService.saveCodeToFiles(stTask, codes, true, null)){
             return new SendingOnTestingResponse(false, stTask.getCurrStatus(), AppError.APP_ERR_001);
         } else {
             studentTasksService.setStatusOnTesting(stTask);
@@ -99,8 +99,8 @@ public class TestingService {
         }
     }
 
-    public SendingOnTestingResponse testingForTeacher(long studentTaskId, User teacher, List<String> codes) {
-        if (!taskService.saveCodeToFiles(studentTasksService.findById(studentTaskId), codes, false)){
+    public SendingOnTestingResponse testingForTeacher(long studentTaskId, long requestId, User teacher, List<String> codes) {
+        if (!taskService.saveCodeToFiles(studentTasksService.findById(studentTaskId), codes, false, requestId)){
             return new SendingOnTestingResponse(false, AppError.APP_ERR_001);
         } else {
             sendOnTesting(studentTasksService.findById(studentTaskId), teacher, codes);

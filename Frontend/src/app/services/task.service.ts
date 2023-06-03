@@ -69,18 +69,6 @@ export class TaskService {
       `/auth/chapter/${serialNumberOfChapter}/block/${serialNumberOfBlock}/task/${serialNumberOfTask}/getClasses`);
   }
 
-  getClassesOfStudentByStudentTaskId(studentTaskId: number): Observable<string[]> {
-    return this.httpclient.get<string[]>(environment.apiUrl + `/request/getClassesOfStudent/${studentTaskId}`);
-  }
-
-  getClassesOfTeacherByStudentTaskId(studentTaskId: number): Observable<string[]> {
-    return this.httpclient.get<string[]>(environment.apiUrl + `/request/getClassesOfTeacher/${studentTaskId}`);
-  }
-
-  arePresentClassesOfTeacherByStudentTaskId(studentTaskId: number): Observable<boolean> {
-    return this.httpclient.get<boolean>(environment.apiUrl + `/request/arePresentClassesOfTeacher/${studentTaskId}`);
-  }
-
   sendOnReview(serialNumberOfChapter: string, serialNumberOfBlock: string, serialNumberOfTask: string, codes: string[]):
     Observable<ISendingOnReviewOrConsiderationResponse> {
     return this.httpclient.post<ISendingOnReviewOrConsiderationResponse>(environment.apiUrl +

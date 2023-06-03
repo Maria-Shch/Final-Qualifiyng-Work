@@ -85,19 +85,21 @@ public class RequestController {
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
     @GetMapping("/getClassesOfStudent/{idStudentTask}")
     public List<String> getCodesOfStudent(@PathVariable long idStudentTask) {
-        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), true);
+        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), true, null);
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
-    @GetMapping("/arePresentClassesOfTeacher/{idStudentTask}")
-    public boolean arePresentCodesOfTeacher(@PathVariable long idStudentTask) {
-        return taskService.arePresentCodesOfTeacher(studentTaskService.findById(idStudentTask));
+    @GetMapping("/arePresentClassesOfTeacher/{idStudentTask}/{requestId}")
+    public boolean arePresentCodesOfTeacher(@PathVariable long idStudentTask,
+                                            @PathVariable long requestId) {
+        return taskService.arePresentCodesOfTeacher(studentTaskService.findById(idStudentTask), requestId);
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
-    @GetMapping("/getClassesOfTeacher/{idStudentTask}")
-    public List<String> getCodesOfTeacher(@PathVariable long idStudentTask) {
-        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), false);
+    @GetMapping("/getClassesOfTeacher/{idStudentTask}/{requestId}")
+    public List<String> getCodesOfTeacher(@PathVariable long idStudentTask,
+                                          @PathVariable long requestId) {
+        return taskService.getClassesForTask(studentTaskService.findById(idStudentTask), false, requestId);
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")

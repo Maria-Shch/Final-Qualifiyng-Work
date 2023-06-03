@@ -51,4 +51,16 @@ export class RequestService {
   public getHistoryOfRequests(pageNumber: number) : Observable<IEventHistory[]>{
     return this.httpclient.get<IEventHistory[]>(environment.apiUrl + `/request/getHistory/${pageNumber}`);
   }
+
+  getClassesOfStudentByStudentTaskId(studentTaskId: number): Observable<string[]> {
+    return this.httpclient.get<string[]>(environment.apiUrl + `/request/getClassesOfStudent/${studentTaskId}`);
+  }
+
+  getClassesOfTeacherByStudentTaskId(studentTaskId: number, requestId: number): Observable<string[]> {
+    return this.httpclient.get<string[]>(environment.apiUrl + `/request/getClassesOfTeacher/${studentTaskId}/${requestId}`);
+  }
+
+  arePresentClassesOfTeacherByStudentTaskId(studentTaskId: number, requestId: number): Observable<boolean> {
+    return this.httpclient.get<boolean>(environment.apiUrl + `/request/arePresentClassesOfTeacher/${studentTaskId}/${requestId}`);
+  }
 }

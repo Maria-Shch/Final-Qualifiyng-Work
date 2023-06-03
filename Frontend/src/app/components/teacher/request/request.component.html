@@ -100,6 +100,9 @@
           <button *ngIf="arePresentCodesOfTeacher" class="h6 d-white-button" style="width: 286px" (click)="showTeacherCode()">Показать мои сохранённые изменения</button>
         </div>
 
+        <p *ngIf="isStudentCode" class="p5" style="margin: 10px 0 10px 0">Код студента:</p>
+        <p *ngIf="!isStudentCode" class="p5" style=" margin: 10px 0 10px 0">Ваш код:</p>
+
         <div *ngFor="let codeTA of codeTextAreas"
              style="display: flex; flex-direction: row; align-items: start; justify-content: space-between; width: 1050px;">
           <textarea class="textarea-code"

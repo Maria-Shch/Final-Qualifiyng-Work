@@ -240,9 +240,8 @@
          style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
       <p class="h4" style="color: var(--c2); text-align: center; margin: 0">Правила написания тестов</p>
       <div style="width: 100%">
-        <p class="p4">1. Класс теста обязан наследовать класс <b>AbstractFirstBlockTaskTest</b>.</p>
-        <p class="p4">2. Разрешено использовать функционал Spring Core.</p>
-        <p class="p4">3. Запрещено использование сторонних библиотек и зависимостей, например Lombok.</p>
+        <p class="p4">1. Класс теста обязан реализовывать интерфейс <b>CodeTest</b>.</p>
+        <p class="p4">2. Запрещено использование сторонних библиотек и зависимостей, например Lombok.</p>
       </div>
       <footer style="display: flex; flex-direction: row; justify-content: center; ">
         <button class="p5 d-violet-button" (click)="showModalTestsRules=false">ОК</button>

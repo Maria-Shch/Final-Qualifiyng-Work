@@ -49,10 +49,12 @@ public class TestingController {
     }
 
     @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
-    @PostMapping("/{studentTaskId}/onTestingT")
-    public SendingOnTestingResponse onTestingForTeacher(@PathVariable long studentTaskId, @RequestBody List<String> codes) {
+    @PostMapping("/{studentTaskId}/{requestId}/onTestingT")
+    public SendingOnTestingResponse onTestingForTeacher(@PathVariable long studentTaskId,
+                                                        @PathVariable long requestId,
+                                                        @RequestBody List<String> codes) {
         User teacher = authService.getUser().orElse(null);
-        return testingService.testingForTeacher(studentTaskId, teacher, codes);
+        return testingService.testingForTeacher(studentTaskId, requestId, teacher, codes);
     }
 
     @PreAuthorize("hasAnyAuthority('USER','TEACHER','ADMIN')")

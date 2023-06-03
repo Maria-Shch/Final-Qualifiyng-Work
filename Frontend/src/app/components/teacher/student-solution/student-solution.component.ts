@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ICodeTextArea} from "../../../dto_interfaces/ICodeTextArea";
 import {toErrorPage} from "../../../utils/ToErrorPageFunc";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TaskService} from "../../../services/task.service";
 import {UserService} from "../../../services/user.service";
 import {IStudentTask} from "../../../interfaces/IStudentTask";
 import {StudentTaskService} from "../../../services/student-task.service";
+import {RequestService} from "../../../services/request.service";
 
 @Component({
   selector: 'app-student-solution',
@@ -24,9 +24,9 @@ export class StudentSolutionComponent implements OnInit{
   constructor(
     private router:Router,
     private route: ActivatedRoute,
-    private taskService: TaskService,
     private userService: UserService,
-    private studentTaskService: StudentTaskService
+    private studentTaskService: StudentTaskService,
+    private requestService: RequestService
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +52,7 @@ export class StudentSolutionComponent implements OnInit{
           }
 
           // @ts-ignore
-          this.taskService.getClassesOfStudentByStudentTaskId(this.studentTask?.id).subscribe(
+          this.requestService.getClassesOfStudentByStudentTaskId(this.studentTask?.id).subscribe(
             (data: string[]) => {
               if (data != null){
                 this.setCodeToTextAreas(data);

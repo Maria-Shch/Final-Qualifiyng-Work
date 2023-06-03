@@ -47,7 +47,7 @@ public class TestDefinitionService {
     private static final char PKG_SEPARATOR = '.';
     private static final char DIR_SEPARATOR = '/';
     private static final String BACKUP_EXTENSION = ".bak.";
-    private static final String TEST_PACKAGE = "ru.shcherbatykh.tests.task";
+    private static final String TEST_PACKAGE = "ru.shcherbatykh.codetester.tests.task";
 
     @Value("${autochecker.hot_reload.io.test_classes_folder}")
     private String testClassesFolder;
