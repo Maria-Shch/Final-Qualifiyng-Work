@@ -222,8 +222,8 @@ public class TestDefinitionService {
             }
         } else {
             classDeclaration.addSingleMemberAnnotation(TaskTest.class, "\"" + taskId + "\"");
-            testDefinitionContext.setUpdatedCodeSource(LexicalPreservingPrinter.print(compilationUnit));
         }
+        testDefinitionContext.setUpdatedCodeSource(LexicalPreservingPrinter.print(compilationUnit));
     }
 
     private TestDefinitionCompilationInfo createCompilationInfo(CompileCodeResult compileCodeResult) {

@@ -44,11 +44,17 @@ public class TestingService {
 
     public ResponseAboutTestingAllowed getResponseAboutTestingAllowed(int serialNumberOfChapter, int serialNumberOfBlock,
                                                                       int serialNumberOfTask, User user) {
-        if (user.getRole() != Role.USER){
-            return new ResponseAboutTestingAllowed(true);
-        }
+
         Task task = taskService.getTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
         Task prevTask = taskService.getPreviousTask(serialNumberOfChapter, serialNumberOfBlock, serialNumberOfTask);
+
+        if (user.getRole() != Role.USER && !Objects.equals(studentTasksService.getStatusByUserAndTask(user, task).getName(), "На тестировании")){
+            return new ResponseAboutTestingAllowed(true);
+        }
+        if (user.getRole() != Role.USER && Objects.equals(studentTasksService.getStatusByUserAndTask(user, task).getName(), "На тестировании")){
+            return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.TASK_ON_TESTING);
+        }
+
         if (prevTask != null){
             if (!Objects.equals(studentTasksService.getStatusByUserAndTask(user, prevTask).getName(), "Решена")){
                 return new ResponseAboutTestingAllowed(false, ReasonOfProhibitionTesting.PREVIOUS_TASK_NOT_SOLVED);

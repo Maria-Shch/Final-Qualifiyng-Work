@@ -27,6 +27,9 @@
     </div>
   </div>
   <div *ngIf="isEditing === false" id="textTheory" style="padding: 0 30px 0 0;"></div>
+  <div *ngIf="isEmptyTextTheory">
+    <p class="h4">Теоретический материал отсутствует.</p>
+  </div>
   <div *ngIf="isEditing === true" >
     <div style="display: flex; flex-direction: row; justify-content: space-evenly; width: 100%; margin: 15px 0 20px 0">
       <button class="p4 d-violet-button" (click)="save()">Сохранить изменения</button>

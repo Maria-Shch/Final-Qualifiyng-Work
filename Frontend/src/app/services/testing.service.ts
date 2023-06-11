@@ -39,8 +39,8 @@ export class TestingService {
       `/${studentTaskId}/${requestId}/onTestingT`, codes);
   }
 
-  getTestingResultForTeacher(studentTaskId: number): Observable<ICodeCheckResponseResult> {
-    return this.httpclient.get<ICodeCheckResponseResult>(environment.apiUrl + `/auth/${studentTaskId}/getTestingResultT`);
+  getTestingResultForTeacher(studentTaskId: number, requestId: number): Observable<ICodeCheckResponseResult> {
+    return this.httpclient.get<ICodeCheckResponseResult>(environment.apiUrl + `/${studentTaskId}/${requestId}/getTestingResultT`);
   }
 
   getActualTestClass(taskId: number): Observable<string> {
@@ -49,7 +49,6 @@ export class TestingService {
       responseType: 'text'
     });
   }
-
 
   sendCodeTest(taskId: number, codeTest: string): Observable<boolean> {
     return this.httpclient.post<boolean>(environment.apiUrl + `/saveCodeTest/${taskId}`, codeTest);

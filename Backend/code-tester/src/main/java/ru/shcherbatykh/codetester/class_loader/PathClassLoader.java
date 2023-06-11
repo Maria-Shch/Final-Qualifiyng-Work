@@ -1,11 +1,14 @@
 package ru.shcherbatykh.codetester.class_loader;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.tools.JavaFileObject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Slf4j
 public class PathClassLoader extends ClassLoader {
     private final Queue<Path> paths;
 
@@ -31,7 +34,8 @@ public class PathClassLoader extends ClassLoader {
                 loadedClasses.put(path, findClass(path.toString().replace(JavaFileObject.Kind.SOURCE.extension,
                         JavaFileObject.Kind.CLASS.extension)));
             } catch (Throwable e) {
-                paths.add(path);
+                log.error("Exception during working ClassLoader", e);
+                throw new RuntimeException(e);
             }
         }
         return loadedClasses;

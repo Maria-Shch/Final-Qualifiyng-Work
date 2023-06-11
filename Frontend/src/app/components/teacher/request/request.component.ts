@@ -59,12 +59,13 @@ export class RequestComponent implements OnInit{
 
         this.requestService.arePresentClassesOfTeacherByStudentTaskId(this.request?.studentTask?.id, this.request?.id).subscribe((data: boolean) => {
             this.arePresentCodesOfTeacher = data;
-          },
-          (error)=>{ toErrorPage(error, this.router);})
-
-        this.testingService.getTestingResultForTeacher(this.request?.studentTask?.id).subscribe((data: ICodeCheckResponseResult) => {
-            this.lastTestingResultForTeacher = data;
-            console.log(this.lastTestingResultForTeacher);
+            if (this.arePresentCodesOfTeacher){
+              // @ts-ignore
+              this.testingService.getTestingResultForTeacher(this.request?.studentTask?.id, this.request?.id).subscribe((data: ICodeCheckResponseResult) => {
+                  this.lastTestingResultForTeacher = data;
+                },
+                (error)=>{ toErrorPage(error, this.router);});
+            }
           },
           (error)=>{ toErrorPage(error, this.router);})
       },

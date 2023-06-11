@@ -21,6 +21,7 @@ export class TheoryComponent implements OnInit{
   block: IBlock | null = null;
   isBlockLast: boolean = false;
   isEditing: boolean = false;
+  isEmptyTextTheory: boolean = false;
 
   editorConfig = {
     base_url: '/tinymce',
@@ -55,6 +56,9 @@ export class TheoryComponent implements OnInit{
           // @ts-ignore
           document.getElementById('textTheory').innerHTML = this.block.textTheory;
         }
+        if (data.textTheory == null ){
+          this.isEmptyTextTheory = true;
+        }
       });
 
       this.blockService.getCountOfBlocks(this.serialNumberOfChapter).subscribe(
@@ -75,6 +79,11 @@ export class TheoryComponent implements OnInit{
       this.block = data;
       this.isEditing = false;
       this.ngOnInit();
+      if (data.textTheory == null){
+        this.isEmptyTextTheory = true;
+      } else {
+        this.isEmptyTextTheory = false;
+      }
     });
   }
 
